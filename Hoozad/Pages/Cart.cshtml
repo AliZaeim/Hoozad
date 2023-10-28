@@ -1,0 +1,274 @@
+﻿@page
+@model Web.Pages.CartModel
+@{
+    ViewData["Title"] = "سبد خرید";
+    string currency = Model.SiteInfo.SiteCurrency ?? "ریال";
+    int TotalAllRow = 0;
+}
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@section CssRefs{
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+    <link rel=“canonical” href="https://hoozadstyle.ir/Cart/" />
+}
+@section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+<section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+    <div class="area-breadcrumb-site">
+        <h1 class="text-center mb-3">سبد خرید</h1>
+        <nav aria-label="breadcrumb" class="mb-1 mb-lg-3">
+            <ol class="breadcrumb breadcrumb-singleProduct ">
+                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                <li class="breadcrumb-item active">سبد خرید</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+@if (Model.Cart != null)
+{
+    if (Model.Cart.CartItems.Any())
+    {
+        <main class="content">
+            <section class="mb-1 pb-sm-2 pb-md-3  pb-lg-1 pb-xl-2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="area-table-cart-shop area-table-shop mb-5">
+                                <table class="table table-shop">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">حذف</th>
+                                            <th scope="col">محصول</th>
+                                            <th scope="col" class="p-0">کد</th>
+                                            <th scope="col" colspan="4">ویژگی های محصول</th>
+                                            <th scope="col"> جمع</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Cart.CartItems)
+                                        {
+                                            int TotalRow = 0;
+                                            DataLayer.Entities.Store.Product product = await _storeService.GetProductByCodeAsync(item.ProductCode!);
+
+                                            @if (!product.AllowedSinglePurchase.GetValueOrDefault())
+                                            {
+                                                List<DataLayer.Entities.Store.Product>? CommProducts = await _storeService.GetCommonProductsofThisAsync(item.ProductCode!);
+                                                if (CommProducts!.Any())
+                                                {
+                                                    
+                                                    <tr>
+                                                        <td colspan="8">
+                                                            <div class="text-xs-center mb-1 animated bounce infinite text-danger"><span>&dArr;</span> <span>این محصول مجوز خرید تکی ندارد !</span> <span>&dArr;</span></div>
+                                                            @if (CommProducts!.Any())
+                                                            {
+                                                                <div class="text-xs-center text-primary mb-1  rounded">
+                                                                    <span>همراه با </span>
+                                                                    @foreach (var comPr in CommProducts!.ToList())
+                                                                    {
+                                                                        if (comPr == CommProducts!.LastOrDefault())
+                                                                        {
+                                                                            <span>@comPr.ProductName</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span>@comPr.ProductName یا </span>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            }
+                                            <tr>
+                                                <td>
+                                                    <a href="javascript:void(0)" data-pname="@product!.ProductName" data-cartitemid="@item.Id" data-cartid="@item.CartId.ToString()" class="remove-product text-danger">
+                                                        <i class="fal fa-times"></i>
+                                                    </a>
+                                                </td>
+
+                                                <td>
+                                                    <div class="product-thumbnail">
+                                                        <div>@product.ProductName</div>
+                                                        <img src="/images/store/products/@product.ProductImage1">
+                                                    </div>
+                                                </td>
+                                                <td class="p-0">
+                                                    @item.ProductCode
+                                                </td>
+                                                <td colspan="4">
+                                                    <table class="table table-bordered ">
+                                                        <thead>
+                                                            <tr class="table-success p-0">
+                                                                <th class="text-center p-0">رنگ</th>
+                                                                <th class="text-center p-0">سایز</th>
+                                                                <th class="text-center p-0">قد</th>
+                                                                <th class="text-center p-0">تعداد</th>
+                                                                <th class="text-center p-0">قیمت- @currency</th>
+                                                                <th class="text-center p-0">جمع</th>
+                                                                <th class="text-center p-0">حذف</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                List<DataLayer.Entities.Store.CartProductInfo> cartProductInfos = await _storeService.GetProductInfosofCartItemAsync(item.Id);
+                                                            }
+                                                            @foreach (var col in cartProductInfos)
+                                                            {
+
+                                                                <tr>
+                                                                    <td class="p-1 text-center zfs-10 font-bold-500">@col.Color</td>
+                                                                    <td class="p-1 text-center">@col.Size</td>
+                                                                    <td class="p-1 text-center">@col.Height</td>
+                                                                    <td class="p-1 text-center">@col.Quantity</td>
+                                                                    <td class="p-1 text-center">@col.NetPrice.GetValueOrDefault().ToString("N0")</td>
+                                                                    <td class="p-1 text-center">
+                                                                        @{
+                                                                            int Rowsum = 0;
+                                                                            Rowsum = col.Quantity * col.NetPrice.GetValueOrDefault();
+                                                                            TotalRow += Rowsum;
+                                                                        }
+                                                                        @Rowsum.ToString("N0")
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <a href="javascript:void(0)" title="حذف سفارش" class="d-flex p-1 text-center remove_pInfofromcartItem" data-pname="@product.ProductName" data-id="@col.Id" data-cartitemid="@col.CartItemId" data-cartid="@col.CartItem!.CartId.ToString()">
+                                                                            <span class="text-danger w-100 zfs-16 font-bold-500">&times;</span>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+
+                                                </td>
+                                                <td>
+                                                    <div class="product-subtotal">
+                                                        @{
+                                                            TotalAllRow += TotalRow;
+                                                        }
+                                                        @TotalRow.ToString("N0")
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                        <tr>
+                                            <td colspan="11" class="actions w-100">
+                                                <div class="footer-table-cart d-flex flex-column flex-md-row align-items-center justify-content-between">
+                                                    @if (User.Identity!.IsAuthenticated)
+                                                    {
+                                                        <div class="area-coupon me-0  me-md-2 mb-4 mb-md-0">
+                                                            <form class="d-flex flex-column flex-sm-row align-items-start justify-content-between ">
+                                                                <div class="coupon d-inline-flex mb-0 align-items-center">
+                                                                    <label class="me-2" for="input-coupon">کوپن: </label>
+                                                                    <input type="text" class="form-control me-2" id="input-coupon" name="coupen" placeholder="کد را وارد کنید">
+                                                                </div>
+                                                                <button asp-page="Cart" asp-page-handler="TakeCoupen" formmethod="post" type="submit" class="btn-animate1 d-inline-flex me-0  me-md-2 mt-3 mt-sm-0">
+                                                                    اعمال
+                                                                    کوپن
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="font-weight-bold">در صورت ثبت نام در سایت می توانید از کوپن تخفیف خود استفاده کنید <a href="/Register?RetUrl=/Cart" class="btn btn-info">ثبت نام</a></span>
+                                                    }
+
+
+
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 offset-md-4 col-md-4">
+                        <div class="box-cart-total ">
+                            <h2>جمع سبد خرید</h2>
+                            <div class="details-cart-total">
+                                <div class="cart-subtotal d-flex justify-content-between align-items-center  mb-4">
+                                    <span>مجموع</span>
+
+                                    <span class="subtotal">
+                                        @TotalAllRow.ToString("N0") @currency
+                                    </span>
+                                </div>
+
+                                @if (TotalAllRow >= Model.SiteInfo.FreeShippingValue)
+                                {
+                                    <hr>
+                                    <div class="cart-shipping d-flex justify-content-between align-items-center  mb-4">
+                                        <span>هزینه ارسال</span>
+                                        @if (TotalAllRow >= Model.SiteInfo.FreeShippingValue)
+                                        {
+                                            <span class="subtotal"> رایگان</span>
+                                        }
+                                    </div>
+                                    <hr>
+                                    <div class="cart-total d-flex justify-content-between align-items-center mb-4">
+                                        <span> مجموع کل سبد خرید</span>
+                                        <span class="payable">@TotalAllRow.ToString("N0") @currency</span>
+                                    </div>
+                                    <p>@Core.Utility.ConvertNumberToString.num2str(TotalAllRow.ToString()) @currency</p>
+                                }
+                            </div>
+                        </div>
+                        <div class="area-btn-checkout text-center mt-4 mb-4">
+                            <a href="/CheckOut" class="btn-animate1 border-0">ادامه جهت تسویه حساب</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    }
+    else
+    {
+        <main class="content">
+            <div class="container d-flex flex-row align-items-center justify-content-center">
+                <h4 class="text-center alert alert-danger">سبد خرید خالی می باشد !</h4>
+            </div>
+        </main>
+    }
+
+}
+else
+{
+    <main class="content">
+        <div class="container d-flex flex-row align-items-center justify-content-center">
+            <h4 class="text-center alert alert-danger">سبد خرید خالی می باشد !</h4>
+        </div>
+    </main>
+}
+
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+@section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

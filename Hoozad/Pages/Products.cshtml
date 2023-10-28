@@ -1,0 +1,397 @@
+﻿@page
+@model Web.Pages.ProductsModel
+@{
+    ViewData["Title"] = "محصولات هوزاد استایل";
+    string cur = Model.SiteInfo.SiteCurrency ?? "ریال";
+}
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@section CssRefs{
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+    <link rel=“canonical” href="https://hoozadstyle.ir/products/" />
+}
+
+@section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+<section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+    <div class="area-breadcrumb-site">
+        <h1 class="text-center mb-3">محصولات هوزاد استایل</h1>
+        <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+            <ol class="breadcrumb breadcrumb-singleProduct ">
+                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                @if (string.IsNullOrEmpty(Model.PageSubTitle))
+                {
+                    <li class="breadcrumb-item active">فروشگاه</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item"><a href="/Products">فروشگاه</a></li>
+                    <li class="breadcrumb-item active">@Model.PageSubTitle صفحه @Model.CurrentPage</li>
+                }
+
+            </ol>
+        </nav>
+    </div>
+</section>
+<main class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-9 order-1 order-lg-2">
+                <div>
+                    <div>
+                        <div class="row">
+                            @foreach (var pr in Model.Products.Where(w => w.IsActive).ToList())
+                            {
+                                bool AllowsingleSell = false;
+
+                                AllowsingleSell = await _storeService.CheckAllowSingleSell(pr.ProductCode!, Model.CartId!);
+                                List<DataLayer.Entities.Store.Product>? Commprs = await _storeService.GetCommonProductsofThisAsync(pr.ProductCode!);
+                                (int price, int netprice, int discount, int disPercent, bool Exist) finance = await _storeService.GetProductFinanceInfoAsync(pr.ProductId);
+
+                                var prc = await _storeService.GetProductPricesFinanceAsync(pr.ProductCode!);
+                                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                                    <div class="product_cart">
+
+                                        @if (finance.disPercent != 0)
+                                        {
+                                            <div class="off"> <span> @finance.disPercent تخفیف</span></div>
+                                        }
+                                        @if (!finance.Exist)
+                                        {
+                                            <div class="zNoSaleSkwed">پایان موجودی</div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(pr.ProductLabel))
+                                        {
+
+                                            <div class="ztag">@pr.ProductLabel</div>
+                                        }
+
+                                        @if (!pr.AllowedSinglePurchase.GetValueOrDefault() && finance.Exist)
+                                        {
+                                            if (!AllowsingleSell)
+                                            {
+                                                <div class="zNoSale justify-content-center align-content-center">امکان خرید تکی ندارد !</div>
+                                                @if (Commprs != null)
+                                                {
+                                                    @if (Commprs.Any())
+                                                    {
+                                                        <div class="zCommPr justify-content-center align-content-center" >
+                                                            <span>خرید همراه </span> &ensp;
+                                                            @{
+                                                                int loop = 1;
+                                                            }
+                                                            @foreach (var comP in Commprs.ToList())
+                                                            {
+                                                                if (loop < 2)
+                                                                {
+                                                                    <a class="d-inline-flex" href="/Product/d/@comP.ProductCode">@comP.ProductName</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>&ensp; یا</span>
+                                                                    <a class="d-inline-flex" href="/Product/d/@comP.ProductCode">&ensp; @comP.ProductName</a>
+                                                                }
+                                                                
+                                                                loop++;
+                                                            }
+                                                        </div>
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                        @*<a href="#" class="link-wishlist-icon"><i class="fal fa-heart"></i></a>*@
+                                        <div class="cart-img-product mb-3">
+                                            <a href="/Product/d/@pr.ProductCode">
+                                                <div class="d-flex justify-content-center align-items-center h-100">
+                                                    <img src="/images/store/products/@pr.ProductImage1" class="img1-product img-fluid rounded" alt="@pr.ProductImageAlt" />
+                                                    @if (!string.IsNullOrEmpty(pr.ProductImage2))
+                                                    {
+                                                        <img src="/images/store/products/@pr.ProductImage2" class="img2-product img-fluid rounded " alt="@pr.ProductName" />
+                                                    }
+                                                </div>
+                                            </a>
+                                            <div class="area-button-view-product">
+                                                @{
+                                                    List<(string, string)> roots = new();
+                                                    List<DataLayer.Entities.Store.Product?> SetProducts = new();
+                                                    if (AllowsingleSell == false)
+                                                    {
+                                                        SetProducts = Model.Products.SelectMany(x => x.ProductComponents).Where(w => w.ProductCode == pr.ProductCode).Select(x => x.Product).ToList();
+                                                    }
+                                                    if (SetProducts != null)
+                                                    {
+                                                        foreach (var item in SetProducts!.ToList())
+                                                        {
+                                                            roots.Add(new("/Product/d/" + item!.ProductCode, item.ProductName!));
+                                                        }
+                                                    }
+
+                                                }
+                                                @if (AllowsingleSell || pr.AllowedSinglePurchase.GetValueOrDefault() && finance.Exist)
+                                                {
+                                                    <a href="/Product/d/@pr.ProductCode" class="button-view-product">
+                                                        مشاهده محصول
+                                                    </a>
+                                                }
+                                                @* else
+                                            {
+                                            foreach (var item in roots)
+                                            {
+                                            <a href="@item.Item1" class="btn btn-primary w-100 d-flex text-white">
+                                            <span class="col-12 text-lg-center">مشاهده @item.Item2</span>
+                                            </a>
+                                            }
+
+                                            } *@
+
+                                            </div>
+                                        </div>
+                                        <div class="content_product text-center">
+                                            <div class="price_card_product mb-2">
+                                                @if (finance.Exist)
+                                                {
+                                                    @if (finance.price != finance.netprice)
+                                                    {
+                                                        <del class="me-1">@finance.price.ToString("N0")</del>
+                                                    }
+                                                    @finance.netprice.ToString("N0")
+
+                                                    <span> </span>  @cur
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-danger">پایان موجودی</span>
+                                                }
+                                            </div>
+                                            @{
+
+                                            }
+                                            <a href="/Product/d/@pr.ProductCode">
+                                                <h3 class="title-product mb-2">
+                                                    @pr.ProductName
+
+                                                </h3>
+
+
+                                            </a>
+
+                                            <a href="/Product/d/@pr.ProductCode"><h5 class="title-product mb-2">کد محصول : @pr.ProductCode </h5></a>
+
+                                            <div class="star_rating">
+                                                @for (var st = 1; st <= pr.Popularity.GetValueOrDefault(); st++)
+                                                {
+                                                    <span class="star-icon star-icon-active">
+                                                        <i class="far fa-star"></i>
+                                                    </span>
+                                                }
+                                                @for (var st = 1; st <= 5 - pr.Popularity.GetValueOrDefault(); st++)
+                                                {
+                                                    <span class="star-icon"><i class="far fa-star"></i></span>
+                                                }
+                                            </div>
+                                            <div>
+
+                                                @if (finance.Exist && AllowsingleSell)
+                                                {
+                                                    <a href="/Product/d/@pr.ProductCode" class="btn-add-to-cart btn btn-info">
+                                                        ثبت سفارش <i class="fal fa-cart-arrow-down ps-3"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="/Product/d/@pr.ProductCode" class="btn-add-to-cart btn btn-info">
+                                                        مشاهده محصول
+                                                    </a>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        @if (Model.TotalPage > 1)
+                        {
+                            <div class="area-pageination-shop  mt-5">
+                                <ul class="pagination page-numbers d-flex justify-content-center order-2 order-md-1">
+                                    <li class="page-item @((Model.CurrentPage == 1)?"disabled":"")">
+                                        @{
+                                            int nextP = 1; int beforeP = 1;
+                                            if (Model.CurrentPage == 1)
+                                            {
+                                                beforeP = 1;
+                                                nextP = 2;
+                                            }
+                                            else
+                                            {
+                                                beforeP = Model.CurrentPage - 1;
+                                                if (Model.CurrentPage != Model.TotalPage)
+                                                {
+                                                    nextP = Model.CurrentPage + 1;
+                                                }
+
+                                            }
+                                        }
+                                        <a class="page-link" href="/Products/?pageId=@beforeP" aria-label="Previous">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                    @for (var pg = 1; pg <= Model.TotalPage; pg++)
+                                    {
+                                        if (Model.CurrentPage == pg)
+                                        {
+                                            <li class="page-item active"><a class="page-link" href="/Products/?pageId=@pg">@pg</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link " href="/Products/?pageId=@pg">@pg</a></li>
+                                        }
+                                    }
+
+                                    <li class="page-item @((Model.CurrentPage == Model.TotalPage)?"disabled":"")">
+                                        <a class="page-link" href="/Products/?pageId=@nextP" aria-label="Next">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12 col-lg-3 mt-5 mt-lg-0 order-2 order-lg-1 ">
+                <aside class="area-sidebar">
+                    <div class="widget-sidebar mb-4 pb-3" id="accordian">
+                        <header>
+                            <h3 class="title-widget-sidebar ">دسته بندی</h3>
+                        </header>
+                        <section>
+                            <ul class="menu-multi-level menu-categorySidebar">
+                                <li class="children">
+                                    @foreach (var gr in Model.ProductGroups.ToList())
+                                    {
+                                        <a href="/Products/?gId=@gr.Id" class="mt-2 @((gr.Id == Model.ProductGroup.Id)? "bg-success text-white p-1":"")">
+                                            @gr.Title <span class="badge-sidebar-shop @((gr.Id == Model.ProductGroup.Id)? "text-white p-1":"")">( @gr.Products.Count() )</span>
+                                        </a>
+                                    }
+
+                                </li>
+
+                            </ul>
+                        </section>
+                    </div>
+
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">رنگ ها</h3>
+                        </header>
+                        <section>
+                            <div class="area-radiosColorProduct mb-4">
+                                @foreach (var color in Model.ProductColors.OrderByDescending(x => x.ColorName).GroupBy(g => g.ColorName!.Trim()).Take(10).ToList())
+                                {
+                                    <a href="/Products/?color=@color.FirstOrDefault()!.ColorName">
+                                        <div class="option-color-product mb-2">
+                                            <div class="badge-sidebar-shop">( @color.Count() )</div>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <input class="checkbox-color" type="checkbox"
+                                                           value="purple" data-label="colorOptionText">
+                                                    <label for="checkbox-color-1" class="lable-option-color">
+                                                        <span style="background-color:@color.FirstOrDefault()!.Color"></span>
+                                                    </label>
+                                                </div>
+                                                <label class="text-checkbox-ColorProduct ms-2">
+                                                    @color.FirstOrDefault()!.ColorName
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+
+                            </div>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">قد (سانتیمتر)</h3>
+                        </header>
+                        <section>
+                            <div class="area-filter-sizeProduct">
+                                <div class="row">
+                                    @foreach (var sz in Model.ProductPrices.OrderBy(x => x.Key.Height).ToList())
+                                    {
+                                        <div class="col-lg-3 form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                            <label class="form-check-label"><a href="/Products/?height=@sz.Key.Height">@sz.Key.Height </a></label>
+                                        </div>
+
+                                    }
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">برچسب ها</h3>
+                        </header>
+                        <section>
+                            <div class="d-flex flex-wrap  area-tags-shop">
+                                @foreach (var tg in Model.GroupingTopTags.OrderBy(x => x.Key).Take(20).ToList())
+                                {
+                                    <div class="tag-sidebar"><a href="/Products/?tag=@tg.Key.Replace(" ","-")">@tg.Key</a></div>
+                                }
+
+                            </div>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+@section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/price-range-slider.js"></script>
+    <script src="~/Layout/js/jquery.elevatezoom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
+@if (TempData["addResp"] != null)
+{
+    if (TempData["addResp"]!.ToString() == "yes")
+    {
+        @section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'به سبد اضافه شد',
+                showConfirmButton: true,
+                confirmButtonText: 'متشکرم',
+            });
+        })
+    </script>
+        }
+
+    }
+
+}

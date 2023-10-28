@@ -1,0 +1,138 @@
+﻿@page "/Login/{ReturnUrl?}"
+@model Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "ورود به سایت";
+}
+@section CssRefs{
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+}
+    @section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+    <div class="bg-close">
+    </div>
+    <div class="bg-searchform">
+        <div class="area-searchform">
+            <div class="area-close-search">
+                <a href="#"><i class="fal fa-times"></i></a>
+            </div>
+            <form class="search-form d-flex w-100" action="" method="get">
+                <input type="text" class="form-control input_search" placeholder="دنبال چه میگردید">
+                <button type="submit">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z">
+                        </path>
+                        <path fill-rule="evenodd"
+                          d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z">
+                        </path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="area-breadcrumb-site">
+            <h1 class="text-center mb-3">ورود</h1>
+            <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+                <ol class="breadcrumb breadcrumb-singleProduct ">
+                    <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                    <li class="breadcrumb-item active">ثبت نام</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+    <main class="content">
+        <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-10 col-md-9 col-lg-8  col-xl-6">
+                        <div class="login login-register-wrap">
+                            <div class="area-form-login area-form-login-register p-3 p-sm-4 p-md-5 ">
+                                <h3 class="heading-style1 mb-3 text-center">ورود به سایت</h3>
+                                <form method="post">
+                                    <input type="hidden" asp-for="@Model.LoginVModel.RetUrl" type="hidden" />
+                                    <div class="form-group">
+                                        <label asp-for="@Model.LoginVModel.UserName" class="control-label"></label>
+                                        <input asp-for="@Model.LoginVModel.UserName" class="form-control" />
+                                        <span asp-validation-for="@Model.LoginVModel.UserName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group mb-3">                                        
+                                        <label asp-for="@Model.LoginVModel.Password" class="control-label"></label>
+                                        <input asp-for="@Model.LoginVModel.Password" class="form-control input-password" type="password" id="password" aria-describedby="basic-addon2" />
+                                        <span asp-validation-for="@Model.LoginVModel.Password" class="text-danger"></span>
+                                        <span class="icon-eye-password" id="basic-addon2">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+                                    <div class=" d-sm-flex justify-content-between">
+                                        <div class="form-check form-check-custom ">
+                                            <label class="checkbox-container">
+                                                مرا به خاطر بسپار
+                                                <input type="checkbox" asp-for="@Model.LoginVModel.RememberMe" checked="">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="forget_password">
+                                            <a href="/ForgetPassword">
+                                                رمز عبور را فراموش کرده اید؟
+                                            </a>
+                                        </div>
+                                    </div> <button type="submit" class="btn-animate1 mt-4">ورود</button>
+
+                                    <div class="form-note mt-4">
+                                        حساب کاربری ندارید؟ <a href="/Register">
+                                            ثبت نام
+                                            کنید
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="footer-login">
+                                <div class="area-socialIcon socialIcon-bg-secondary d-flex justify-content-center">
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.InstagramLink))
+                                {
+                                    <a href="@Model.SiteInfo.InstagramLink" class="icon instegram text-danger">
+                                        <span class="tooltip-site">اینستاگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.TelegramLink))
+                                {
+                                    <a href="@Model.SiteInfo.TelegramLink" class="icon telegram text-primary">
+                                        <span class="tooltip-site">تلگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.WhatsupLink))
+                                {
+                                    <a href="@Model.SiteInfo.WhatsupLink" class="icon whatsapp text-success">
+                                        <span class="tooltip-site">واتزآپ</span>
+                                    </a>
+                                }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    @section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+
+    @section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+
+}

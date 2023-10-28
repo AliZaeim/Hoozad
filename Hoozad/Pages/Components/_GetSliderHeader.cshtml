@@ -1,0 +1,19 @@
+﻿@model IEnumerable<DataLayer.Entities.Supplementary.Slider>
+
+@if (Model.Any())
+{
+    <section id="zcrousel" class="carousel-wrapper m-b-20 d-flex" >
+        <div class="owl-carousel owl-theme" id="z-owl" >
+            @foreach (var item in Model.ToList())
+            {
+                <div class="item hero-slider-item" data-z="@item.LinkUrl">
+                    <picture onClick="window.location.href = '@item.LinkUrl'">
+                        <source srcset="/images/sliders/@item.MobileImage" media="(max-width:600px)">
+                        <img src="/images/sliders/@item.Image" alt="@item.Title">
+                    </picture>                 
+                </div>
+            }
+        </div>
+    </section>
+
+}

@@ -1,0 +1,62 @@
+﻿@model DataLayer.Entities.Supplementary.Banner
+@if (Model != null)
+{
+    string cls = string.Empty;
+    
+    if (Model.ItemCount == 1)
+    {
+        cls = "col-12";
+    }
+    if (Model.ItemCount == 2)
+    {
+        cls = "col-12 col-sm-6 col-lg-6";
+    }
+    if (Model.ItemCount == 4)
+    {
+        cls = "col-12 col-sm-6 col-lg-4 col-xl-3";
+    }
+    <section class="mb-5  pb-lg-4 pb-xl-5">
+        <div class="container">
+            <div class="row baner-site">
+                @foreach (var (value, index) in Model.BannerItems.Select((value, index) => (value, index)).Where(w => w.value.IsActive).ToList())
+                {
+                    string clss = "bounceInRight";
+                    if ((index + 1) % 2 != 0)
+                    {
+                        clss = "bounceInLeft";
+                    }
+                    <div class="wow @clss @cls item-baner" data-wow-duration="2s">
+                        <div class="box-baner mb-5">
+                            @if (!string.IsNullOrEmpty(value.LinkUrl))
+                            {
+                                <a href="@value.LinkUrl">
+                                    <picture class="img-fluid">
+                                        <source media="(max-width: 799px)" class="img-fluid" srcset="/images/banners/@value.MobileImage" />
+                                        <source media="(min-width: 800px)" class="img-fluid" srcset="/images/banners/@value.Image" />
+                                        <img src="/images/banners/@value.Image" class="img-fluid" alt="@value.Name" />
+                                    </picture>
+                                </a>
+                            }
+                            else
+                            {
+                                <picture class="img-fluid">
+                                    <source media="(max-width: 799px)" class="img-fluid" srcset="/images/banners/@value.MobileImage" />
+                                    <source media="(min-width: 800px)" class="img-fluid" srcset="/images/banners/@value.Image" />
+                                    <img src="/images/banners/@value.Image" class="img-fluid" alt="@value.Name" />
+                                </picture>
+                            }
+
+                           @*  @if (!string.IsNullOrEmpty(value.LinkUrl))
+                            {
+                                <a href="@value.LinkUrl" class="btn-buy-view btn-animate1 to-arrow">
+                                    مشاهده و خرید <i class="fal fa-angle-left"></i>
+                                </a>
+                            } *@
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}

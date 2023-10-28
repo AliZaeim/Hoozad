@@ -1,0 +1,60 @@
+﻿@model DataLayer.Entities.Store.ProductSize
+
+@{
+    ViewData["Title"] = "جزئیات سایز محصول";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">جزئیات سایز</h1>
+
+<div class="container-fluid">
+    
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ChestAround)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ChestAround)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaistAround)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaistAround)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HipsAround)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HipsAround)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ArmAround)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ArmAround)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SleeveLength)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SleeveLength)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Product)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Product!.ProductName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">ویرایش</a> |
+    <a asp-action="Index">بازگشت</a>
+</div>

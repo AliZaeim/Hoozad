@@ -1,0 +1,27 @@
+﻿@model IEnumerable<DataLayer.Entities.Store.ProductSize>
+
+<table id="SizeTbl" class="table table-bordered">
+    <thead>
+        <tr >
+            <th>سایز</th>
+            <th>دور سینه</th>
+            <th>دور کمر</th>
+            <th>دور باسن</th>
+            <th>دور بازو</th>
+            <th>قد آستین</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Size</td>
+                <td>@item.ChestAround</td>
+                <td>@item.WaistAround</td>
+                <td>@item.HipsAround</td>
+                <td>@item.ArmAround</td>
+                <td>@item.SleeveLength</td>
+            </tr>
+        }
+    </tbody>
+</table>

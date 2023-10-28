@@ -1,0 +1,46 @@
+﻿@model IEnumerable<DataLayer.Entities.Supplementary.CellphoneBank>
+@using Core.Convertors;
+@{
+    ViewData["Title"] = "بانک تلفن همراه";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">بانک تلفن همراه <span class="tag tag-square">@Model.Count()</span></h1>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-xs-center align-middle">
+                #
+            </th>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.Cellphone)
+            </th>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.RegDate)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int radif = 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-xs-center align-middle">
+                    @radif
+                </td>
+                <td class="text-xs-center align-middle">
+                    @Html.DisplayFor(modelItem => item.Cellphone)
+                </td>
+                <td class="text-xs-center align-middle">
+                    @item.RegDate.ToShamsiN_WithTime()
+                </td>
+            </tr>
+            radif++;
+        }
+    </tbody>
+</table>

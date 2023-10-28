@@ -1,0 +1,165 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "هوزاد استایل";
+}
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@inject ISuppService _suppService
+@section CssRefs{
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="مزون تخصصی هوزاد با استفاده از کادری مجرب و متخصص در جهت تهیه سفارش های مشتریان برای دوخت مانتو، پالتو، شومیز، شلوار و شال و سایر لباسهای مدل روز برای بانوان قدم بر می دارد" />
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.theme.default.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+    <link rel="canonical" href="https://hoozadstyle.ir/" />
+}
+@section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+<main class="content">
+    @await Component.InvokeAsync("SliderHeaderComponent")
+    <partial name="_SiteModal" />
+    <partial name="_ColElementMulti" />
+    @await Component.InvokeAsync("ProductCategoryComponent")
+    @if (Model.ExistNewProducts)
+    {
+        @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType="جدید"})
+    }
+
+    @if (await _suppService.ExistColBannerAsync(4,1))
+    {
+        @await Component.InvokeAsync("BannerComponent", new { count = 4, priority = 1})
+    }
+    @if (Model.ExistBestSaleProducts)
+    {
+        @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType = "پرفروش"})
+    }
+    @if (await _suppService.ExistColBannerAsync(2, 1))
+    {
+        @await Component.InvokeAsync("BannerComponent" , new { count = 2, priority = 1})
+    }
+    @await Component.InvokeAsync("AmazingOffersComponent")
+    @if (Model.ExistSuggestedProducts)
+    {
+        @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType = "پیشنهادی"})
+    }
+    @if (await _suppService.ExistColBannerAsync(4, 2))
+    {
+        @await Component.InvokeAsync("BannerComponent", new { count = 4 , priority = 2})
+    }
+    @if (Model.ExistPopulareProducts)
+    {
+        @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType = "محبوب"})
+    }
+    @if (await _suppService.ExistColBannerAsync(2, 2))
+    {
+        @await Component.InvokeAsync("BannerComponent", new { count = 2 , priority = 2})
+    }
+    @if (Model.ExistSeasonProducts)
+    {
+        @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType = "فصل"})
+    }
+    @if (await _suppService.ExistColBannerAsync(1, 1))
+    {
+        @await Component.InvokeAsync("BannerComponent", new { count = 1 , priority = 1})
+    }
+    @if (Model.ExistBestProducts)
+    {
+        @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType = "برتر"})
+    }
+    @if (Model.ExistBlogs)
+    {
+        @await Component.InvokeAsync("LatestPostsComponent")
+    }
+    <section>
+        <div class="area-newsletter">
+            <div class="container d-flex align-items-center h-100 ">
+                <div class="row w-100">
+                    <div class="col-12  d-flex  flex-column flex-xl-row align-items-center justify-content-center justify-content-xl-between">
+                        <div class="title-newsletter mb-4 mb-xl-0 text-center">
+                            با عضویت در مجله مزون هوزاد، شما می توانید از
+                            مهمترین تخفیف ها و بروزترین
+                            اخبار
+                            مطلع شوید
+                        </div>
+                        <div class="newsletter-email">
+                            <form asp-page="Index" asp-page-handler="AddCellphone" method="post">
+                                <div class="input-group">
+                                    <input type="text" name="cellphone" id="cellphone" data-val="true" required autocomplete="off" class="form-control" placeholder="تلفن همراه شما" oninvalid="this.setCustomValidity('تلفن همراه خود را وارد کنید')" oninput="this.setCustomValidity('')">
+                                    <button type="submit"> <i class="far fa-phone"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <input type="hidden" value="@TempData["crtTracknumber"]" id="cartTN" />
+</main>
+
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+@section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <!--refrence carousel-->
+    <script src="~/Layout/js/owl.carousel.min.js"></script>
+    <!--refrence carousel-->
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/layout/js/jquery.cookie.js"></script>
+}
+@if (TempData["saveCell"] != null)
+{
+    if (TempData["saveCell"]!.ToString() == "yes")
+    {
+        @section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'تلفن شما ثبت شد',
+                showConfirmButton: true,
+                confirmButtonText: 'باشه',
+            });
+        })
+    </script>
+       }
+    }
+}
+@if (TempData["successBuy"] != null)
+{
+    if (TempData["successBuy"]!.ToString() == "yes")
+    {
+        @section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var trN = $("#cartTN").val();
+            if (trN !== "") {
+                var tit = "سفارش شما با کد پیگیری " + trN + " ثبت شد.";
+                Swal.fire({
+                    icon: 'success',
+                    title: tit,
+                    showConfirmButton: true,
+                    confirmButtonText: 'باشه',
+                });
+            }
+
+        })
+    </script>
+       }
+    }
+}

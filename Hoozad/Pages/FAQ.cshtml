@@ -1,0 +1,56 @@
+﻿@page
+@model Web.Pages.FAQModel
+@{
+    ViewData["Title"] = "سئوالات متداول هوزاد استایل";
+}
+@section CssRefs{
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.theme.default.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel=“canonical” href="https://hoozadstyle.ir/FAQ/" />
+}
+@section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+<section>
+    <div class="area-breadcrumb-site">
+        <h1 class="text-center mb-3">سئوالات متداول هوزاد استایل</h1>
+        <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+            <ol class="breadcrumb breadcrumb-singleProduct ">
+                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                <li class="breadcrumb-item active">سئوالات متداول هوزاد استایل</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<main class="content">
+    <div class="container">
+        <div class="row p-5">
+            <h1 class="text-center ">سئوالات متداول</h1>
+            <hr />
+            @{int rad = 1;}
+            @foreach (var item in Model.FAQs)
+            {
+                <h5>@rad - @item.Question</h5>
+                <p class="text-justify">@item.Answer</p>
+                rad ++;
+            }
+
+        </div>
+    </div>
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+@section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script src="~/Layout/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+}

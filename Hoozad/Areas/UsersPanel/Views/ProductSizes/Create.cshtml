@@ -1,0 +1,68 @@
+﻿@model DataLayer.Entities.Store.ProductSize
+
+@{
+    ViewData["Title"] = "ثبت سایز";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">ثبت سایز</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="offset-md-4 col-md-4 col-xs-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ProductId" class="control-label"></label>
+                    <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId">
+                        <option value="">لطفا محصول را انتخاب کنید ...</option>
+                    </select>
+                    <span asp-validation-for="ProductId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Size" class="control-label"></label>
+                    <input asp-for="Size" class="form-control" />
+                    <span asp-validation-for="Size" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ChestAround" class="control-label"></label>
+                    <input asp-for="ChestAround" class="form-control" />
+                    <span asp-validation-for="ChestAround" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="WaistAround" class="control-label"></label>
+                    <input asp-for="WaistAround" class="form-control" />
+                    <span asp-validation-for="WaistAround" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HipsAround" class="control-label"></label>
+                    <input asp-for="HipsAround" class="form-control" />
+                    <span asp-validation-for="HipsAround" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ArmAround" class="control-label"></label>
+                    <input asp-for="ArmAround" class="form-control" />
+                    <span asp-validation-for="ArmAround" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SleeveLength" class="control-label"></label>
+                    <input asp-for="SleeveLength" class="form-control" />
+                    <span asp-validation-for="SleeveLength" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="ثــبت" class="btn btn-primary col-xs-12" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">بازگشت</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

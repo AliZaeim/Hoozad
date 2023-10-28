@@ -1,0 +1,183 @@
+﻿@model DataLayer.Entities.Supplementary.SiteInfo;
+@using Core.Services.Interfaces;
+@inject ISuppService _suppService;
+<header>
+    <div class="topbar-site d-none d-lg-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-sm-center justify-content-md-start">
+                        <div class="email ">
+                            <a href="mailto:@Model?.Email">
+                                <span>@Model?.Email</span>
+                                <i class="far fa-envelope"></i>
+                            </a>
+                        </div>
+                        <div class="phone">
+                            <a href="tel:@Model?.Mobile1">
+                                <span>@Model?.Mobile1</span>
+                                <i class="fal fa-phone-alt"></i>
+                            </a>
+                        </div>
+                        <div class="phone">
+                            <a href="tel:@Model?.Mobile2">
+                                <span>@Model?.Mobile2</span>
+                                <i class="fal fa-phone-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-center">
+                        @Model?.MainPageMessage
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-sm-center justify-content-md-end">
+                        <div class="user-account d-none d-md-block">
+                            <partial name="_LoginPartial" />
+                        </div>
+                        <ul class="serv-socialicon d-flex align-items-center">
+                            @if (!string.IsNullOrEmpty(Model?.WhatsupLink))
+                            {
+                                <li>
+
+                                    <a href="@Model?.WhatsupLink" class="icon whatsapp text-success">
+                                        <span class="tooltip-site">واتزآپ</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Model?.InstagramLink))
+                            {
+                                <li>
+                                    <a href="@Model?.InstagramLink" class="icon instegram text-danger">
+                                        <span class="tooltip-site">اینستاگرام</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (!string.IsNullOrEmpty(Model?.TelegramLink))
+                            {
+                                <li>
+                                    <a href="@Model?.TelegramLink" class="icon telegram text-primary">
+                                        <span class="tooltip-site">تلگرام</span>
+                                    </a>
+                                </li>
+                            }                            
+                        </ul>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="serv-navbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-4 col-lg-2 order-2 order-lg-1 d-flex justify-content-center justify-content-lg-start">
+                    <div class="area-logo">
+                        <a href="/"><img src="/images/icons/logo48golden.png" /></a>
+                    </div>
+                    <h1 class="d-flex justify-content-center align-items-center h1Title"><a href="/">هوزاد استایل</a></h1>
+                </div>
+                <div class="col-4 col-lg-8 order-1 order-lg-2 d-flex align-items-center col-main_menu">
+                    <div class="main_menu h-100 d-none d-lg-block">
+                        <ul class="d-flex h-100 align-items-center ">
+                            <li>
+                                <a href="/">صفحه اصلی</a>
+                            </li>
+                            @if (await _suppService.ExistAnyBlogAsync())
+                            {
+                                <li>
+                                    <a href="/blogs">مجله</a>
+                                </li>
+                            }
+                            <li>
+                                <a href="/Products">فروشگاه</a>
+                            </li>
+                            <li>
+                                <a href="/About">درباره هوزاد</a>
+                            </li>
+                            <li>
+                                <a href="/Contact">تماس با هوزاد</a>
+                            </li>
+                            <partial name="_MyLoginPartial" />
+                        </ul>
+                    </div>
+                    <div class="icon_meni_bar">
+                        <a class="d-block d-lg-none"><i class="fas fa-bars"></i></a>
+                    </div>
+                    <div id="menu_mobile" class="menu_mobile">
+                        <div class="header_menu_mobile d-flex align-items-center">
+                            <button type="button" class="close close_menu_mobile" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <div class="area-logo">
+                                <a href="/"><img src="img/logo.png" class="img-fluid" /></a>
+                            </div>
+                        </div>
+                        <div class="area_menu_mobile menu-top-menu-container" id="accordian">
+                            <ul class="menu-multi-level">
+                                <li>
+                                    <a href="/">صفحه اصلی</a>
+                                </li>
+                                @if (await _suppService.ExistAnyBlogAsync())
+                                {
+                                    <li>
+                                        <a href="/blogs">مجله</a>
+                                    </li>
+                                }
+                                <li>
+                                    <a href="/Products">فروشگاه</a>
+                                </li>
+                                <li>
+                                    <a href="/About">درباره هوزاد</a>
+                                </li>
+                                <li>
+                                    <a href="/Contact">تماس با هوزاد</a>
+                                </li>
+                                <partial name="_MyLoginPartial" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 col-lg-2 order-3 order-lg-3">
+                    <div class="area-widget_navbar d-flex align-items-center justify-content-end h-100">
+                        <div class="icon-search item_widget_navbar d-none d-lg-block ">
+                            <a href="#">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        </div>
+                        <div class="icon-wishlist item_widget_navbar d-none d-lg-block">
+                            <a href="#" class="d-none">
+                                <i class="fal fa-heart"></i>
+                                <span class="badge_count">0</span>
+                            </a>
+                        </div>
+                        <div class="icon-shooping-cart item_widget_navbar">
+                            @await Component.InvokeAsync("CartComponent")
+                        </div>
+                        <div class="area-widget-header-fixed d-block d-lg-none">
+                            <div class="widget-header-fixed d-flex justify-content-between align-items-center">
+                                <div class="icon-search widget-header">
+                                    <a href="#" class="d-flex justify-content-center align-items-center">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                                <div class="icon-wishlist widget-header">
+                                    <a href="#" class="d-flex justify-content-center align-items-center">
+                                        <i class="fal fa-heart"></i>
+                                        <span class="badge_count">0</span>
+                                    </a>
+                                </div>
+                                <div class="account-user widget-header">
+                                    <a href="#" class="d-flex justify-content-center align-items-center">
+                                        <i class="fal fa-user"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

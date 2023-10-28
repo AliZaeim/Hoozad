@@ -1,0 +1,189 @@
+﻿@page "/Contact"
+@model Web.Pages.ContactModel
+@{
+    ViewData["Title"] = "تماس با هوزاد استایل";
+}
+@section CssRefs{
+    <meta name="description" content="جهت برقراری ارتباط راحت با مزون هوزاد اطلاعات تماس مجموعه در این صفحه قرار داده شده است" />
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+    <link rel="canonical" href="https://hoozadstyle.ir/contact/" />
+}
+    @section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="area-breadcrumb-site">
+            <h1 class="text-center mb-3">تماس با هوزاد استایل</h1>
+            <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+                <ol class="breadcrumb breadcrumb-singleProduct ">
+                    <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                    <li class="breadcrumb-item active">تماس با هوزاد استایل</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+    <main class="content">
+        <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="area-information-contact pt-3">
+                            <div class="item-info-contact ">
+                                <div class="title-info-contact">
+                                    <h2><i class="fad fa-home me-2"></i>آدرس ما</h2>
+                                </div>
+                                <div class="text-info-contact">
+                                    <p class="mb-0">
+                                        @Model.SiteInfo.Address
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="item-info-contact ">
+                                <div class="title-info-contact">
+                                    <h2><i class="fad fa-phone-alt me-2"></i> شماره تلفن</h2>
+                                </div>
+                                <div class="text-info-contact">
+                                    <p class="mb-0">
+                                        موبایل :
+                                        @Model.SiteInfo.Mobile1
+                                    </p>
+                                    <p class="mb-0">
+                                        تلفن :
+                                        @Model.SiteInfo.Phone1
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="item-info-contact">
+                                <div class="title-info-contact">
+                                    <h2><i class="fad fa-envelope me-2"></i> ایمیل </h2>
+                                </div>
+                                <div class="text-info-contact">
+                                    <p class="mb-0">
+                                        @Model.SiteInfo.Email
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="item-info-contact border-bottom-0">
+                                <div class="title-info-contact mb-3">
+                                    <h2>با ما در شبکه های اجتماعی در تماس باشید</h2>
+                                </div>
+                                <div class="area-socialIcon d-flex ">
+
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.InstagramLink))
+                                {
+                                    <a href="@Model.SiteInfo.InstagramLink" class="icon instegram text-danger">
+                                        <span class="tooltip-site">اینستاگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.TelegramLink))
+                                {
+                                    <a href="@Model.SiteInfo.TelegramLink" class="icon telegram text-primary">
+                                        <span class="tooltip-site">تلگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.WhatsupLink))
+                                {
+                                    <a href="@Model.SiteInfo.WhatsupLink" class="icon whatsapp text-success">
+                                        <span class="tooltip-site">واتزآپ</span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <div class="area-form-wrap contact mb-5 mb-lg-0">
+                        <div class="area-form-contact">
+                            <h3 class="h4 mb-4 title-contact">ارتباط با ما</h3>
+                            <!-- Default form contact -->
+                            <form class="row" asp-page="Contact" method="post">
+                                <!-- Name -->
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="ContactMessage.FullName" class="control-label"></label>
+                                    <input asp-for="ContactMessage.FullName" class="form-control" />
+                                    <span asp-validation-for="ContactMessage.FullName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ContactMessage.Cellphone" class="control-label"></label>
+                                    <input asp-for="ContactMessage.Cellphone" class="form-control" />
+                                    <span asp-validation-for="ContactMessage.Cellphone" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ContactMessage.Subject" class="control-label"></label>
+                                    <input asp-for="ContactMessage.Subject" class="form-control" />
+                                    <span asp-validation-for="ContactMessage.Subject" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ContactMessage.Message" class="control-label"></label>
+                                    <textarea asp-for="ContactMessage.Message" rows="5" class="form-control" ></textarea>
+                                    <span asp-validation-for="ContactMessage.Message" class="text-danger"></span>
+                                </div>
+                                <!-- Send button -->
+                                <div class="form-group mb-4 col-12">
+                                    <button type="submit" class="btn-animate1 mt-4">ارسال</button>
+                                </div>
+                            </form>
+                            <!-- Default form contact -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @if (!string.IsNullOrEmpty(Model.SiteInfo.AddressLink))
+    {
+        <section>
+            <div id="map_container">
+                <div class="map">
+                    <iframe src="@Model.SiteInfo.AddressLink"
+                        style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+    }
+    @if (TempData["Saved"] != null)
+    {
+        <input type="hidden" id="saveInp" value="@TempData["Saved"]!.ToString()" />
+    }
+    
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+    @section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            var save = $("#saveInp").val();
+            if (save != "") {
+                if (save=="yes"){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'پیام شما ثبت شد',
+                        showConfirmButton: true,
+                        confirmButtonText: 'باشه',
+                    });
+                }               
+            }
+        });
+    </script>
+    
+}

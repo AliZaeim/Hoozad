@@ -1,0 +1,358 @@
+﻿@page "/blog/d/{code}"
+@model Web.Pages.BlogDetailsModel
+@{
+    ViewData["Title"] = Model.Blog.BlogPageTitle;
+}
+@using Core.Convertors;
+@using System.Globalization;
+@section CssRefs{
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="@Model.Blog.BlogPageDescription" />
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+    <link rel="canonical" href="https://hoozadstyle.ir/blog/d/" />
+}
+    @section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="area-breadcrumb-site">
+            <h1 class="text-center mb-3">@Model.Blog.BlogTitle</h1>
+            <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+                <ol class="breadcrumb breadcrumb-singleProduct ">
+                    <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                    <li class="breadcrumb-item"><a href="/blogs">مجله هوزاد</a></li>
+                    <li class="breadcrumb-item active">@Model.Blog.BlogTitle</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+    <main class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-3 order-2  order-lg-1">
+                    <aside class="area-sidebar">
+                        <div class="widget-sidebar mb-4 pb-3">
+                            <section>
+                                <form class="search-form d-flex w-100 " action="" method="get">
+                                    <input type="text" class="form-control input_search " placeholder="جستجو کنید">
+                                    <button type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </form>
+                            </section>
+                        </div>
+                        <div class="widget-sidebar mb-4 pb-3">
+                            <header>
+                                <h3 class="title-widget-sidebar ">دسته بندی</h3>
+                            </header>
+                            <section>
+                                <ul class="category-siabar-singlePost menu-categorySidebar">
+                                @foreach (var gr in Model.BlogGroups)
+                                {
+                                    <li>
+                                        <a href="/Blogs/?grName=@gr.BlogGroupEnTitle">@gr.BlogGroupTitle <span class="badge-sidebar-shop">( @gr.Blogs.Count() )</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">پست های اخیر</h3>
+                        </header>
+                        <section>
+                            <ul class="area-post-thumbnail-sidebar ">
+                                @foreach (var Rb in Model.RecentBlogs.Take(5).ToList())
+                                {
+                                    <li class="d-flex mb-2">
+                                        <a href="/blog/d/@Rb.BlogUrl" class="link-img-post-thumbnail grayscale">
+                                            <img class="img-Post-thumbnail " src="/images/blogs/@Rb.BlogImageInBlog" />
+                                        </a>
+                                        <div class="details-Post-thumbnail">
+                                            <h4 class="mb-1">
+                                                <a href="/blog/d/@Rb.BlogUrl">
+                                                    @Rb.BlogTitle
+                                                </a>
+                                            </h4>
+                                            <p class="small m-0">@Rb.BlogDate.ToShamsiN()</p>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">بایگانی</h3>
+                        </header>
+                        <section>
+                            <ul class="menu-archive-Sidebar">
+                                @{
+                                    PersianCalendar PC = new();
+                                    var recb = Model.RecentBlogs.OrderByDescending(x => PC.GetYear(x.BlogDate!.Value) + PC.GetMonth(x.BlogDate!.Value)).ToList();
+                                    var res = recb.Select(x => new { x.BlogDate, Year = PC.GetYear(x.BlogDate!.Value), Month = PC.GetMonth(x.BlogDate!.Value) }).GroupBy(x => new { x.Year, x.Month }).ToList();
+
+                                }
+                                @foreach (var ar in res.ToList())
+                                {
+                                    <li>
+                                        <a href="/Blogs/?ary=@ar.Key.Year&&arm=@ar.Key.Month">@Core.Utility.Applications.GetMounthShamsiName(ar.Key.Month) @ar.Key.Year<span class="badge-sidebar-shop">( @ar.Count() )</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">برچسب ها</h3>
+                        </header>
+                        <section>
+                            <div class="d-flex flex-wrap  area-tags-blog">
+                                <div class="d-flex flex-wrap  area-tags-blog">
+                                    <div class="d-flex flex-wrap  area-tags-blog">
+                                        @foreach (var tg in Model.GroupingTopTags.Take(15).ToList())
+                                        {
+                                            <div class="tag-sidebar"><a href="/blogs/?tag=@tg.Key">@tg.Key</a></div>
+                                        }
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+            <div class="col-12 col-lg-9 post-single-right  order-1  order-lg-2">
+                <article class="content-post single">
+                    <h1 class="title-post">@Model.Blog.BlogTitle</h1>
+                    <div class="meta-post single d-flex mb-4">
+                        <div class="author-post item-meta-post me-3">
+                            <a href="#"> @Model.Blog.Author</a>
+                        </div>
+                        <div class="date-post   item-meta-post  me-3">
+                            <a href="#" class="data-link">
+                                @Model.Blog.BlogDate.ToShamsiN()
+                            </a>
+                        </div>
+                        <div class="count-comment-post  item-meta-post  me-3">
+                            <a class="message-link" href="#">
+                                @Model.Blog.BlogComments.Count
+                            </a>
+                        </div>
+                    </div>
+                    <div class="blog-img mb-3">
+                        <img src="/images/blogs/@Model.Blog.BlogImageInBlogDetails" class="img-fluid" alt="تصویر پست" />
+                    </div>
+                    <div class="post-content">
+                        <blockquote>
+                            <p>
+                                @Model.Blog.BlogSummary
+                            </p>
+                        </blockquote>
+                        @Html.Raw(Model.Blog.BlogText)                       
+                    </div>
+                    <div class="row post-blog-footer d-flex  align-items-center justify-content-md-between">
+                        <div class="col-12 col-md-8 mb-4 mb-md-0">
+                            <div class="area-tags-blog d-flex flex-wrap justify-content-start align-items-center">
+                                @foreach (var btag in Model.Blog.TagsList)
+                                {
+                                    <div class="tag-blog"><a href="/blogs/?tag=@btag">@btag</a></div>
+                                }
+                                
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 ">
+                            <div class="area-socialIcon socialIcon-bg-secondary d-flex justify-content-start justify-content-md-end  align-items-center">
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.InstagramLink))
+                                {
+                                    <a href="@Model.SiteInfo.InstagramLink" class="icon instegram text-danger">
+                                        <span class="tooltip-site">اینستاگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.TelegramLink))
+                                {
+                                    <a href="@Model.SiteInfo.TelegramLink" class="icon telegram text-primary">
+                                        <span class="tooltip-site">تلگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SiteInfo.WhatsupLink))
+                                {
+                                    <a href="@Model.SiteInfo.WhatsupLink" class="icon whatsapp text-success">
+                                        <span class="tooltip-site">واتزآپ</span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <div class="border-bottom"></div>
+                @if (Model.Blog.BlogComments != null)
+                {
+                    if (Model.Blog.BlogComments.Count !=0)
+                    {
+                        <div class="box-comments">
+                            <h2 class="heading-style1 my-5"><span>4</span> دیدگاه</h2>
+                            <div class="item-comment pb-5 pb-md-1 mb-4">
+                                <div class="porofile_customers-comment d-flex">
+                                    <div class="area-img-comment">
+                                        <img src="img/img100.jpg" class="img-fluid">
+                                    </div>
+                                    <div class="ms-3 ms-md-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="porofileName ">
+                                                <h6>فاطمه حمزه عوفی</h6>
+                                                <span>3 روز پیش</span>
+                                            </div>
+                                            <div class="area-btn-peply">
+                                                <a href="#" class="btn-peply"> پاسخ</a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
+                                            استفاده از طراحان
+                                            گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و
+                                            سطرآنچنان که لازم است، و
+                                            برای شرایط
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reply-comment mt-4">
+                                <div class="item-comment pb-5 pb-md-1 mb-4">
+                                    <div class="porofile_customers-comment d-flex">
+                                        <div class="area-img-comment">
+                                            <img src="img/img100.jpg" class="img-fluid">
+                                        </div>
+                                        <div class="ms-3 ms-md-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div class="porofileName ">
+                                                    <h6>فاطمه حمزه عوفی</h6>
+                                                    <span>3 روز پیش</span>
+                                                </div>
+
+                                                <div class="area-btn-peply">
+                                                    <a href="#" class="btn-peply"> پاسخ</a>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
+                                                استفاده از طراحان
+                                                گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و
+                                                سطرآنچنان که لازم است، و
+                                                برای شرایط
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-comment pb-5 pb-md-1 mb-4">
+                                    <div class="porofile_customers-comment d-flex">
+                                        <div class="area-img-comment">
+                                            <img src="img/img100.jpg" class="img-fluid">
+                                        </div>
+                                        <div class="ms-3 ms-md-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div class="porofileName ">
+                                                    <h6>فاطمه حمزه عوفی</h6>
+                                                    <span>3 روز پیش</span>
+                                                </div>
+
+                                                <div class="area-btn-peply">
+                                                    <a href="#" class="btn-peply"> پاسخ</a>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
+                                                استفاده از طراحان
+                                                گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و
+                                                سطرآنچنان که لازم است، و
+                                                برای شرایط
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-comment pb-5 pb-md-1 mb-4">
+                                <div class="porofile_customers-comment d-flex">
+                                    <div class="area-img-comment">
+                                        <img src="img/img100.jpg" class="img-fluid">
+                                    </div>
+                                    <div class="ms-3 ms-md-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="porofileName ">
+                                                <h6>فاطمه حمزه عوفی</h6>
+                                                <span>3 روز پیش</span>
+                                            </div>
+                                            <div class="area-btn-peply">
+                                                <a href="#" class="btn-peply"> پاسخ</a>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
+                                            استفاده از طراحان
+                                            گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و
+                                            سطرآنچنان که لازم است، و
+                                            برای شرایط
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="area-form-wrap single mb-5 mb-lg-0">
+                            <div class="area-form-reviews">
+                                <h3 class="mb-4 heading-style1 mt-5">ارسال نظرات</h3>
+                                <!-- Default form contact -->
+                                <form class="row form-reviews" action="#!">
+                                    <!-- Name -->
+                                    <div class="form-group mb-4 col-12 col-md-4">
+                                        <input type="text" required class="form-control" id="Input-name"
+                                       placeholder="نام شما *">
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="form-group mb-4 col-12 col-md-4">
+                                        <input type="email" required class="form-control" id="input-email"
+                                       placeholder="ایمیل شما *">
+                                    </div>
+                                    <!-- website -->
+                                    <div class="form-group mb-4 col-12 col-md-4">
+                                        <input type="text" class="form-control" id="Input-website" placeholder="سایت شما">
+                                    </div>
+                                    <!-- Message -->
+                                    <div class="form-group mb-4 col-12">
+                                        <textarea class="form-control" required id="textarea-form" rows="6"
+                                          placeholder="نظر شما *"></textarea>
+                                    </div>
+                                    <!-- Send button -->
+                                    <div class="form-group mb-4 col-12">
+                                        <button type="submit" class="btn-animate1">ارسال نظر</button>
+                                    </div>
+                                </form>
+                                <!-- Default form contact -->
+                            </div>
+                        </div>
+                    }
+                }
+                
+            </div>
+        </div>
+    </div>
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+    @section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script src="~/Layout/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/price-range-slider.js"></script>
+}

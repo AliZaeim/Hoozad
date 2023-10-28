@@ -1,0 +1,15 @@
+﻿@model IEnumerable<DataLayer.Entities.Supplementary.County>
+@{
+    int? cid = null;
+    if (ViewData["scountyId"] != null)
+    {
+        cid = int.Parse(ViewData["scountyId"]!.ToString()!);
+    }
+}
+<select name="CountyId" class="form-control">
+    <option value="">بعد از انتخاب نام استان، شهرستان را انتخاب کنید</option>
+    @foreach (var item in Model.OrderBy(_ => _.CountyName))
+    {
+        <option value="@item.CountyId">@item.CountyName</option>
+    }
+</select>

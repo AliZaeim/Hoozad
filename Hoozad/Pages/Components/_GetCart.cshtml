@@ -1,0 +1,222 @@
+﻿@model DataLayer.Entities.Store.Cart;
+@using Core.Services.Interfaces;
+@inject IStoreService _storService;
+@{
+    DataLayer.Entities.Supplementary.SiteInfo siteinfo = await _storService.GetLastSiteInfoAsync();
+    string cur = "ریال";
+    int Cart_quantity = 0;
+    int Total_Sum = 0;
+    List<DataLayer.Entities.Store.CartItem>? cartItems = null;
+    if (Model!= null)
+    {
+         cartItems= await _storService.GetCartItemsofCart(Model.Id.ToString());
+    }
+    
+    if (siteinfo != null)
+    {
+        cur = siteinfo.SiteCurrency ?? "ریال";
+        if (cartItems != null)
+        {
+            if (cartItems.Any())
+            {
+
+                Cart_quantity = cartItems.SelectMany(x => x.CartProductInfos).Sum(x => x.Quantity);
+                Total_Sum = cartItems.SelectMany(x => x.CartProductInfos).Sum(x => x.Quantity * x.NetPrice.GetValueOrDefault());
+            }
+        }
+        
+    }
+}
+@if (Model != null)
+{
+    @if (Model.IsActive)
+    {
+        List<DataLayer.Entities.Store.CartProductInfo> cartProductInfos = cartItems!.SelectMany(_ => _.CartProductInfos.ToList()).ToList();
+
+        if (cartItems!.Any())
+        {
+            if (cartProductInfos.Any())
+            {
+                <a href="javascript:void(0)">
+                    <i class="fal fa-shopping-cart"></i>
+                    <span class="badge_count">@Cart_quantity</span>
+                </a>
+                <div class="box-add-to-cart-header">
+                    <div class="header-add-to-cart d-flex justify-content-between align-items-center">
+                        <div class="count-product-addtocart">
+                            <span>تعداد : <span class="tag tag-info">@Cart_quantity</span></span>
+                        </div>
+                        <div class="link-show-cart"><a href="/Cart" class="btn btn-success">مشاهده سبد خرید</a></div>
+                    </div>
+                    <div class="col-12 cartcur">
+                        واحد پول : @cur
+                    </div>
+                    <div class="body-add-to-cart p-2">
+                        @foreach (var item in cartItems!.ToList())
+                        {
+                            DataLayer.Entities.Store.Product product = await _storService.GetProductByCodeAsync(item.ProductCode!);
+
+                            <div class="mb-4">
+                                <div class="">
+                                    <div class="details_product_addtocart">
+                                        <div class="title_product_addtocart mb-2 d-flex justify-content-start">
+                                            <div class="d-flex flex-row align-items-center pr-0 zborder-bootom-1">
+                                                <div class="img_product_addtocart align-items-center">
+                                                    <img class="width-50 h-auto " src="/images/store/products/@product!.ProductImage1" />
+                                                    <div class="zfs-10 p-0  zpl-1">@product?.ProductName </div>
+                                                    <div class="zfs-14 p-0  zpl-1 ">تعداد : <span class="tag tag-square tag-primary ">@item.CartProductInfos.Sum(x => x.Quantity)</span></div>
+                                                    <div class="close_product_addtocart " data-pname="@product!.ProductName" data-cartitemid="@item.Id" data-cartid="@item.CartId.ToString()">
+                                                        <a href="javascript:void(0)" class="p-1 ">
+                                                            <i class="fa fa-times text-danger"></i><span class="tooltip-site">حذف @product.ProductName</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="text-md-right zmr-1">
+                                                    <div class="ztext-right zfs-10 zborder-right align-content-center zpr-1 zpl-1 rounded">
+                                                        @Html.AntiForgeryToken()
+                                                        <center>
+                                                            @if (item.CartProductInfos.Any())
+                                                            {
+                                                                @if (!product!.AllowedSinglePurchase.GetValueOrDefault())
+                                                                {
+
+                                                                    List<DataLayer.Entities.Store.Product>? CommProducts = await _storService.GetCommonProductsofThisAsync(item.ProductCode!);
+
+                                                                    <div class="text-xs-center mb-1 bg bg-danger text-white rounded">این محصول مجوز خرید تکی ندارد !</div>
+                                                                    @if (CommProducts!.Any())
+                                                                    {
+                                                                        <div class="text-xs-center text-primary mb-1  rounded">
+                                                                            <span>همراه با </span>
+                                                                            @foreach (var comPr in CommProducts!.ToList())
+                                                                            {
+                                                                                if (comPr == CommProducts!.LastOrDefault())
+                                                                                {
+                                                                                    <span>@comPr.ProductName</span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span>@comPr.ProductName یا </span>
+                                                                                }
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                                <table class="table table-bordered ">
+                                                                    <thead>
+                                                                        <tr class="table-success ">
+                                                                            <th class="p-1 text-center text-black">رنگ</th>
+                                                                            <th class="p-1 text-center text-black">سایز</th>
+                                                                            <th class="p-1 text-center text-black">قد</th>
+                                                                            <th class="p-1 text-center text-black">تعداد</th>
+                                                                            <th class="p-1 text-center text-black">قیمت</th>
+                                                                            <th class="p-1 text-center text-black">جمع</th>
+                                                                            <th class="p-1 text-center text-black">حذف</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var col in item.CartProductInfos)
+                                                                        {
+                                                                            <tr>
+                                                                                <td class="p-1 text-center zfs-8 font-bold-500">@((col.Color == null) ? "-" : col.Color)</td>
+                                                                                <td class="p-1 text-center">
+                                                                                    @((col.Size == null) ? "-" : col.Size)
+                                                                                </td>
+                                                                                <td class="p-1 text-center">@((col.Height == null)? "-":col.Height)</td>
+                                                                                <td class="p-1 text-center">@col.Quantity</td>
+                                                                                <td class="p-1 text-center">@col.NetPrice.GetValueOrDefault().ToString("N0")</td>
+                                                                                <td class="p-1 text-center">
+                                                                                    @{
+                                                                                        int Rowsum = 0;
+                                                                                        Rowsum = col.Quantity * col.NetPrice.GetValueOrDefault();
+                                                                                    }
+                                                                                    @Rowsum.ToString("N0")
+                                                                                </td>
+                                                                                <td class="p-1 text-xs-center">
+                                                                                    <a href="javascript:void(0)" class="d-flex p-1 text-xs-center remove_pInfofromcartItem" data-pname="@product.ProductName" data-id="@col.Id" data-cartitemid="@col.CartItemId" data-cartid="@item.CartId.ToString()">
+                                                                                        <span class="text-danger zfs-14 font-bold-500">&times;<span title="حذف سفارش"></span></span>
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+
+                                                                    </tbody>
+                                                                </table>
+                                                            }
+                                                        </center>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                    <div class="footer_addtocart d-flex flex-column align-items-center justify-content-center">
+                        <div class="area_total_modal_addtocart mb-3  d-flex justify-content-between w-100">
+                            <span>مجموع کل :</span>
+                            <span>@Total_Sum.ToString("N0") @cur </span>
+                        </div>
+                        <a href="/Checkout" class=" btn-block btn-add-to-cart btn-animate1">
+                            صورتحساب
+                        </a>
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a href="javascript:void(0)">
+                    <i class="fal fa-shopping-cart"></i>
+                    <span class="badge_count">0</span>
+                </a>
+                <div class="box-add-to-cart-header">
+                    <p class="text-danger mt-2">سبد خالی می باشد !</p>
+                </div>
+            }
+
+        }
+        else
+        {
+            <a href="javascript:void(0)">
+                <i class="fal fa-shopping-cart"></i>
+                <span class="badge_count">0</span>
+            </a>
+            <div class="box-add-to-cart-header">
+                <p class="zCartSkewd-Empty mt-2">سبد خالی می باشد !</p>
+            </div>
+        }
+
+    }
+    else
+    {
+        <a href="javascript:void(0)">
+            <i class="fal fa-shopping-cart"></i>
+            <span class="badge_count">0</span>
+        </a>
+        <div class="box-add-to-cart-header">
+            <p class="zCartSkewd-Empty mt-2">سبد خالی می باشد !</p>
+        </div>
+    }
+
+}
+else
+{
+    <a href="javascript:void(0)">
+        <i class="fal fa-shopping-cart"></i>
+        <span class="badge_count">0</span>
+    </a>
+    <div class="box-add-to-cart-header">
+        <p class="text-danger mt-2">سبد خالی می باشد !</p>
+    </div>
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+

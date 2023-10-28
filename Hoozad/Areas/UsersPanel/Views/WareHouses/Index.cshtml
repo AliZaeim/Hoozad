@@ -1,0 +1,132 @@
+﻿@model IEnumerable<DataLayer.Entities.Store.WareHouse>
+@using Core.Convertors;
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@{
+    ViewData["Title"] = "دفتر انبار";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">دفتر انبار</h1>
+<p>
+    <a asp-action="Create" class="btn btn-success">ثبت در دفتر</a>
+</p>
+<div class="container-fluid">
+    <div class="row">
+        
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                       
+                        <th class="text-xs-center align-middle">ورود</th>
+                        <th class="text-xs-center align-middle">خروج</th>
+                        <th class="text-xs-center align-middle">مانده</th>
+                        <th class="text-xs-center align-middle">تاریخ</th>
+                        <th class="text-xs-center align-middle">ش سفارش</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.GroupBy(g => g.Product).ToList())
+                    {
+                        
+                        <tr>
+                            <td class="text-xs-center align-middle bg-success text-white" colspan="5"> @item.Key!.ProductName</td>
+                        </tr>
+                        int? remain = 0;
+                        DataLayer.Entities.Store.Cart? cart = null;
+                        @foreach (var wr in item.ToList())
+                        {
+                            if (wr.CartItem != null)
+                            {
+                                cart = await _storeService.GetCartByIdAsync(wr.CartItem.CartId.GetValueOrDefault());
+                            }
+                            
+                            remain += (wr.Input - wr.Export);
+                            <tr>                                
+                                <td class="text-xs-center align-middle">@wr.Input</td>
+                                <td class="text-xs-center align-middle">@wr.Export</td>
+                                <td class="text-xs-center align-middle">@remain</td>
+                                <td class="text-xs-center align-middle">@wr.RegDate.ToShamsiN()</td>
+                                <td class="text-xs-center align-middle">
+                                    @if (cart != null)
+                                    {
+                                        <span>@cart.OrderNumber | آیتم : @wr.CartItemId</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                       
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#grSel").change(function () {
+                var vlu = $(this).val();
+                $.ajax({
+                    url: "/UsersPanel/WareHouses/GetGroupProducts",
+                    data: { gId: vlu },
+                    type: "GET",
+                    success: function (result) {
+                        if (result.length > 0) {
+                            $.each(result, function (k, v) {
+                                var option = "<option value='" + v.id + "'>" + v.name + "</option>";
+                                $("#prSel").append(option);
+                            })
+                        }
+                        else {
+                            $("#prSel").find('option').not(':first').remove();
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            });
+            $("#prSel").change(function () {
+                var vlu = $(this).val();
+                $.ajax({
+                    url: "/UsersPanel/WareHouses/GetProductItems",
+                    data: { pId: vlu },
+                    type: "GET",
+                    success: function (result) {
+                        if (result.length > 0) {
+                            $.each(result, function (k, v) {
+                                var option = "<option value='" + v.id + "'>" + v.name + "</option>";
+                                $("#itemSel").append(option);
+                            });
+
+                        }
+                        else {
+                            $("#itemSel").find('option').not(':first').remove();
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+
+
+            });
+            $("#btnOk").click(function () {
+                var grid = $("#grSel").val();
+                var prid = $("#prSel").val();
+                var url = "/UsersPanel/WareHouses/Index?gr=" + grid + "&pr=" + prid;
+
+                $(location).attr('href', url);
+            })
+        });
+    </script>
+}

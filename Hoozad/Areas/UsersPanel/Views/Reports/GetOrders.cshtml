@@ -1,0 +1,65 @@
+﻿@model IEnumerable<DataLayer.Entities.Store.Cart>
+@using Core.Convertors;
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@{
+    ViewData["Title"] = "فاکتورهای خرید";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">فاکتورها</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-xs-center align-middle">شماره پیگیری</th>
+            <th class="text-xs-center align-middle">تاریخ ثبت</th>
+            <th class="text-xs-center align-middle">تاریخ پرداخت</th>
+            <th class="text-xs-center align-middle">مبلغ کل</th>
+            <th class="text-xs-center align-middle">تعداد محصول</th>
+            <th class="text-xs-center align-middle">آخرین وضعیت</th>
+            <th class="text-xs-center align-middle">عملیات</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(_ => _.PaymentDate))
+        {
+
+            <tr>
+                <td class="text-xs-center align-middle">@item.TracingNumber</td>
+                <td class="text-xs-center align-middle">@item.CreatedDate.ToShamsiN()</td>
+                <td class="text-xs-center align-middle">@item.PaymentDate.ToShamsiN_WithTime()</td>
+                <td class="text-xs-center align-middle">@item.CartSum.ToString("N0") @item.Currency</td>
+                <td class="text-xs-center align-middle">@item.CartItems.Sum(_ => _.Quantity)</td>
+
+                <td class="text-xs-center align-middle">
+                    @{
+                        DataLayer.Entities.Store.CartStatus? cartStatus = item.CartStatuses?.OrderByDescending(_ => _.RegDate).FirstOrDefault();
+                        DataLayer.Entities.Supplementary.Status? status = null;
+                        if (cartStatus != null)
+                        {
+                            status = await _storeService.GetStatusByIdAsync(cartStatus.StatusId.GetValueOrDefault());
+                        }
+                    }
+                    @if (status !=null)
+                    {
+                        <span>@status.Name</span>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+
+                <td class="text-xs-center align-middle">
+                    <a asp-area="UsersPanel" asp-controller="Reports" asp-action="GetOrderDetails" asp-route-id="@item.Id">جزئیات</a> <span>|</span>
+                </td>
+
+            </tr>
+        }
+
+
+    </tbody>
+
+</table>
