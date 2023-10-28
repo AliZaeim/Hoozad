@@ -1,0 +1,13 @@
+﻿@if (User.Identity!.IsAuthenticated)
+{
+    <li>
+        <a href="/MyAccount">کاربری (@User.FindFirst("fullname")?.Value)</a>
+    </li>
+    
+}
+else
+{
+    <li>
+        <a href="/Login">کاربری من</a>
+    </li>
+}

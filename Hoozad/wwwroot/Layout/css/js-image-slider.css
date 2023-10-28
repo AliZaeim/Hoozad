@@ -1,0 +1,71 @@
+#sliderFrame {
+	position: relative;
+}
+
+#slideranimate img {
+	position: absolute;
+	border: none;
+	display: none;
+}
+
+/* Caption styles */
+div.mc-caption-bg, div.mc-caption-bg2 {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	padding: 0;
+	left: 0px;
+	/*if the caption needs to be aligned from right, specify by right instead of left. i.e. right:20px;*/
+	bottom: 0px;
+	/*if the caption needs to be aligned from top, specify by top instead of bottom. i.e. top:150px;*/
+	z-index: 3;
+	overflow: hidden;
+	font-size: 0;
+}
+
+div.mc-caption-bg {
+	background-color: black;
+}
+
+div.mc-caption {
+	font: bold 14px/20px Arial;
+	color: #EEE;
+	z-index: 4;
+	padding: 10px 0;
+	/*Adding a padding-left or padding-right here will make the caption area wider than its background. Sometimes you may need to define its width again here to keep it the same width as its background area (div.mc-caption-bg).*/
+	text-align: center;
+}
+
+/* ------ built-in navigation bullets wrapper ------*/
+div.navBulletsWrapper {
+	bottom: 15%;
+	/* left: 50%;
+    transform: translatex(-50%); */
+	position: absolute;
+	z-index: 5;
+	cursor: pointer;
+}
+
+/* each bullet */
+div.navBulletsWrapper div {
+	width: 13px;
+	height: 13px;
+	border-radius: 50%;
+	background-color: #ccc;
+	cursor: pointer;
+	margin-left: 11px;
+	_position: relative;
+	display: inline-block;
+}
+
+div.navBulletsWrapper div.active {
+	background: #e7b053;
+}
+
+/* --------- Others ------- */
+#slideranimate {
+	transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+}

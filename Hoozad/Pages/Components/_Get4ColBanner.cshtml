@@ -1,0 +1,32 @@
+﻿@model DataLayer.Entities.Supplementary.Banner
+@if (Model != null)
+{
+    if (Model.BannerItems.Where(w => w.IsActive).Any())
+    {
+        <section class="mb-4  mb-lg-5 pb-lg-4 pb-xl-5">
+            <div class="container">
+                <div class="row baner-site one">
+                    @foreach (var (value, index) in Model.BannerItems.Select((value, index) => (value, index)).Where(w => w.value.IsActive).ToList())
+                    {
+                        string clss = "rubberBand";
+                        if (index == 0 || index == 3)
+                        {
+                            clss = "flipInX";
+                        }
+                        <div class="wow @clss col-12 col-sm-6 col-lg-4 col-xl-3 item-baner" data-wow-duration="2s">
+                            <div class="box-baner">
+                                <a href="@value.LinkUrl">                                    
+                                    <picture class="img-fluid">
+                                        <source media="(max-width: 799px)" class="img-fluid" srcset="/images/banners/@value.MobileImage" />
+                                        <source media="(min-width: 800px)" class="img-fluid" srcset="/images/banners/@value.Image" />
+                                        <img src="/images/banners/@value.Image" class="img-fluid" alt="@value.Name" />
+                                    </picture>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+}

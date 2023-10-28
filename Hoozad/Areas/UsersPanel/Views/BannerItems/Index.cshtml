@@ -1,0 +1,57 @@
+﻿@model IEnumerable<DataLayer.Entities.Supplementary.BannerItem>
+
+@{
+    ViewData["Title"] = ViewData["zTitle"]!.ToString();
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">@ViewData["zTitle"]!.ToString()</h1>
+
+<p>
+    <a asp-action="Create" class="text-xs-center btn btn-success">ثبت بنر</a>
+    <a asp-action="Index" asp-controller="Banners" class="text-xs-center btn btn-success">بسته های بنر</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th class="text-xs-center align-middle">
+                بسته بنر
+            </th>
+            <th class="text-xs-center align-middle">عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model!.ToList())
+        {
+            <tr>
+                <td class="text-xs-center align-middle">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="text-xs-center align-middle">
+                    <img src="/images/banners/@item.Image" width="50" height="50">
+                </td>
+
+                <td class="text-xs-center align-middle">
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td class="text-xs-center align-middle">
+                    @Html.DisplayFor(modelItem => item.Banner!.Name)
+                </td>
+                <td class="text-xs-center align-middle">
+                    <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">حذف</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

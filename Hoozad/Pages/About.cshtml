@@ -1,0 +1,164 @@
+﻿@page "/About"
+@model Web.Pages.AboutModel
+@{
+    ViewData["Title"] = "درباره هوزاد استایل";
+}
+@section CssRefs{
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.theme.default.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel=“canonical” href="https://hoozadstyle.ir/about/" />
+}
+@section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+<section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+    <div class="area-breadcrumb-site">
+        <h1 class="text-center mb-3">درباره هوزاد استایل</h1>
+        <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+            <ol class="breadcrumb breadcrumb-singleProduct ">
+                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                <li class="breadcrumb-item active">درباره هوزاد استایل</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<main class="content">
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                    <div class="area-img-about-us" id="tilt">
+                        <img src="/images/Marjan_Soltani_Image.JPG" alt="مرجان سلطانی خوشبخت" class="img-fluid w-100">
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 d-flex align-items-center">
+                    <div class="text-about-us">
+                        <h2 class="title-style2" style="visibility: visible; animation-name: fadeInUp;">
+                            ما کی هستیم
+                        </h2>
+                        <p class="text-justify">
+                            من مرجان سلطانی، کارشناس رادیولوژی هستم که علاقه زیادی به طراحی لباس و ترکیب پارچه ها دارم. از سال 1400 با پیج اینستاگرام هوزاد، فعالیت خودم را شروع کردم که با همراهی شما عزیزان، خانواده هوزاد روز به روز بزرگتر شد.
+                            در حال حاضر تلاش مجموعه ما بر این است که زیباترین ، به روزترین و در عین حال با کیفیت ترین طراحی ها و دوخت ها را برای شما ارائه دهیم.
+
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="area-services-about">
+            <div class="container">
+                <div class="area-title-about mb-5">
+                    <h2 class="title-style2" style="visibility: visible; animation-name: fadeInUp;">
+                        چرا باید از مزون هوزاد خرید کنیم ؟
+                    </h2>
+                    <p>
+                        مزون هوزاد با تیم متخصص خود سعی دارد شما را در انتخاب زبیاترین و برزوترین پوشاک یاری کند
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-12  col-sm-6 col-lg-4 ">
+                        <div class="box-icon-about">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <i class="fal fa-pencil-paintbrush"></i>
+                                </div>
+                                <div class="card-body p-0">
+
+                                    <h5 class="card-title">شخصی دوزی </h5>
+                                    <p class="card-text text-justify">
+                                        در مزون هوزاد، لباس ها شخصی دوزی هستن و بر اساس اندازه مخصوص شما دوخته میشن.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12  col-sm-6 col-lg-4">
+                        <div class="box-icon-about">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <i class="fal fa-user-headset"></i>
+                                </div>
+                                <div class="card-body p-0">
+
+                                    <h5 class="card-title">پشتیبانی فوق العاده</h5>
+                                    <p class="card-text text-justify">
+                                        اینجا، زیباترین و در عین حال با کیفیت ترین پارچه ها جهت دوخت لباس ها استفاده میشن.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12  col-sm-6 col-lg-4 ">
+                        <div class="box-icon-about" id="box-icon-about-three">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <i class="far fa-signal"></i>
+                                </div>
+                                <div class="card-body p-0">
+                                    <h5 class="card-title">تغییر مدل</h5>
+                                    <p class="card-text text-justify">
+                                        در صورت تمایل شما، امکان ایجاد تغییرات جزئی در مدل لباس ها وجود دارد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @if (Model.ContactMessages.Where(w => w.IsActive).Any())
+    {
+        <section>
+            <div class="area-show-customers-comment">
+                <div class="container">
+                    <div class="area-title-about mb-5">
+                        <h2 class="title-style2" style="visibility: visible; animation-name: fadeInUp;">
+                            مشتریان ما می گویند
+                        </h2>
+                    </div>
+                    <div class="owl-carousel slider-show-customers-comment" id="testimonial-slider">
+                        @foreach (var item in Model.ContactMessages.Where(w => w.IsActive).ToList())
+                        {
+                            <div class="item-show-customers-comment d-flex flex-column align-items-center">
+                                <div class="area-img-comment mb-3">
+                                    <img src="~/images/icons/avatar.png" class="img-fluid">
+                                </div>
+                                <p class="text-center">
+                                    @item.Message
+                                </p>
+
+                                <div class="testimonial-info">
+                                    <h6>@item.FullName</h6>
+                                    <span>مشتری</span>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+    
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+@section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script src="~/Layout/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+}

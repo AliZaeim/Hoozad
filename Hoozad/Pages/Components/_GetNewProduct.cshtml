@@ -1,0 +1,114 @@
+﻿@model Core.DTOs.General.SepcialProducts
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@{
+    var siteInfo = await _storeService.GetLastSiteInfoAsync();
+    string cur = siteInfo.SiteCurrency ?? "ریال";
+}
+<section class="mb-2 mb-md-3  mb-lg-4 mb-xl-5">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <h2 class="wow fadeInUp title-site">
+                محصولات جدید
+                <span>محصولات جدید</span>
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="owl-carousel slider_product">
+                    @foreach (var item in Model.Products.Where(w => w.IsActive).ToList())
+                    {
+                        (int price, int netprice, int discount, int disPercent, bool exist) finance = await _storeService.GetProductFinanceInfoAsync(item.ProductId);
+                        bool AllowsingleSell = false;
+                        if (!string.IsNullOrEmpty(Model.CartId))
+                        {
+                            AllowsingleSell = await _storeService.CheckAllowSingleSell(item.ProductCode!, Model.CartId!);
+                        }                        
+                        List<DataLayer.Entities.Store.Product>? Commprs = await _storeService.GetCommonProductsofThisAsync(item.ProductCode!);
+                        
+
+                        var prc = await _storeService.GetProductPricesFinanceAsync(item.ProductCode!);
+                        <div class="wow bounceIn item_slider_product-new" data-wow-duration="2s">
+                            <div class="product_cart">
+                                @if (finance.disPercent != 0)
+                                {
+                                    <div class="off"> <span>@finance.disPercent% تخفیف</span></div>
+                                }
+
+
+                                <div class="cart-img-product mb-3">
+                                    <a href="/Product/d/@item.ProductCode">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <img src="/images/store/products/@item.ProductImage1" width="360" height="360" class="img1-product zround-10" title="@item.ProductName" />
+                                            @if (!string.IsNullOrEmpty(item.ProductImage2))
+                                            {
+                                                <img src="/images/store/products/@item.ProductImage2" width="360" height="360" class="img2-product zround-10" alt="@item.ProductName" />
+                                            }
+                                        </div>
+                                    </a>
+                                    <div class="area-button-view-product">
+                                        <a href="/Product/d/@item.ProductCode" class="button-view-product">
+                                            مشاهده
+                                            محصول
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <div class="content_product text-center">
+                                    <div class="price_card_product mb-2">
+                                        @if (finance.exist)
+                                        {
+                                            @if (finance.price != finance.netprice)
+                                            {
+                                                <del class="me-1">@finance.price.ToString("N0")</del>
+                                            }
+                                            @finance.netprice.ToString("N0")
+                                            @cur
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">پایان موجودی</span>
+                                        }
+                                    </div>
+                                    <a href="/Product/d/@item.ProductCode">
+                                        <h3 class="title-product mb-2"> @item.ProductName </h3>
+                                    </a>
+                                    <div class="star_rating">
+                                        @for (var i = 1; i <= item.Popularity; i++)
+                                        {
+                                            if (i <= item.Popularity)
+                                            {
+                                                <span class="star-icon star-icon-active"><i class="far fa-star"></i></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="star-icon"><i class="far fa-star"></i></span>
+                                            }
+                                        }
+
+                                    </div>
+
+                                    @if (finance.exist)
+                                    {
+                                        <a href="/Product/d/@item.ProductCode" data-pid="@item.ProductId.ToString()"  class="btn-add-to-cart btn btn-success ">
+                                            ثبت سفارش <i class="fal fa-cart-arrow-down ps-3"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascript:void(0)" class="btn btn-outline-danger w-100 disabled">
+                                            پایان موجودی
+                                        </a>
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

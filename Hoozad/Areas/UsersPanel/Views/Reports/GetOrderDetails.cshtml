@@ -1,0 +1,325 @@
+﻿@model DataLayer.Entities.Store.Cart
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@using Core.Convertors;
+@{
+    ViewData["Title"] = "جزئیات سفارش";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+    string cur = Model.Currency ?? "ریال";
+}
+
+<h1 class="text-xs-center alert alert-info">جزئیات سفارش &ensp; @Model.TracingNumber</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <dl class="row">
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </dt>
+                <dd class="col-sm-6">
+                    @Model.CreatedDate.ToShamsiN_WithTime()
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.CheckOut)
+                </dt>
+                <dd class="col-sm-6">
+                    @if (Model.CheckOut)
+                    {
+                        <span>بله</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">خیر</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.PaymentDate)
+                </dt>
+                <dd class="col-sm-6">
+                    @Model.PaymentDate.ToShamsiN_WithTime()
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.DiscountCoupen)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.DiscountCoupen)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </dt>
+                <dd class="col-sm-6">
+                    @if (Model.IsActive)
+                    {
+                        <span>بله</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">خیر</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerIsRecepient)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerIsRecepient)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Currency)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Currency)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerName) @Model.BuyerFamily
+                </dd>
+
+
+            </dl>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <dl class="row">
+
+                @* ---- *@
+                @* <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerFamily)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerFamily)
+                </dd> *@
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerCellphone)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerCellphone)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.RecipientName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.RecipientName)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.RecipientFamily)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.RecipientFamily)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.RecipientPhone)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.RecipientPhone)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.StateName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.StateName)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.CountyName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.CountyName)
+                </dd>
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+                @* ------ *@
+
+            </dl>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <dl class="row">
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.PostalCode)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ShippingWithTipax)
+                </dt>
+                <dd class="col-sm-6">
+                    @if (Model.ShippingWithTipax)
+                    {
+                        <span>بله</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">خیر</span>
+                    }
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ShippingWithSnapp)
+                </dt>
+                <dd class="col-sm-6">
+                    @if (Model.ShippingWithSnapp)
+                    {
+                        <span>بله</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">خیر</span>
+                    }
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ShippingWithPost)
+                </dt>
+                <dd class="col-sm-6">
+                    @if (Model.ShippingWithPost)
+                    {
+                        <span>بله</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">خیر</span>
+                    }
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Freight)
+                </dt>
+                <dd class="col-sm-6">
+                    @Model.Freight.GetValueOrDefault().ToString("N0") @cur
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Comment)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Comment)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.TracingNumber)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.TracingNumber)
+                </dd>
+                <dt class="col-sm-6">
+                    متقاضی
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.User!.FullName) <span>| @Model.User?.Cellphone</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="col-xs-12 table-responsive mt-5">
+            <table class="table table-bordered">
+                <caption class="text-md-center font-size-large alert alert-info">جزئیات سفارش</caption>
+                <thead>
+                    <tr>
+                        <th class="text-xs-center align-middle">محصول</th>
+                        <th class="text-xs-center align-middle">تصویر</th>
+                        <th class="text-xs-center align-middle p-0">کد</th>
+                        <th class="text-xs-center align-middle p-0">سایز</th>
+                        <th class="text-xs-center align-middle p-0">قد</th>
+                        <th class="text-xs-center align-middle p-0">رنگ</th>
+                        <th class="text-xs-center align-middle">قیمت</th>
+                        <th class="text-xs-center align-middle">تعداد</th>
+                        <th class="text-xs-center align-middle">جمع</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartItems.ToList())
+                    {
+                        DataLayer.Entities.Store.Product product = await _storeService.GetProductByCodeAsync(item.ProductCode!);
+                        <tr>
+                            <td class="text-xs-center align-middle">@product.ProductGroup!.Title @product.ProductName</td>
+                            <td class="text-xs-center align-middle"><img src="/images/store/products/@product.ProductImage1" width="100" height="100" /></td>
+                            <td class="text-xs-center align-middle p-0">@item.ProductCode</td>
+                            <td class="text-xs-center align-middle p-0">
+                               
+                            </td>
+                            <td class="text-xs-center align-middle p-0">
+                                
+                            </td>
+                            <td class="text-xs-center align-middle p-0">
+                               
+                            </td>
+                            <td class="text-xs-center align-middle">@item.NetPrice.ToString("N0") @cur</td>
+                            <td class="text-xs-center align-middle">@item.Quantity</td>
+                            <td class="text-xs-center align-middle">
+                                @{
+                                    int rowSum = item.Quantity * item.NetPrice;
+                                }
+                                @rowSum.ToString("N0")
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="7"></td>
+                        <td class="text-md-center">کرایه</td>
+                        <td class="text-md-center">@Model.Freight.GetValueOrDefault().ToString("N0") @cur</td>
+                    </tr>
+                    <tr>
+                        <td colspan="7"></td>
+                        <td class="text-lg-center pl-0 pr-0">جمع کل (@cur)</td>
+                        <td class="text-lg-center">@Model.CartSum.ToString("N0") </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-12">
+            <a class="btnAddStatus btn btn-success float-lg-left mb-2" data-cartid="@Model.Id.ToString()" data-carttr="@Model.TracingNumber">افزودن وضعیت</a>
+        </div>
+        <div class="col-xs-12 table-responsive " id="divStatus">
+            @{
+                List<DataLayer.Entities.Store.CartStatus> cartStatuses = await _storeService.GetCartStatusesByCartIdAsync(Model.Id);
+            }
+
+            @await Html.PartialAsync("ShowCartStatuses",cartStatuses.ToList())
+        </div>
+    </div>
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">ویرایش</a> |
+    <a asp-action="Index">بازگشت</a>
+</div>
+
+@section Scripts{
+    
+    <script src="~/adminlayout/app-assets/js/adminjsfile.js"></script>
+    <script>
+        
+        $(".btnAddStatus").on("click", function () {
+            var urll = "/UsersPanel/Reports/AddStatus";
+            var crtId = $(this).attr("data-cartid");
+            var trCode = $(this).attr("data-carttr");
+            $.ajax({
+                url: urll,
+                data: { cartId: crtId },
+                type: "GET",
+                success: function (result) {
+                    var header = "ثبت وضعیت برای سفارش " + trCode;
+                    $("#adminmodal .modal-title").text(header);
+                    $("#adminmodal .modal-body").html(result);
+                    $("#adminmodal").modal();
+                }
+            });
+
+        });
+                                             
+
+    </script>
+}

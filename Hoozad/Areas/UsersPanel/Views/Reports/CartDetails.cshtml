@@ -1,0 +1,220 @@
+﻿@model DataLayer.Entities.Store.Cart
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@using Core.Convertors;
+@{
+    ViewData["Title"] = "جزئیات سبد خرید";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+    string cur = Model.Currency ?? "ریال";
+}
+
+<h1 class="text-xs-center alert alert-info">جزئیات سبد خرید</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <dl class="row">
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </dt>
+                <dd class="col-sm-6">
+                    @Model.CreatedDate.ToShamsiN_WithTime()
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.CheckOut)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.CheckOut)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.PaymentDate)
+                </dt>
+                <dd class="col-sm-6">
+                    @Model.PaymentDate.ToShamsiN_WithTime()
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.DiscountCoupen)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.DiscountCoupen)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.IsActive)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerIsRecepient)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerIsRecepient)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Currency)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Currency)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerName)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerFamily)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerFamily)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.BuyerCellphone)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.BuyerCellphone)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.RecipientName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.RecipientName)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.RecipientFamily)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.RecipientFamily)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.RecipientPhone)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.RecipientPhone)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.StateName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.StateName)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.CountyName)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.CountyName)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.PostalCode)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ShippingWithTipax)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.ShippingWithTipax)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ShippingWithSnapp)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.ShippingWithSnapp)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.ShippingWithPost)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.ShippingWithPost)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Freight)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Freight)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Comment)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Comment)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.TracingNumber)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.TracingNumber)
+                </dd>
+                <dt class="col-sm-6">
+                    متقاضی
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.User!.FullName)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-8 col-xs-12">
+            <div class="row">
+                <div class="col-xs-12 table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-xs-center align-middle">محصول</th>
+                                <th class="text-xs-center align-middle">تصویر</th>
+                                <th class="text-xs-center align-middle p-0">کد</th>
+                                <th class="text-xs-center align-middle p-0">سایز</th>
+                                <th class="text-xs-center align-middle p-0">قد</th>
+                                <th class="text-xs-center align-middle">قیمت</th>
+                                <th class="text-xs-center align-middle">تعداد</th>
+                                <th class="text-xs-center align-middle">جمع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CartItems.ToList())
+                            {
+                                DataLayer.Entities.Store.Product product = await _storeService.GetProductByCodeAsync(item.ProductCode!);
+                                <tr>
+                                    <td class="text-xs-center align-middle">@product.ProductGroup!.Title @product.ProductName</td>
+                                    <td class="text-xs-center align-middle"><img src="/images/store/products/@product.ProductImage1" width="100" height="100" /></td>
+                                    <td class="text-xs-center align-middle p-0">@item.ProductCode</td>
+                                    <td class="text-xs-center align-middle p-0">
+                                        
+                                    </td>
+                                    <td class="text-xs-center align-middle p-0">
+                                        
+                                    </td>
+                                    <td class="text-xs-center align-middle">@item.NetPrice.ToString("N0") @cur</td>
+                                    <td class="text-xs-center align-middle">@item.Quantity</td>
+                                    <td class="text-xs-center align-middle">
+                                        @{
+                                            int rowSum = item.Quantity * item.NetPrice;
+                                        }
+                                        @rowSum.ToString("N0") @cur
+                                    </td>
+                                </tr>
+                            }
+                            
+                        </tbody>
+                        <tr>
+                            <td class="text-xs-center align-middle" colspan="4"></td>
+                            <td class="text-xs-center align-middle">جمع فاکتور</td>
+                            <td class="text-xs-center align-middle">@Model.CartSum.ToString("N0") @cur</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div>
+    
+    <a asp-action="GetCarts" asp-area="UsersPanel" asp-controller="Reports">بازگشت</a>
+</div>

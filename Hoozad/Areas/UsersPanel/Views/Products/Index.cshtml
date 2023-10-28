@@ -1,0 +1,449 @@
+﻿@model IEnumerable<DataLayer.Entities.Store.Product>
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService;
+@{
+    ViewData["Title"] = "محصولات";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">محصولات</h1>
+
+<p>
+    @if (ViewData["gid"] == null)
+    {
+        <a asp-action="Create" class="btn btn-success">ثبت محصول جدید</a>
+    }
+    else
+    {
+        <a asp-action="Create" asp-route-gId="@ViewData["gid"]" class="btn btn-success">ثبت محصول جدید</a>
+    }
+    <a asp-action="Index" asp-controller="ProductGroups" class="btn btn-info">گروه های محصول</a>
+</p>
+<div class="table-responsive" id="tblDiv">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-xs-center align-middle p-0">
+                    #
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    @Html.DisplayNameFor(model => model.ProductCode)
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    @Html.DisplayNameFor(model => model.ProductGroup!.Title)
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    سایز
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    @Html.DisplayNameFor(model => model.ProductPrice)
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    @Html.DisplayNameFor(model => model.ProductImage1)
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    امکان خرید تکی
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    بازدید
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    اجزا
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    قیمت ها
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">
+                    رنگ ها
+                </th>
+                <th class="text-xs-center align-middle p-0 font-size-xsmall">عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int rad = 1;
+            }
+            @foreach (var item in Model.OrderByDescending(x => x.CreatedDate))
+            {
+                <tr>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @rad
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @Html.DisplayFor(modelItem => item.ProductCode)
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @Html.DisplayFor(modelItem => item.ProductGroup!.Title)
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td class="text-xs-center align-middle p-0 bg bg-success">
+                        @{
+                            string prdSizesStr = string.Empty;
+                            foreach (var ps in item.ProductSizes.ToList())
+                            {
+                                prdSizesStr += "سایز :" + ps.Size + "-کمر :" + ps.WaistAround + "-سینه :" + ps.ChestAround + "-باسن :" + ps.HipsAround + "-بازو :" + ps.ArmAround + "-قد آستین :" + ps.SleeveLength + "<br>";
+                            }
+                        }
+                        <span class="tag tag-default tag-square text-white cursor-pointer" data-toggle="tooltip" data-placement="top" title="@prdSizesStr">@item.ProductSizes.Count</span>
+
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @item.ProductPrice.GetValueOrDefault().ToString("N0")
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        <img src="/images/store/products/@item.ProductImage1" width="50" height="50">
+                    </td>
+
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @if (item.AllowedSinglePurchase != null)
+                        {
+                            @if (item.AllowedSinglePurchase.GetValueOrDefault())
+                            {
+                                <span class="fa fa-check-square text-success cursor-pointer ballow" data-id="@item.ProductId" data-status="0" title="بله">- بله</span>
+                            }
+                            else
+                            {
+                                <span class="fa fa-square-o text-danger cursor-pointer ballow" data-id="@item.ProductId" data-status="1" title="خیر">- خیر</span>
+                            }
+                        }
+                        else
+                        {
+                            <span>نامشخص</span>
+                        }
+
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @if (item.IsActive)
+                        {
+                            <span class="fa fa-check-square cursor-pointer chk" data-id="@item.ProductId" data-status="0"></span>
+                        }
+                        else
+                        {
+                            <span class="fa fa-square-o cursor-pointer chk" data-id="@item.ProductId" data-status="1"></span>
+                        }
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        @item.Views.GetValueOrDefault()
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        <table class="table">
+                            @foreach (var pc in item.ProductComponents.ToList())
+                            {
+
+                                DataLayer.Entities.Store.Product? prd = await _storeService.GetProductByCodeAsync(pc.ProductCode!);
+                                if (prd != null)
+                                {
+                                    int rem = await _storeService.GetProductWareHouseRemainAsync(pc.ProductCode ?? "asd");
+                                    <tr>
+                                        <td class="p-0 text-xs-center">@prd?.ProductName  </td>
+                                        <td class="p-0 text-xs-center"><span class="text-danger" title="موجودی">@rem</span></td>
+                                        <td class="p-0 text-xs-center"><a href="javascript:void(0)" class="text-danger removeComp" data-name="@item.ProductName" data-id="@pc.Id">حــذف</a></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-xs-center">--</td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        <table class="table table-borderd">
+                            <thead>
+                                <tr>
+                                    <th class="text-xs-center align-middle p-0">سایز</th>
+                                    <th class="text-xs-center align-middle p-0">قد</th>
+                                    <th class="text-xs-center align-middle p-0">قیمت</th>
+                                    <th class="text-xs-center align-middle p-0">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pr in item.ProductPrices.OrderBy(x => x.Size).ThenBy(_ => _.Height).ToList())
+                                {
+                                    <tr>
+                                        <td class="text-xs-center align-middle p-0">
+                                            @pr.Size
+                                        </td>
+                                        <td class="text-xs-center align-middle p-0">
+                                            @pr.Height
+                                        </td>
+                                        <td class="text-xs-center align-middle p-0">@pr.Price.GetValueOrDefault().ToString("N0")</td>
+                                        <td class="text-xs-center align-middle p-0">
+                                            <a data-prId="@pr.Id" data-name="@item.ProductName" class="EditPrice text-info font-size-xsmall p-0">ویرایش</a> <span>|</span>
+                                            <a data-prId="@pr.Id" data-name="@item.ProductName" class="RemovePrice text-danger font-size-xsmall p-0">حذف</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="text-xs-center align-middle p-0">
+                        <table class="table table-borderd">
+                            <thead>
+                                <tr>
+                                    <th class="text-xs-center align-middle p-0">رنگ</th>
+                                    <th class="text-xs-center align-middle p-0">نام رنگ</th>
+
+                                    <th class="text-xs-center align-middle p-0">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var pr in item.ProductColors.ToList())
+                                {
+                                    <tr>
+                                        <td class="text-xs-center align-middle p-0"><input type="color" class="zcolorPalet" value="@pr.Color" disabled /></td>
+                                        <td class="text-xs-center align-middle p-0">@pr.ColorName</td>
+                                        <td class="text-xs-center align-middle p-0">
+                                            <a data-prcId="@pr.Id" data-name="@item.ProductName" class="EditColor text-info font-size-xsmall">ویرایش</a> <span>|</span>
+                                            <a data-prcId="@pr.Id" data-name="@item.ProductName" class="RemoveColor text-danger font-size-xsmall">حذف</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="text-xs-center align-middle p-0 font-size-samll">
+                        <a asp-action="Edit" asp-route-id="@item.ProductId">ویرایش</a> <span>|</span>
+                        <a asp-action="Details" asp-route-id="@item.ProductId">جزئیات</a> <span>|</span>
+                        <a asp-action="Delete" asp-route-id="@item.ProductId">حــذف</a> <br>
+                        <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddPrice text-info">ثبت قیمت</a> <span>|</span>
+                        <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddColor text-info">ثبت رنگ</a><span> | </span>
+                        <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddComponent text-warning">افزودن آیتم</a>
+                    </td>
+                </tr>
+                rad++;
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip({ html: true });
+        });
+        $(document).ready(function () {
+            $(".chk").click(function () {
+                if (confirm("آیا مطمئن به تغییر وضعیت محصول هستید؟")) {
+                    var idd = $(this).attr("data-id");
+                    var st = $(this).attr("data-status");
+                    var th = $(this);
+                    $.ajax({
+                        url: "/UsersPanel/Products/ChangeStatus",
+                        data: { id: idd, status: st },
+                        type: "GET",
+                        success: function (result) {
+                            if (result === true) {
+                                th.removeClass("fa-square-o").addClass("fa-check-square");
+                                th.attr("data-status", 0);
+                            }
+                            else {
+
+                                th.removeClass("fa-check-square").addClass("fa-square-o");
+                                th.attr("data-status", 1);
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    })
+                }
+
+            });
+            $(".ballow").click(function () {
+                if (confirm("آیا مطمئن به تغییر وضعیت خرید محصول هستید؟")) {
+                    var idd = $(this).attr("data-id");
+                    var st = $(this).attr("data-status");
+                    var th = $(this);
+                    $.ajax({
+                        url: "/UsersPanel/Products/ChangeBuyStatus",
+                        data: { id: idd, status: st },
+                        type: "GET",
+                        success: function (result) {
+                            if (result === true) {
+                                th.removeClass("fa-square-o text-danger").addClass("fa-check-square text-success");
+                                th.attr("data-status", 0);
+                                var str = "- بله";
+                                th.text(str);
+                            }
+                            else {
+
+                                th.removeClass("fa-check-square text-success").addClass("fa-square-o text-danger");
+                                th.attr("data-status", 1);
+                                var str = "- خیر";
+                                th.text(str);
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    })
+                }
+
+            });
+            $(".AddPrice").click(function () {
+                var prId = $(this).attr("data-pId");
+                var pname = $(this).attr("data-name");
+                $.ajax({
+                    url: "/UsersPanel/Products/AddPrice",
+                    data: { pId: prId },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "ثبت قیمت برای محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+            });
+            $(".AddColor").click(function () {
+                var prId = $(this).attr("data-pId");
+                var pname = $(this).attr("data-name");
+                $.ajax({
+                    url: "/UsersPanel/Products/AddColor",
+                    data: { pId: prId },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "ثبت رنگ برای محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+            });
+            $(".EditPrice").click(function () {
+                var prrId = $(this).attr("data-prId");
+                var pname = $(this).attr("data-name");
+                $.ajax({
+                    url: "/UsersPanel/Products/EditPrice",
+                    data: { prId: prrId },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "ویرایش قیمت برای محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+            });
+            $(".EditColor").click(function () {
+                var prcId = $(this).attr("data-prcId");
+                var pname = $(this).attr("data-name");
+                $.ajax({
+                    url: "/UsersPanel/Products/EditColor",
+                    data: { PrcId: prcId },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "ویرایش رنگ برای محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+            });
+            $(".RemovePrice").click(function () {
+                var prrId = $(this).attr("data-prId");
+                var pname = $(this).attr("data-name");
+
+                $.ajax({
+                    url: "/UsersPanel/Products/RemovePrice",
+                    data: { prId: prrId },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "حذف قیمت برای محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+
+            });
+            $(".RemoveColor").click(function () {
+                var prrId = $(this).attr("data-prcId");
+                var pname = $(this).attr("data-name");
+
+                $.ajax({
+                    url: "/UsersPanel/Products/RemoveColor",
+                    data: { prcId: prrId },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "حذف رنگ برای محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+
+            });
+
+            $(".AddComponent").click(function () {
+                var prId = $(this).attr("data-pId");
+                var pname = $(this).attr("data-name");
+
+                $.ajax({
+                    url: "/UsersPanel/Products/AddComponent",
+                    data: { pId: prId },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "افزودن جزء به محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+            });
+            $(".removeComp").click(function () {
+                var idd = $(this).attr("data-id");
+                var pname = $(this).attr("data-name");
+                $.ajax({
+                    url: "/UsersPanel/Products/RemoveComponent",
+                    data: { id: idd },
+                    type: "GET",
+                    success: function (result) {
+                        var title = "<h4 class='text-primary'>" + "حذف جزء از محصول " + pname + "</h4>";
+                        $(document).find("#adminmodal .modal-title").html(title);
+                        $(document).find("#adminmodal .modal-body").html(result);
+                        $(document).find("#adminmodal").modal('show');
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+            });
+        });
+    </script>
+
+}
+

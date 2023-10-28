@@ -1,0 +1,229 @@
+﻿@model DataLayer.Entities.Store.Product
+
+@{
+    ViewData["Title"] = "ویرایش محصول";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+}
+
+<h1 class="text-xs-center alert alert-info">ویرایش محصول</h1>
+<div>
+    <a asp-action="Index">بازگشت</a>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductId" />
+            <input type="hidden" asp-for="CreatedDate" />
+            <input type="hidden" asp-for="ProductImage1" />
+            <input type="hidden" asp-for="ProductImage2" />
+            <input type="hidden" asp-for="ProductImage3" />
+            <input type="hidden" asp-for="ProductImage4" />
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label" asp-for="ProductGroupId">گروه</label>
+                    <select class="form-control" asp-for="ProductGroupId" asp-items="ViewBag.ProductGroupId">
+                        <option value="">لطفا گروه محصول را انتخاب کنید...</option>
+                    </select>
+                    <span asp-validation-for="ProductGroupId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductName" class="control-label"></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductCode" id="lblCode" class="control-label"></label><button type="button" class="float-xs-left" id="btnCode">چک صحت کد</button>
+                    <input asp-for="ProductCode" placeholder="حداقل 2 کاراکتر" class="form-control" /><button type="button" class="float-xs-left" id="btnGenCode">تولید کد</button>
+                    <span asp-validation-for="ProductCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductPrice" class="control-label"></label>
+                    <input asp-for="ProductPrice" class="form-control" />
+                    <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductPercentDiscount" class="control-label"></label>
+                    <input asp-for="ProductPercentDiscount" class="form-control" />
+                    <span asp-validation-for="ProductPercentDiscount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductValueDiscount" class="control-label"></label>
+                    <input asp-for="ProductValueDiscount" class="form-control" />
+                    <span asp-validation-for="ProductValueDiscount" class="text-danger"></span>
+                </div>
+                
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    <label asp-for="ProductPageTitle" class="control-label"></label>
+                    <input asp-for="ProductPageTitle" class="form-control" />
+                    <span asp-validation-for="ProductPageTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductPageDescription" class="control-label"></label><span class="float-xs-left" id="char-count">160</span>
+                    <textarea asp-for="ProductPageDescription" rows="2" maxlenght="160" class="form-control"></textarea>
+                    <span asp-validation-for="ProductPageDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductImage1" class="control-label"></label>&nbsp;<span class="zStar-color">*</span><img src="/images/store/products/@Model.ProductImage1" width="50" height="50" />
+                    <input asp-for="ProductImage1" type="file" class="form-control" />
+                    <span asp-validation-for="ProductImage1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductImage2" class="control-label"></label><img src="/images/store/products/@Model.ProductImage2" width="50" height="50" />
+                    <input asp-for="ProductImage2" type="file" class="form-control" />
+                    <span asp-validation-for="ProductImage2" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductImage3" class="control-label"></label><img src="/images/store/products/@Model.ProductImage3" width="50" height="50" />
+                    <input asp-for="ProductImage3" type="file" class="form-control" />
+                    <span asp-validation-for="ProductImage3" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductImage4" class="control-label"></label><img src="/images/store/products/@Model.ProductImage4" width="50" height="50" />
+                    <input asp-for="ProductImage4" type="file" class="form-control" />
+                    <span asp-validation-for="ProductImage4" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductSmallComment" class="control-label"></label>
+                    <textarea asp-for="ProductSmallComment" rows="2" class="form-control"></textarea>
+                    <span asp-validation-for="ProductSmallComment" class="text-danger"></span>
+                </div>
+                <script>
+                    CKEDITOR.replace('ProductSmallComment');
+                </script>
+                <div class="form-group mt-2">
+                    <input type="submit" value="ثبت" class="btn btn-primary col-xs-12" />
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    <label asp-for="ProductImageAlt" class="control-label"></label>
+                    <input asp-for="ProductImageAlt" class="form-control" />
+                    <span asp-validation-for="ProductImageAlt" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductTagsList" class="control-label"></label>&ensp;<span class="font-size-samll">برچسب های انتخابی : جدید-پرفروش-پیشنهادی-محبوب-برتر-فصل</span>
+                    <input asp-for="ProductTagsList" class="form-control" placeholder="با - از هم جدا شوند" />
+                    <span asp-validation-for="ProductTagsList" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProductLabel" class="control-label"></label>
+                    <input asp-for="ProductLabel" class="form-control" />
+                    <span asp-validation-for="ProductLabel" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Popularity" class="control-label"></label>
+                    <select asp-for="Popularity" class="form-control">
+                        <option value="">لطفا انتخاب کنید</option>
+                        <option value="5">پنچ ستاره</option>
+                        <option value="4">چهار ستاره</option>
+                        <option value="3">سه ستاره</option>
+                        <option value="2">دو ستاره</option>
+                        <option value="1">تک ستاره</option>
+                    </select>
+                    <span asp-validation-for="Popularity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MinimumStockForWarning" class="control-label"></label>
+                    <input asp-for="MinimumStockForWarning" class="form-control" />
+                    <span asp-validation-for="MinimumStockForWarning" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AllowedSinglePurchase" class="control-label"></label>
+                    <select asp-for="AllowedSinglePurchase" class="form-control">
+                        <option value="">لطفا انتخاب کنید</option>
+                        <option value="true">دارد</option>
+                        <option value="false">ندارد</option>
+                    </select>
+                    <span asp-validation-for="AllowedSinglePurchase" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Views" class="control-label"></label>
+                    <input asp-for="Views" class="form-control" />
+                    <span asp-validation-for="Views" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+                
+                
+                <script>
+                    CKEDITOR.replace('ProductExtraInfo');
+                </script>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">بازگشت</a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function countChar(inobj, maxl, outobj) {
+            var len = inobj.value.length;
+
+            if (len >= maxl) {
+                inobj.value = inobj.value.substring(0, maxl);
+                $(outobj).text(0);
+            } else {
+                $(outobj).text(maxl - len);
+            }
+        }
+        $(document).ready(function () {
+            var curChars = $('#ProductPageDescription').val().length;
+            var maxchars = 160 - curChars;
+            $('#char-count').text(maxchars);
+            $('#ProductPageDescription').keyup(function () {
+                countChar(this, 160, '#char-count');
+            });
+
+            $("#btnCode").click(function () {
+                var cd = $("#ProductCode").val();
+                if (cd == "") {
+                    alert("کد محصول وارد نشده است !");
+                    return;
+                }
+                $.ajax({
+                    url: "/UsersPanel/Products/ValidateProductCode",
+                    data: { code: cd },
+                    type: "GET",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.valid == false) {
+                            var html = "<i class='text-danger mr-1 addEl fa fa-close'></i><span class='text-danger addEl mr-1'>" + result.message + "</span>";
+                            $(".addEl").remove();
+                            $("#lblCode").append(html);
+                        }
+                        else {
+                            var html = "<i class='text-success mr-1 addEl fa fa-check'></i><span class='text-success addEl mr-1'>" + result.message + "</span>";
+                            $(".addEl").remove();
+                            $("#lblCode").append(html);
+                        }
+                    },
+                    error: function () {
+                        alert("خطا رخ داده است !");
+                    }
+                })
+            });
+            $("#ProductCode").keyup(function () {
+                $(".addEl").remove();
+            })
+
+
+        });
+
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

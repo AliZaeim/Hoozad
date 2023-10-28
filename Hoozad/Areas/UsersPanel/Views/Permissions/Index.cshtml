@@ -1,0 +1,109 @@
+﻿@model IEnumerable<DataLayer.Entities.Permissions.Permission>
+
+@{
+    ViewData["Title"] = "دسترسی‌ها";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">دسترسی‌ها</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">ثبت</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.PermissionTitle)
+            </th>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.PermissionName)
+            </th>
+            <th class="text-xs-center align-middle">
+                والــد
+            </th>
+
+
+
+            <th class="text-xs-center align-middle">عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(_ => _.Parent == null).ToList())
+        {
+            <tr class="bg bg-success">
+                <td class="text-xs-center align-middle">@item.PermissionTitle</td>
+                <td class="text-xs-center align-middle">@item.PermissionName</td>
+                <td class="text-xs-center align-middle">@item.Parent?.PermissionTitle</td>
+
+                <td class="text-xs-center align-middle">
+
+                    <a asp-action="Edit" asp-route-id="@item.PermissionId">ویرایش</a> <span>|</span>
+
+                    <a asp-action="Details" asp-route-id="@item.PermissionId">جزئیات</a> <span>|</span>
+
+                    <a asp-action="Delete" asp-route-id="@item.PermissionId">حذف</a>
+
+
+                </td>
+            </tr>
+            @foreach (var child1 in Model.Where(w => w.ParentId == item.PermissionId).ToList())
+            {
+                <tr class="bg bg-info">
+                    <td class="text-xs-center align-middle">@child1.PermissionTitle</td>
+                    <td class="text-xs-center align-middle">@child1.PermissionName</td>
+                    <td class="text-xs-center align-middle">@child1.Parent?.PermissionTitle</td>
+
+                    <td class="text-xs-center align-middle">
+
+                        <a asp-action="Edit" asp-route-id="@child1.PermissionId">ویرایش</a> <span>|</span>
+
+                        <a asp-action="Details" asp-route-id="@child1.PermissionId">جزئیات</a> <span>|</span>
+
+                        <a asp-action="Delete" asp-route-id="@child1.PermissionId">حذف</a>
+
+                    </td>
+                </tr>
+                @foreach (var child2 in Model.Where(h => h.ParentId == child1.PermissionId).ToList())
+                {
+                    <tr class="bg bg-warning">
+                        <td class="text-xs-center align-middle">@child2.PermissionTitle</td>
+                        <td class="text-xs-center align-middle">@child2.PermissionName</td>
+                        <td class="text-xs-center align-middle">@child2.Parent?.PermissionTitle</td>
+
+                        <td class="text-xs-center align-middle">
+
+                            <a asp-action="Edit" asp-route-id="@child2.PermissionId">ویرایش</a> <span>|</span>
+
+
+                            <a asp-action="Details" asp-route-id="@child2.PermissionId">جزئیات</a> <span>|</span>
+
+                            <a asp-action="Delete" asp-route-id="@child2.PermissionId">حذف</a>
+
+                        </td>
+                    </tr>
+                    @foreach (var child3 in Model.Where(w => w.ParentId == child2.PermissionId).ToList())
+                    {
+                        <tr>
+                            <td class="text-xs-center align-middle">@child3.PermissionTitle</td>
+                            <td class="text-xs-center align-middle">@child3.PermissionName</td>
+                            <td class="text-xs-center align-middle">@child3.Parent?.PermissionTitle</td>
+
+                            <td class="text-xs-center align-middle">
+
+                                <a asp-action="Edit" asp-route-id="@child3.PermissionId">ویرایش</a> <span>|</span>
+
+                                <a asp-action="Details" asp-route-id="@child3.PermissionId">جزئیات</a> <span>|</span>
+
+                                <a asp-action="Delete" asp-route-id="@child3.PermissionId">حذف</a>
+
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+
+        }
+
+    </tbody>
+</table>

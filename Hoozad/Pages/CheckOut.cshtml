@@ -1,0 +1,336 @@
+﻿@page
+@model Web.Pages.ChackOutModel
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService;
+@{
+    ViewData["Title"] = "پرداخت سبد خرید";
+    string currency = Model.SiteInfo.SiteCurrency ?? "ریال";
+    string curType = ((currency == "تومان") ? "T" : "R");
+    int deliverCost = Model.SiteInfo.ShippingCost ?? 40000;
+    bool ZreadOnly = false;
+    bool freeShipping = false;
+    int sum = Model.CartItems.SelectMany(x => x.CartProductInfos).Sum(x => x.Quantity * x.NetPrice.GetValueOrDefault());
+    if (Model.SiteInfo.FreeShippingValue != null)
+    {
+        if (sum > Model.SiteInfo.FreeShippingValue)
+        {
+            deliverCost = 0;
+            freeShipping = true;
+        }
+    }
+
+}
+@section CssRefs{
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.theme.default.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel=“canonical” href="https://hoozadstyle.ir/CheckOut/" />
+}
+@section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+<section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+    <div class="area-breadcrumb-site">
+        <h1 class="text-center mb-3">صورتحساب</h1>
+        <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+        <ol class="breadcrumb breadcrumb-singleProduct ">
+        <li class="breadcrumb-item"><a href="/">خانه</a></li>
+        <li class="breadcrumb-item active">صورتحساب</li>
+        </ol>
+        </nav>
+    </div>
+</section>
+
+<main class="content checkout">
+    <section class="mb-5 pb3 pb-md-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 ">
+                    @if (!User.Identity!.IsAuthenticated)
+                    {
+                        <div class="area-form-login-toggle area-form-toggle   checkout">
+                            <i class="fal fa-user"></i>
+                            <span>قبلا مشتری بوده اید؟</span>
+                            <a href="/Login?ReturnUrl=CheckOut">برای ورود اینجا کلیک کنید</a>
+                        </div>
+                    }
+                    else
+                    {
+                        ZreadOnly = true;
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="container">
+
+            <form method="post" class="row area-details-checkout">
+                <input type="hidden" asp-for="CheckoutVModel.CartId" />
+                <div class="col-12 col-lg-6">
+                    <div class="area-form-wrap">
+                        <!-- Default form contact -->
+                        <h5 class="mb-4 heading-style1"> جزئیات صورتحساب</h5>
+                        <h4 class="alert alert-primary">مشخصات خریدار</h4>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.BuyerName" class="control-label"></label>
+                            @if (ZreadOnly)
+                            {
+                                <input asp-for="CheckoutVModel.BuyerName" readonly class="form-control" />
+                            }
+                            else
+                            {
+                                <input asp-for="CheckoutVModel.BuyerName" class="form-control" />
+                            }
+
+                            <span asp-validation-for="CheckoutVModel.BuyerName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.BuyerFamily" class="control-label"></label>
+                            @if (ZreadOnly)
+                            {
+                                <input asp-for="CheckoutVModel.BuyerFamily" readonly class="form-control" />
+                            }
+                            else
+                            {
+                                <input asp-for="CheckoutVModel.BuyerFamily" class="form-control" />
+                            }
+
+                            <span asp-validation-for="CheckoutVModel.BuyerFamily" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.BuyerCellphone" class="control-label"></label>
+                            @if (ZreadOnly)
+                            {
+                                <input asp-for="CheckoutVModel.BuyerCellphone" readonly class="form-control" />
+                            }
+                            else
+                            {
+                                <input asp-for="CheckoutVModel.BuyerCellphone" class="form-control" />
+                            }
+                            <span asp-validation-for="CheckoutVModel.BuyerCellphone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.BuyerIsRecepient" class="control-label"></label>
+                            <select asp-for="CheckoutVModel.BuyerIsRecepient" id="bcp" class="form-control">
+                                <option value="true">بــله</option>
+                                <option value="false">خیر</option>
+                            </select>
+                            <span asp-validation-for="CheckoutVModel.BuyerIsRecepient" class="text-danger"></span>
+                        </div>
+                        <div id="bic" class="hidden">
+                            <h4 class="alert alert-primary">مشخصات تحویل گیرنده</h4>
+                            <div class="form-group">
+                                <label asp-for="CheckoutVModel.RecepientName" class="control-label"></label>
+                                <input asp-for="CheckoutVModel.RecepientName" class="form-control" />
+                                <span asp-validation-for="CheckoutVModel.RecepientName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CheckoutVModel.RecepientFamily" class="control-label"></label>
+                                <input asp-for="CheckoutVModel.RecepientFamily" class="form-control" />
+                                <span asp-validation-for="CheckoutVModel.RecepientFamily" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CheckoutVModel.RecepientCellphone" class="control-label"></label>
+                                <input asp-for="CheckoutVModel.RecepientCellphone" class="form-control" />
+                                <span asp-validation-for="CheckoutVModel.RecepientCellphone" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.StateId" class="control-label"></label><span style="color:red;font-size:18px;font-weight:700">&nbsp;*</span>
+                            <select asp-for="CheckoutVModel.StateId" id="stId" class="form-control">
+                                <option value="">لطفا استان را انتخاب کنید</option>
+                                @foreach (var st in Model.CheckoutVModel.States)
+                                {
+                                    <option value="@st.StateId">@st.StateName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CheckoutVModel.StateId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.CountyId" class="control-label"></label><span style="color:red;font-size:18px;font-weight:700">&nbsp;*</span>
+                            <select asp-for="CheckoutVModel.CountyId" id="cntSelect" class="form-control">
+                                <option value="">بعد از انتخاب استان، شهرستان را انتخاب کنید</option>
+                                @foreach (var co in Model.CheckoutVModel.Counties)
+                                {
+                                    <option value="@co.CountyId">@co.CountyName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CheckoutVModel.CountyId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.Address" class="control-label"></label>
+                            <input asp-for="CheckoutVModel.Address" class="form-control" />
+                            <span asp-validation-for="CheckoutVModel.Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.PostalCode" class="control-label"></label>
+                            <input asp-for="CheckoutVModel.PostalCode" class="form-control" />
+                            <span asp-validation-for="CheckoutVModel.PostalCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CheckoutVModel.Comment" class="control-label"></label>
+                            <textarea asp-for="CheckoutVModel.Comment" maxlength="200" rows="3" class="form-control"></textarea>
+                            <span asp-validation-for="CheckoutVModel.Comment" class="text-danger"></span>
+                        </div>
+                        <!-- Default form contact -->
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    @if (Model.Cart != null)
+                    {
+                        <h4 class="mb-4 heading-style1">سفارشات شما | واحد پول @currency  می باشد</h4>
+                        <div class="area-order-review">
+
+                            <div class="table-wrapper-review-order mb-4">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center p-0">محصول</th>
+                                            <th class="text-center p-0">تعداد</th>
+                                            <th class="text-center p-0">قیمت</th>
+                                            <th class="text-center p-0">جمع</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Cart.CartItems)
+                                        {
+                                            List<DataLayer.Entities.Store.CartProductInfo> cartItemProductInfos =
+                                                await _storeService.GetProductInfosofCartItemAsync(item.Id);
+                                            var product = await _storeService.GetProductByCodeAsync(item.ProductCode!);
+                                            int sumRowQuantity = cartItemProductInfos.Sum(_ => _.Quantity);
+                                            int rowSum = sumRowQuantity * item.NetPrice;
+                                            <tr>
+                                                <td class="text-center">@product.ProductName</td>
+                                                <td class="text-center">@sumRowQuantity</td>
+                                                <td class="text-center">@item.NetPrice.ToString("N0")</td>
+                                                <td class="text-center">@rowSum.ToString("N0")</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+
+                                            <th>جمع کل</th>
+                                            <td colspan="3" class="text-xs-left product-subtotal">@sum.ToString("N0") @currency</td>
+                                        </tr>
+                                        @if (freeShipping)
+                                        {
+                                            <tr>
+                                                <th>هزینه ارسال</th>
+                                                <td>ارسال رایگان</td>
+                                            </tr>
+                                            <tr>
+                                                <th>جمع</th>
+                                                <td class="product-subtotal">@sum.ToString("N0") @currency</td>
+                                            </tr>
+                                        }
+
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                            @if (!freeShipping)
+                            {
+                                
+
+                                <div class="payment_method">
+                                    <h4 class="mb-4 heading-style1">انتخاب روش ارسال کالا</h4> <p class="text-danger">@Model.CheckoutVModel.ShippingMessage</p>
+                                    <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input chkpay" data-shval="0" data-crtsum="@sum" data-cur="@curType" asp-for="CheckoutVModel.ShippingWithTipax" /> @Html.DisplayNameFor(model => model.CheckoutVModel.ShippingWithTipax)
+                                        </label>
+                                        <p class="text-danger">کالا توسط تیپاکس ارسال می شود (دریافت کرایه هنگام تحویل سفارش)</p>
+                                    </div>
+                                    @* <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input chkpay" disabled id="shwithsnapp" data-shval="0" data-crtsum="@sum" data-cur="@curType" asp-for="CheckoutVModel.ShippingWithSnapp" /> @Html.DisplayNameFor(model => model.CheckoutVModel.ShippingWithSnapp)
+                                        </label>
+                                        <p class="text-danger">کالا توسط اسنپ ارسال می شود (دریافت کرایه هنگام تحویل سفارش)</p>
+                                    </div> *@
+
+                                    <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                            
+                                            <input class="form-check-input chkpay" id="shwithpost" data-shval="@Model.SiteInfo?.ShippingCost" data-cur="@curType" data-crtsum="@sum" asp-for="CheckoutVModel.ShippingWithPost" checked="checked" /> @Html.DisplayNameFor(model => model.CheckoutVModel.ShippingWithPost)
+                                        </label>
+                                        <p>هزینه ارسال @deliverCost.ToString("N0") @currency می باشد.</p>
+                                    </div>
+                                </div>
+
+                            }
+
+                            @if (!freeShipping)
+                            {
+                                sum += deliverCost;
+                            }
+                            <div class="area-btn-animate-S2 mt-5 text-center">
+                                <button type="submit" class="btn-animate1" id="btn-submit-checkout">پرداخت (@sum.ToString("N0")) @currency</button>
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            </form>
+
+        </div>
+    </section>
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+@section JsRefs{
+    <script type="text/javascript" src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("[data-val-required]").each(function () {
+                var label = $('label[for="' + $(this).attr("id") + '"]');
+                var asterisksHtml = '<span style="color:red;font-size:18px;font-weight:700">&nbsp;*</span>';
+                if (label.text().length > 0 && label.html().indexOf(asterisksHtml) === -1) {
+                    label.append(asterisksHtml);
+                }
+            });
+            $("#bcp").change(function () {
+                var vlu = $(this).val();
+                if (vlu === "false") {
+                    $("#bic").removeClass("hidden");
+                }
+                else {
+                    $("#bic").addClass("hidden");
+                }
+            });
+            $("#stId").change(function () {
+                var vlu = $(this).val();
+                if (vlu == 5 || vlu == 8) {
+                    $("#shwithsnapp").removeAttr('disabled');
+                }
+                else {
+                    $("#shwithsnapp").attr('disabled', 'disabled');
+                    $("#shwithsnapp").prop('checked', false);
+                }
+                $.ajax({
+                    url: "/CheckOut?handler=CountiesofState",
+                    type: "GET",
+                    data: { sId: vlu },
+                    success: function (result) {
+                        $("#cntSelect").html(result);
+                    }
+                });
+            });
+        });
+    </script>
+}

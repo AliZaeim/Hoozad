@@ -1,0 +1,215 @@
+﻿@page
+@model Web.Pages.BlogsModel
+@{
+    ViewData["Title"] = "مجله مزون هوزاد استایل";
+}
+@using Core.Convertors;
+@using System.Globalization
+@section CssRefs{
+    <meta name="description" content="در مجله هوزاد استایل اطلاعات و آموزش های لازم در مورد انواع لباس های در حال دوخت در مجموعه هوزاد به اشتراک گذاشته می شود" />
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="canonical" href="https://hoozadstyle.ir/blogs/" />
+}
+
+    @section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="area-breadcrumb-site">
+            <h1 class="text-center mb-3">مجله مزون هوزاد استایل</h1>
+            <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+                <ol class="breadcrumb breadcrumb-singleProduct ">
+                    <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                @if (string.IsNullOrEmpty(Model.Pagetitle))
+                {
+                    <li class="breadcrumb-item active">مجله هوزاد</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item"><a href="/blogs">مجله هوزاد</a></li>
+                    <li class="breadcrumb-item active">@Model.Pagetitle</li>
+                }
+
+            </ol>
+        </nav>
+    </div>
+</section>
+<main class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-3 order-2  order-lg-1">
+                <aside class="area-sidebar">
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <section>
+                            <form class="search-form d-flex w-100 " action="" method="get">
+                                <input type="text" class="form-control input_search " placeholder="جستجو کنید">
+                                <button type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">دسته بندی</h3>
+                        </header>
+                        <section>
+                            <ul class="category-siabar-singlePost menu-categorySidebar">
+                                @foreach (var gr in Model.BlogGroups)
+                                {
+                                    <li>
+                                        <a href="/Blogs/?grName=@gr.BlogGroupEnTitle">@gr.BlogGroupTitle <span class="badge-sidebar-shop">( @gr.Blogs.Count() )</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">پست های اخیر</h3>
+                        </header>
+                        <section>
+                            <ul class="area-post-thumbnail-sidebar ">
+                                @foreach (var Rb in Model.RecentBlogs.Take(5).ToList())
+                                {
+                                    <li class="d-flex mb-2">
+                                        <a href="/blog/d/@Rb.BlogUrl" class="link-img-post-thumbnail grayscale">
+                                            <img class="img-Post-thumbnail " src="/images/blogs/@Rb.BlogImageInBlog" />
+                                        </a>
+                                        <div class="details-Post-thumbnail">
+                                            <h4 class="mb-1">
+                                                <a href="/blog/d/@Rb.BlogUrl">
+                                                    @Rb.BlogTitle
+                                                </a>
+                                            </h4>
+                                            <p class="small m-0">@Rb.BlogDate.ToShamsiN()</p>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">بایگانی</h3>
+                        </header>
+                        <section>
+                            <ul class="menu-archive-Sidebar">
+                                @{
+                                    PersianCalendar PC = new();
+                                    var recb = Model.RecentBlogs.OrderByDescending(x => PC.GetYear(x.BlogDate!.Value) + PC.GetMonth(x.BlogDate.Value)).ToList();
+                                    var res = recb.Select(x => new { x.BlogDate, Year = PC.GetYear(x.BlogDate!.Value), Month = PC.GetMonth(x.BlogDate.Value) }).GroupBy(x => new { x.Year, x.Month }).ToList();
+
+                                }
+                                @foreach (var ar in res.ToList())
+                                {
+                                    <li>
+                                        <a href="/Blogs/?ary=@ar.Key.Year&&arm=@ar.Key.Month">@Core.Utility.Applications.GetMounthShamsiName(ar.Key.Month) @ar.Key.Year<span class="badge-sidebar-shop">( @ar.Count() )</span></a>
+                                    </li>
+                                }
+                            </ul>
+                        </section>
+                    </div>
+                    <div class="widget-sidebar mb-4 pb-3">
+                        <header>
+                            <h3 class="title-widget-sidebar ">برچسب ها</h3>
+                        </header>
+                        <section>
+                            <div class="d-flex flex-wrap  area-tags-blog">
+                                @foreach (var tg in Model.GroupingTopTags.Take(15).ToList())
+                                {
+                                    <div class="tag-sidebar"><a href="/blogs/?tag=@tg.Key">@tg.Key</a></div>
+                                }
+
+                            </div>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+            <div class="col-12 col-lg-9 order-1  order-lg-2">
+                <div class="row">
+                    @foreach (var item in Model.Blogs)
+                    {
+                        <div class="col-12 col-md-6 col-xl-4 ">
+                            <div class="card card-post">
+                                <div class="hover01 column">
+                                    <figure>
+                                        <img class="card-img-top" src="/images/blogs/@item.BlogImageInBlog" alt="@item.BlogTitle" width="334" height="253">
+                                    </figure>
+                                </div>
+                                <div class="card-body">
+                                    <div class="meta-post d-flex mb-3">
+                                        <div class="author-post  me-3 item-meta-post">
+
+                                            <a href="#"> @item.Author</a>
+                                        </div>
+                                        <div class="date-post item-meta-post ">
+                                            <a href="#" class="data-link">
+                                                @item.BlogDate.ToShamsiN()
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="content-post">
+                                        <h2 class="title-post mb-3">
+                                            <a href="/blog/d/@item.BlogUrl">
+                                                @item.BlogTitle
+                                            </a>
+                                        </h2>
+                                        <p class="card-text mb-3">
+                                            @item.BlogSummary
+                                        </p>
+                                        <div class="btn-post-cart">
+                                            <a href="/blog/d/@item.BlogUrl">بیشتر بخوانید</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <ul class="pagination page-numbers d-flex justify-content-center order-2 order-md-1 mt-4">
+                    @if (Model.TotalRecs > 12)
+                    {
+
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        for (var pg = 1; pg <= Model.PageCount; pg++)
+                        {
+                            @if (pg == Model.CurrentPage)
+                            {
+                                <li class="page-item active"><a class="page-link" href="/blogs/?pageId=@pg">@pg</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="/blogs/?pageId=@pg">@pg</a></li>
+                            }
+
+                        }
+
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+    @section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+}

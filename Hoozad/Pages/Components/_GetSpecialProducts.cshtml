@@ -1,0 +1,184 @@
+﻿@model Core.DTOs.General.SepcialProducts
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService
+@{
+    var siteInfo = await _storeService.GetLastSiteInfoAsync();
+    string cur = siteInfo.SiteCurrency ?? "ریال";
+}
+<section class="mb-2 mb-md-3  mb-lg-4 mb-xl-5">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <h2 class="wow fadeInUp title-site">
+                @Model.Title
+                <span>@Model.Title</span>
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-9 order-1 order-lg-2">
+                <div class="row">
+                    @foreach (var pr in Model.Products.Where(w => w.IsActive).ToList())
+                    {
+                        bool AllowsingleSell = false;
+
+                        AllowsingleSell = await _storeService.CheckAllowSingleSell(pr.ProductCode!, Model.CartId!);
+                        List<DataLayer.Entities.Store.Product>? Commprs = await _storeService.GetCommonProductsofThisAsync(pr.ProductCode!);
+                        (int price, int netprice, int discount, int disPercent, bool Exist) finance = await _storeService.GetProductFinanceInfoAsync(pr.ProductId);
+
+                        var prc = await _storeService.GetProductPricesFinanceAsync(pr.ProductCode!);
+                        <div class="col-12 col-sm-6 col-md-4 mb-4">
+                            <div class="product_cart">
+
+                                @if (finance.disPercent != 0)
+                                {
+                                    <div class="off"> <span> @finance.disPercent تخفیف</span></div>
+                                }
+                                @if (!finance.Exist)
+                                {
+                                    <div class="zNoSaleSkwed">پایان موجودی</div>
+                                }
+                                @if (!string.IsNullOrEmpty(pr.ProductLabel))
+                                {
+
+                                    <div class="ztag">@pr.ProductLabel</div>
+                                }
+
+                                @if (!pr.AllowedSinglePurchase.GetValueOrDefault() && finance.Exist)
+                                {
+                                    if (!AllowsingleSell)
+                                    {
+                                        <div class="zNoSale justify-content-center align-content-center">امکان خرید تکی ندارد !</div>
+                                        @if (Commprs != null)
+                                        {
+                                            @if (Commprs.Any())
+                                            {
+                                                <div class="zCommPr justify-content-center align-content-center">
+                                                    <span>خرید همراه </span> &ensp;
+                                                    @{
+                                                        int loop = 1;
+                                                    }
+                                                    @foreach (var comP in Commprs.ToList())
+                                                    {
+                                                        if (loop < 2)
+                                                        {
+                                                            <a class="d-inline-flex" href="/Product/d/@comP.ProductCode">@comP.ProductName</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>&ensp; یا</span>
+                                                            <a class="d-inline-flex" href="/Product/d/@comP.ProductCode">&ensp; @comP.ProductName</a>
+                                                        }
+
+                                                        loop++;
+                                                    }
+                                                </div>
+                                            }
+                                        }
+                                    }
+
+                                }
+                                @*<a href="#" class="link-wishlist-icon"><i class="fal fa-heart"></i></a>*@
+                                <div class="cart-img-product mb-3">
+                                    <a href="/Product/d/@pr.ProductCode">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <img src="/images/store/products/@pr.ProductImage1" class="img1-product img-fluid rounded" alt="@pr.ProductImageAlt" />
+                                            @if (!string.IsNullOrEmpty(pr.ProductImage2))
+                                            {
+                                                <img src="/images/store/products/@pr.ProductImage2" class="img2-product img-fluid rounded " alt="@pr.ProductName" />
+                                            }
+                                        </div>
+                                    </a>
+                                    <div class="area-button-view-product">
+                                        @{
+                                            List<(string, string)> roots = new();
+                                            List<DataLayer.Entities.Store.Product?> SetProducts = new();
+                                            if (AllowsingleSell == false)
+                                            {
+                                                SetProducts = Model.Products.SelectMany(x => x.ProductComponents).Where(w => w.ProductCode == pr.ProductCode).Select(x => x.Product).ToList();
+                                            }
+                                            if (SetProducts != null)
+                                            {
+                                                foreach (var item in SetProducts!.ToList())
+                                                {
+                                                    roots.Add(new("/Product/d/" + item!.ProductCode, item.ProductName!));
+                                                }
+                                            }
+
+                                        }
+                                        @if (AllowsingleSell || pr.AllowedSinglePurchase.GetValueOrDefault() && finance.Exist)
+                                        {
+                                            <a href="/Product/d/@pr.ProductCode" class="button-view-product">
+                                                مشاهده محصول
+                                            </a>
+                                        }
+
+
+                                    </div>
+                                </div>
+                                <div class="content_product text-center">
+                                    <div class="price_card_product mb-2">
+                                        @if (finance.Exist)
+                                        {
+                                            @if (finance.price != finance.netprice)
+                                            {
+                                                <del class="me-1">@finance.price.ToString("N0")</del>
+                                            }
+                                            @finance.netprice.ToString("N0")
+
+                                            <span> </span>  @cur
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">پایان موجودی</span>
+                                        }
+                                    </div>
+                                    @{
+
+                                    }
+                                    <a href="/Product/d/@pr.ProductCode">
+                                        <h3 class="title-product mb-2">
+                                            @pr.ProductName
+
+                                        </h3>
+
+
+                                    </a>
+
+                                    <a href="/Product/d/@pr.ProductCode"><h5 class="title-product mb-2">کد محصول : @pr.ProductCode </h5></a>
+
+                                    <div class="star_rating">
+                                        @for (var st = 1; st <= pr.Popularity.GetValueOrDefault(); st++)
+                                        {
+                                            <span class="star-icon star-icon-active">
+                                                <i class="far fa-star"></i>
+                                            </span>
+                                        }
+                                        @for (var st = 1; st <= 5 - pr.Popularity.GetValueOrDefault(); st++)
+                                        {
+                                            <span class="star-icon"><i class="far fa-star"></i></span>
+                                        }
+                                    </div>
+                                    <div>
+
+                                        @if (finance.Exist && AllowsingleSell)
+                                        {
+                                            <a href="/Product/d/@pr.ProductCode" class="btn-add-to-cart btn btn-info">
+                                                ثبت سفارش <i class="fal fa-cart-arrow-down ps-3"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/Product/d/@pr.ProductCode" class="btn-add-to-cart btn btn-info">
+                                                مشاهده محصول
+                                            </a>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

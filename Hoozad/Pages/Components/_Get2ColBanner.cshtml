@@ -1,0 +1,37 @@
+﻿@model DataLayer.Entities.Supplementary.Banner
+@if (Model != null)
+{
+    @if (Model.BannerItems.Where(w => w.IsActive).Any())
+    {
+        <section class="mb-5  pb-lg-4 pb-xl-5">
+            <div class="container">
+                <div class="row baner-site two">
+                    @foreach (var (value, index) in Model.BannerItems.Select((value, index) => (value, index)).Where(w => w.value.IsActive).ToList())
+                    {
+                        string clss = "bounceInRight";
+                        if ((index + 1) % 2 != 0)
+                        {
+                            clss = "bounceInLeft";
+                        }
+                        <div class="wow @clss col-12 col-md-6 item-baner" data-wow-duration="2s">
+                            <div class="box-baner">
+                                <picture class="img-fluid">
+                                    <source media="(max-width: 799px)" class="img-fluid" srcset="/images/banners/@value.MobileImage" />
+                                    <source media="(min-width: 800px)" class="img-fluid" srcset="/images/banners/@value.Image" />
+                                    <img src="/images/banners/@value.Image" class="img-fluid" alt="@value.Name" />
+                                </picture>
+                                @if (!string.IsNullOrEmpty(value.LinkUrl))
+                                {
+                                    <a href="@value.LinkUrl" class="btn-buy-view btn-animate1 to-arrow">
+                                        مشاهده و خرید <i class="fal fa-angle-left"></i>
+                                    </a>
+                                }
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+}

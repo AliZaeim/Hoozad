@@ -1,0 +1,89 @@
+﻿@page
+@model Web.Pages.Account.UserPanel.OrdersModel
+@using Core.Convertors;
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService;
+@{
+    ViewData["Title"] = "سفارش های من";
+    ViewData["Header"] = "سفارش ها";
+    Layout = "~/Pages/Shared/_AccountLayout.cshtml";
+}
+
+<div >
+    <table class="table table-bordered">
+        @foreach (var item in Model.CartItems.GroupBy(_ => _.Cart).ToList())
+        {
+            DataLayer.Entities.Store.CartStatus? sts = await _storeService.GetCartLastStatusAsync(item.Key!.Id);
+            <tr class="bg bg-info">
+                <td colspan="2" class="text-center align-middle">شماره پیگیری : @item.Key!.TracingNumber</td>
+                <td colspan="2" class="text-center align-middle">تاریخ سفارش : @item.Key!.CreatedDate.ToShamsiN_WithTime()</td>
+                <td colspan="2" class="text-center align-middle">مبلغ : @item.Key.CartSum.ToString("N0") @item.Key.Currency | هزینه ارسال : @item.Key.Freight.GetValueOrDefault().ToString("N0") @item.Key.Currency </td>
+                <td colspan="2" class="text-center align-middle">
+                    آخرین وضعیت :
+                    @if (sts != null)
+                    {
+                        <span>@sts.Status!.Name</span>
+                    }
+                    else
+                    {
+                        <span>ثبت شده</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <table class="table table-bordered">
+                        @foreach (var cl in item.Key.CartItems)
+                        {
+                            DataLayer.Entities.Store.Product? product = await _storeService.GetProductByCodeAsync(cl.ProductCode!);
+                            <tr>
+                                <td class="text-center align-middle">محصول : @product?.ProductName</td>
+                                <td class="text-center align-middle">
+                                    <img width="50" src="/images/store/products/@product?.ProductImage1" alt="@product?.ProductImageAlt">
+                                </td>
+                                <td colspan="6" class="text-center align-middle">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center align-middle p-1">رنگ</th>
+                                                <th class="text-center align-middle p-1">سایز</th>
+                                                <th class="text-center align-middle p-1">قد</th>
+                                                <th class="text-center align-middle p-1">تعداد</th>
+                                                <th class="text-center align-middle p-1">قیمت</th>
+                                                <th class="text-center align-middle p-1">جمع</th>
+                                            </tr>
+                                        </thead>
+                                        @foreach (var pinf in cl.CartProductInfos.ToList())
+                                        {
+                                            <tr>
+                                                <td class="text-center align-middle">@pinf.Color</td>
+                                                <td class="text-center align-middle">@pinf.Size</td>
+                                                <td class="text-center align-middle">@pinf.Height</td>
+                                                <td class="text-center align-middle">@pinf.Quantity</td>
+                                                <td class="text-center align-middle">@pinf.NetPrice.GetValueOrDefault().ToString("N0")</td>
+                                                <td class="text-center align-middle">
+                                                    @{
+                                                        int pinfSum = pinf.Quantity * pinf.NetPrice.GetValueOrDefault();
+                                                    }
+                                                    @pinfSum.ToString("N0")
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </td>
+                                
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        }
+    </table>
+    
+</div>
+<div class="area-btnOldOrders text-center pt-3">
+    <a class="btn-style2" href="#">نمایش سفارش های بیشتر</a>
+</div>
+
+
+

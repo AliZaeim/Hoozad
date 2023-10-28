@@ -1,0 +1,19 @@
+﻿@model IEnumerable<DataLayer.Entities.Store.ProductGroup>
+<section class="mb-5 pb-sm-3  pb-lg-4 pb-xl-5">
+    <div class="container">
+        <div class="row ">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-sm-6 col-md-3 col-category">
+                    <div class="wow  bounceInRight box-category" data-wow-duration="2.5s">
+                        <img src="/images/pgroups/@item.Image" class="img-fluid" alt="تصویر @item.Title " />
+                        <div class="area-title-category">
+                            <span class="title-category">@item.Title</span>
+                        </div>
+                        <a href="/Products/?gId=@item.Id">مشاهده محصولات</a>
+                    </div>
+                </div>
+            }            
+        </div>
+    </div>
+</section>

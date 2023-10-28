@@ -1,0 +1,506 @@
+﻿@page "/product/d/{code}"
+@model Web.Pages.ProductDetailsModel
+@{
+    ViewData["Title"] = Model.Pproduct.ProductName;
+    string cur = Model.SiteInfo.SiteCurrency ?? "ریال";
+}
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService;
+@{
+    (int price, int netprice, int discount, int dispercent, bool exist) finance = await _storeService.GetProductFinanceInfoAsync(Model.Pproduct.ProductId);
+    bool hasColor = false;
+    bool hasSize = false;
+    bool hasHeight = false;
+    bool hasComp = false;
+}
+@section CssRefs{
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.theme.default.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+    <link rel="stylesheet" href="~/Layout/css/easyzoom.css">
+}
+@section Header{
+    @await Component.InvokeAsync("HeaderComponent")
+    }
+<section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+    <div class="area-breadcrumb-site">
+        <h1 class="text-center mb-3">جزئیات محصول  @Model.Pproduct.ProductName</h1>
+        <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+            <ol class="breadcrumb breadcrumb-singleProduct ">
+                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                <li class="breadcrumb-item"><a href="/Products">فروشگاه</a></li>
+                <li class="breadcrumb-item active">@Model.Pproduct.ProductName</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<main class="content">
+    <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-4  mb-4 mb-sm-5 mb-lg-0">
+                    <div class="exzoom" id="exzoom">
+                        <div class="exzoom_img_box">
+                            <ul class='exzoom_img_ul'>
+                                <li><img src="/images/store/products/@Model.Pproduct.ProductImage1" /></li>
+                                @if (!string.IsNullOrEmpty(Model.Pproduct.ProductImage2))
+                                {
+                                    <li><img src="/images/store/products/@Model.Pproduct.ProductImage2" /></li>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Pproduct.ProductImage3))
+                                {
+                                    <li><img src="/images/store/products/@Model.Pproduct.ProductImage3" /></li>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Pproduct.ProductImage4))
+                                {
+                                    <li><img src="/images/store/products/@Model.Pproduct.ProductImage4" /></li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="exzoom_nav"></div>
+                        <p class="exzoom_btn">
+                            <a href="javascript:void(0);" class="exzoom_prev_btn">
+                                <i class="fa fa-chevron-left"></i>
+                            </a>
+                            <a href="javascript:void(0);" class="exzoom_next_btn">
+                                <i class="fa fa-chevron-right"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-8 ">
+                    <div class="contentproduct-sigle area-details-product">
+                        @{
+                            var prs = await _storeService.GetCommonProductsofThisAsync(Model.Pproduct?.ProductCode!);
+                            (int price, int netprice, int discount, int discountPercent, bool Exist) = await _storeService.GetProductFinanceInfoAsync(Model.Pproduct!.ProductId);
+                            bool ProductAllowBuySingle = await _storeService.CheckAllowSingleSell(Model.Pproduct?.ProductCode!, Model.CartId!);
+                        }
+                        <h3 class="product-title mb-3">
+                            <a href="#">@Model.Pproduct?.ProductName</a>
+                            @if (ProductAllowBuySingle == false)
+                            {
+                                <span class="alert alert-danger m-lg-5">خرید تکی ندارد !</span>
+                            }
+                        </h3>
+
+                        <div class="d-sm-flex justify-content-between align-items-center  mb-3">
+                            <div class="area-price-Product d-flex mb-2 mb-sm-0">
+                                <span class="me-2"> قیمت: </span>
+                                @if (finance.discount != 0)
+                                {
+                                    <del class="price-discount me-3 ">@finance.price.ToString("N0")</del>
+                                }
+
+                                <p class="price  mb-0"  data-discount="@finance.discount" data-price="@finance.price" data-netprice="@finance.netprice" id="prdPrice">@finance.netprice.ToString("N0") </p><span>&ensp;</span> <span>@cur</span>
+                            </div>
+                            <a href="#" class="d-flex">
+                                <div class="star_rating me-3">
+                                    @for (var p = 1; p <= 5; p++)
+                                    {
+                                        if (p <= Model.Pproduct?.Popularity)
+                                        {
+                                            <span class="star-icon star-icon-active"><i class="far fa-star"></i></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="star-icon "><i class="far fa-star"></i></span>
+                                        }
+                                    }
+
+                                </div>
+                                <span>( @Model.Pproduct?.Popularity )</span>
+                            </a>
+                        </div>
+                        @if (Model.ComponentProducts.Any())
+                        {
+                            hasComp = true;
+
+                            <div class="align-items-center row" id="componentDiv">
+                                @{
+                                    int loop = 1;
+                                }
+                                @foreach (var cpr in Model.ComponentProducts.Where(_ => _.IsActive).OrderByDescending(x => x.AllowedSinglePurchase))
+                                {
+                                    string pricelblId = loop.ToString() + "lbl" + cpr.ProductCode;
+                                    (int Compprice, int Compnetprice, int Compdiscount, int CompdiscountPercent, bool CompExist) comFinanceinfo = await _storeService.GetProductFinanceInfoAsync(cpr.ProductId);
+                                    bool AllowBuySingle = await _storeService.CheckAllowSingleSell(cpr.ProductCode!, Model.CartId!);
+                                    <div class="col-xs-12 border text-md-right text-xs-center rounded-2 mb-2 mt-5 p-2 subs product_cart">
+                                        @if (comFinanceinfo.CompdiscountPercent != 0)
+                                        {
+                                            <div class="off"> <span> @comFinanceinfo.CompdiscountPercent تخفیف</span></div>
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(cpr.ProductLabel))
+                                        {
+                                            <div class="ztag">@cpr.ProductLabel</div>
+                                        }
+                                        <label class="  mb-3 text-success zfs-18 font-weight-bold">@cpr.ProductName</label>&emsp; <label id="@pricelblId">@comFinanceinfo.Compnetprice.ToString("N0") </label>&ensp;<label>@cur</label>
+
+                                        @if (cpr.ProductSizes.Any())
+                                        {
+                                            <span data-productId="@cpr.ProductId" class="btn btn-infor btnShowSize mb-3" title="مشاهده سایزها">جدول سایز بندی</span>
+                                        }
+
+                                        @if (!AllowBuySingle )
+                                        {
+                                            <span class="animated bounce col-xs-6 infinite zborder-danger rounded p-2 text-warning float-end ">توجه : به صورت تک قابل خرید نیست !</span>
+                                        }
+
+                                        <div class="col-md-12 propdiv">
+                                            <div class="row">
+                                                <div class="col-12 text-center">
+                                                    <img src="/images/store/products/@cpr.ProductImage1" class="rounded" width="100">
+                                                </div>
+
+                                                @if (cpr.ProductPrices.Any())
+                                                {
+                                                    hasSize = true;
+                                                    <div class="col-md-4 col-xs-12 ">
+                                                        <label>انتخاب سایز @cpr.ProductName</label>
+                                                        <select class="form-control custom-select pSize "@((comFinanceinfo.CompExist && AllowBuySingle) ? "" : "disabled")>
+                                                            <option value="">لطفا سایز را انتخاب کنید</option>
+
+                                                            @foreach (var item in cpr.ProductPrices.Select(_ => _.Size).Distinct().ToList())
+                                                            {
+
+                                                                <option value="@item" data-type="multi" data-lblId="@pricelblId" data-pcode="@cpr.ProductCode">@item</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+
+                                                    @if (cpr.ProductPrices.Any())
+                                                    {
+                                                        hasHeight = true;
+                                                        <div class="col-md-4 col-xs-12">
+
+                                                            <label>انتخاب قد @cpr.ProductName</label><span id="totPrice"></span>
+                                                            <select class="form-control custom-select pHeight "@((comFinanceinfo.CompExist && AllowBuySingle) ? "" : "disabled")>
+                                                                <option value="">لطفا قد را انتخاب کنید</option>
+                                                                @foreach (var item in cpr.ProductPrices.Select(x => x.Height).Distinct().ToList())
+                                                                {
+                                                                    <option value="@item" data-type="multi" data-lblId="@pricelblId" data-pcode="@cpr.ProductCode">@item</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    }
+
+                                                }
+                                                @if (cpr.ProductColors.Any())
+                                                {
+                                                    hasColor = true;
+                                                    <div class="col-md-4 col-xs-12">
+                                                        <label>انتخاب رنگ @cpr.ProductName</label>
+                                                        <select class="form-control custom-select pColor " @((comFinanceinfo.CompExist && AllowBuySingle) ? "" : "disabled")>
+                                                            <option value="">لطفا رنگ را انتخاب کنید</option>
+                                                            @foreach (var item in cpr.ProductColors.ToList())
+                                                            {
+
+                                                                <option  value="@item.ColorName">@item.ColorName</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                }
+                                            </div>
+
+
+
+                                        </div>
+                                        <div class="row mt-3 addbtndiv">
+                                            @if (comFinanceinfo.CompExist && AllowBuySingle )
+                                            {
+                                                <div class="col-12">
+                                                    <div class="row text-center">
+                                                        <div class="offset-md-4 col-md-4 col-xs-12 input-number-wrapper d-flex col-lg-4 col-xs-12 justify-content-center align-items-center me-3">
+                                                            <span class="quanti-invitati-op increase cursor-pointer">+</span>
+                                                            <input class="input-number-custtom" type="text" value="1">
+                                                            <span class="quanti-invitati-op decrease cursor-pointer">-</span>
+                                                            <span>&ensp;</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row text-center mt-2">
+                                                        <div class="offset-md-4 col-md-4 col-xs-12">
+                                                            <a href="javascript:void(0)" data-btnAddType="comp" data-pid="@cpr.ProductId.ToString()" data-allowsinglebuy="@cpr.AllowedSinglePurchase.GetValueOrDefault()" data-hascolor="@hasColor" data-hasheight="@hasHeight" data-hassize="@hasSize" data-hascomponent="@hasComp" data-where="@Model.Pproduct!.ProductName" class="btn-add-to-cart btn btn-success addTocart">
+                                                                افزودن به سبد <i class="fal fa-cart-arrow-down ps-3"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            }
+                                            else
+                                            {
+                                                @if (!comFinanceinfo.CompExist)
+                                                {
+                                                    <div class="container  text-center mb-3">
+                                                        <div class="row pt-3">
+                                                            <p class="offset-md-3 col-md-6 col-12 alert alert-danger ztext-red">
+                                                                پایان موجودی
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    if (comFinanceinfo.CompExist == true && AllowBuySingle==false)
+                                                    {
+                                                        <div class="container  text-center mb-3">
+                                                            <div class="row pt-3">
+                                                                <p class="offset-md-3 col-md-6 col-12 alert alert-danger ztext-red">
+                                                                    عدم امکان خرید به صورت تکی
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+
+                                    }
+                                        </div>
+                                    </div>
+                                    loop++;
+                                }
+                            </div>
+
+                        }
+
+                        <p class="mb-3">
+                            @Html.Raw(Model.Pproduct?.ProductSmallComment)
+                        </p>
+                        <div class="mainprDiv row">
+                            @{
+                                hasSize = false;
+                            }
+
+                            @if (Model.Pproduct!.ProductSizes.Any())
+                            {
+                                hasSize = true;
+                                <div class="">
+                                    <div class="col-md-6 col-xs-12 form-group">
+                                        <label class="">انتخاب سایز : </label> &ensp; <span data-productId="@Model.Pproduct.ProductId" class="btn btn-infor btnShowSize" title="مشاهده سایزها">جدول سایز بندی</span>
+                                        <select class="form-control mt-1 pSize">
+                                            <option value="">لطفا سایز را انتخاب کنید...</option>
+                                            @foreach (var sz in Model.Pproduct.ProductSizes.DistinctBy(_ => _.Size).OrderBy(x => x.Size))
+                                            {
+                                                <option value="@sz.Size" data-type="single" data-lblId="prdPrice" data-pcode="@Model.Pproduct.ProductCode">@sz.Size</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                            @{
+                                hasHeight = false;
+                            }
+                            @if (Model.Pproduct.ProductPrices.Any())
+                            {
+                                hasHeight = true;
+                                <div class="">
+                                    <div class="col-md-6 col-xs-12 form-group">
+                                        <label class="control-label">انتخاب قد : </label>
+                                        <select class="form-control mt-1 pHeight" id="">
+                                            <option value="">لطفا قد را انتخاب کنید...</option>
+                                            @foreach (var len in Model.ProductPricesFinance.DistinctBy(_ => _.Height).OrderBy(x => x.Height))
+                                            {
+                                                <option value="@len.Height" data-type="single" data-lblId="prdPrice" data-pcode="@Model.Pproduct.ProductCode" data-price="@len.Price" data-netprice="@len.NetPrice" data-discount="@len.DiscountVal">@len.Height</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                            @{
+                                hasColor = false;
+                            }
+                            @if (Model.Pproduct.ProductColors.Any())
+                            {
+                                hasColor = true;
+                                <div class="">
+                                    <div class="col-md-6 col-xs-12 form-group">
+                                        <label class="control-label">انتخاب رنگ : </label>
+                                        <select class="form-control mt-1 pColor">
+                                            <option value="">لطفا رنگ را انتخاب کنید...</option>
+                                            @foreach (var clr in Model.Pproduct.ProductColors.OrderBy(x => x.ColorName))
+                                            {
+                                                <option data-type="single" value="@clr.ColorName">@clr.ColorName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (!hasComp && finance.exist && ProductAllowBuySingle)
+                            {
+                                <hr>
+                                <div class="area-inputNumber-singlproduct d-flex align-items-center mt-4 btnaddDiv">
+
+                                    <div class="input-number-wrapper d-flex col-lg-4 col-xs-12 justify-content-center align-items-center me-3">
+                                        <span class="quanti-invitati-op increase cursor-pointer">+</span>
+                                        <input class="input-number-custtom" type="text" value="1">
+                                        <span class="quanti-invitati-op decrease cursor-pointer">-</span>
+                                        <span>&ensp;</span>
+                                    </div>
+
+
+                                    <div class="col-lg-6 col-xs-12">
+                                        @if (finance.exist)
+                                        {
+                                            @if (ProductAllowBuySingle)
+                                            {
+                                                <a href="javascript:void(0)" data-btnAddType="main" data-pid="@Model.Pproduct.ProductId.ToString()" data-allowsinglebuy="@Model.Pproduct.AllowedSinglePurchase" data-hascolor="@hasColor" data-hasheight="@hasHeight" data-hassize="@hasSize" data-hascomponent="@hasComp" data-where="@Model.Pproduct.ProductName" class="btn-add-to-cart btn btn-success addTocart">
+                                                    افزودن به سبد <i class="fal fa-cart-arrow-down ps-3"></i>
+                                                </a>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <div class="col-12">
+                                                <a href="javascript:void(0)" class="btn btn-outline-danger w-75 disabled">
+                                                    پایان موجودی
+                                                </a>
+                                            </div>
+
+                                        }
+                                    </div>
+
+                                </div>
+                            }
+                        </div>
+                        <hr>
+                        <ul class="category-single-product">
+                            <li>
+                                <span>شناسه محصول: </span>@Model.Pproduct.ProductCode
+                                @if (ProductAllowBuySingle == false)
+                                {
+                                    <span class="alert alert-danger m-lg-5 mt-3">خرید تکی ندارد !</span>
+                                }
+                            </li>
+                            <li>
+                                <span>دسته بندی: </span><a href="/Products/?gId=@Model.Pproduct.ProductGroupId">@Model.Pproduct.ProductGroup!.Title</a>
+                            </li>
+                            <li>
+                                <span>برچسب ها: </span>
+                                @foreach (var tg in Model.Pproduct.TagsList.ToList())
+                                {
+                                    <a href="/Products/?tag=@tg" class="border p-1 ml-2">@tg.Trim()</a>
+                                }
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <partial name="_ColElementMulti" />
+
+    @if (Model.ProductGroup.Products.Where(w => w.ProductCode != Model.Pproduct.ProductCode).ToList().Any())
+    {
+        <section class="mb-2 mb-md-3  mb-lg-4 mb-xl-5">
+            <div class="container">
+                <div class="row justify-content-center mb-5">
+                    <h2 class="title-site">
+                        محصولات مرتبط
+                    </h2>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="owl-carousel slider_product">
+                            @{
+                                List<DataLayer.Entities.Store.Product> grProducts = Model.ProductGroup.Products.Where(w => w.ProductCode != Model.Pproduct.ProductCode).ToList();
+                            }
+                            @foreach (var item in grProducts.ToList())
+                            {
+                                (int price, int netprice, int discount, int disPercent, bool exist) Prfinance = await _storeService.GetProductFinanceInfoAsync(item.ProductId);
+                                <div class="wow bounceIn item_slider_product-new" data-wow-duration="2s">
+                                    <div class="product_cart">
+                                        @if (Prfinance.disPercent != 0)
+                                        {
+                                            <div class="off"> <span>@Prfinance.disPercent% تخفیف</span></div>
+                                        }
+                                        <div class="cart-img-product mb-3">
+                                            <a href="#">
+                                                <div class="d-flex justify-content-center align-items-center h-100">
+                                                    <img src="/images/store/products/@item.ProductImage1" width="360" height="360" class="img1-product zround-10" title="@item.ProductName" />
+                                                    @if (!string.IsNullOrEmpty(item.ProductImage2))
+                                                    {
+                                                        <img src="/images/store/products/@item.ProductImage2" width="360" height="360" class="img2-product zround-10" alt="@item.ProductName" />
+                                                    }
+                                                </div>
+                                            </a>
+                                            <div class="area-button-view-product">
+                                                <a href="/Product/d/@item.ProductCode" class="button-view-product">
+                                                    مشاهده
+                                                    محصول
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                        <div class="content_product text-center">
+                                            <div class="price_card_product mb-2">
+                                                @if (finance.exist)
+                                                {
+                                                    @if (finance.price != finance.netprice)
+                                                    {
+                                                        <del class="me-1">@finance.price.ToString("N0")</del>
+                                                    }
+                                                    @finance.netprice.ToString("N0")
+                                                    @cur
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-danger">پایان موجودی</span>
+                                                }
+
+                                            </div>
+                                            <a href="/Product/d/@item.ProductCode">
+                                                <h3 class="title-product mb-2">@item.ProductName</h3>
+                                            </a>
+                                            <div class="star_rating">
+                                                @for (var i = 1; i <= item.Popularity; i++)
+                                                {
+                                                    if (i <= item.Popularity)
+                                                    {
+                                                        <span class="star-icon star-icon-active"><i class="far fa-star"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="star-icon"><i class="far fa-star"></i></span>
+                                                    }
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+</main>
+@section Footer{
+    @await Component.InvokeAsync("FooterComponent")
+    }
+@section JsRefs{
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <!--refrence carousel-->
+    <script src="~/Layout/js/owl.carousel.min.js"></script>
+    <!--refrence carousel-->
+    <script src="~/Layout/js/main.js"></script>
+    <script src="~/Layout/js/wow.min.js"></script>
+    <!-- <script type="text/javascript" src="js/price-range-slider.js"></script> -->
+
+    <script src="~/layout/js/jquery.elevatezoom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+}

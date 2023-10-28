@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DataLayer.Entities.Store.CartStatus>
+@using Core.Services.Interfaces;
+@inject IStoreService _storeService;
+@using Core.Convertors;
+<table class="table table-bordered">
+    <caption class="text-md-center font-size-large alert alert-success">وضعیت های سفارش</caption>
+    <thead>
+        <tr>
+            <th class="text-xs-center align-middle">#</th>
+            <th class="text-xs-center align-middle">وضعیت</th>
+            <th class="text-xs-center align-middle">توضیحات</th>
+            <th class="text-xs-center align-middle">تاریخ ثبت</th>
+            <th class="text-xs-center align-middle">کاربر</th>
+
+        </tr>        
+    </thead>
+    <tbody>
+        @{
+            int radif = 1;
+        }
+        @foreach (var item in Model.OrderByDescending(_ => _.RegDate))
+        {
+            <tr>
+                <td class="text-xs-center align-middle">@radif</td>
+                <td class="text-xs-center align-middle">@item.Status?.Name</td>
+                <td class="text-xs-center align-middle">@item.Comment</td>
+                <td class="text-xs-center align-middle">@item.RegDate.ToShamsiN_WithTime()</td>
+                <td class="text-xs-center align-middle">@item.LastCreateUser</td>
+            </tr>
+            radif++;
+        }
+    </tbody>
+</table>

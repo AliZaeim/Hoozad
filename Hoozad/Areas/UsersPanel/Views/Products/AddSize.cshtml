@@ -1,0 +1,47 @@
+﻿@model Core.DTOs.Admin.ProductSizeVM
+
+<div class="container-fluid">
+    <div class="row">
+        <form asp-action="AddPrice" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductId" />
+            <div class="form-group row">
+                <div class="col-xs-6">
+                    <label asp-for="Size" class="control-label"></label>
+                    <input asp-for="Size" class="form-control" />
+                    <span asp-validation-for="Size" class="text-danger"></span>
+                </div>
+                <div class="col-xs-6">
+                    <label asp-for="ChestAround" class="control-label"></label>
+                    <input asp-for="ChestAround" class="form-control" />
+                    <span asp-validation-for="ChestAround" class="text-danger"></span>
+                </div>
+                <div class="col-xs-6">
+                    <label asp-for="WaistAround" class="control-label"></label>
+                    <input asp-for="WaistAround" class="form-control" />
+                    <span asp-validation-for="WaistAround" class="text-danger"></span>
+                </div>
+                <div class="col-xs-6">
+                    <label asp-for="HipsAround" class="control-label"></label>
+                    <input asp-for="HipsAround" class="form-control" />
+                    <span asp-validation-for="HipsAround" class="text-danger"></span>
+                </div>
+                <div class="col-xs-6">
+                    <label asp-for="ArmAround" class="control-label"></label>
+                    <input asp-for="ArmAround" class="form-control" />
+                    <span asp-validation-for="ArmAround" class="text-danger"></span>
+                </div>
+                <div class="col-xs-6">
+                    <label asp-for="SleeveLength" class="control-label"></label>
+                    <input asp-for="SleeveLength" class="form-control" />
+                    <span asp-validation-for="SleeveLength" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="ثبت" class="btn btn-primary col-xs-12" />
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.9/jquery.validate.unobtrusive.min.js"></script>

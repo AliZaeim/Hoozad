@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'PeydaWeb';
+    src: url('PeydaWeb-Bold.eot');
+    src: url('PeydaWeb-Bold.eot?#iefix') format('embedded-opentype'),
+        url('PeydaWeb-Bold.woff2') format('woff2'),
+        url('PeydaWeb-Bold.woff') format('woff'),
+        url('PeydaWeb-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+

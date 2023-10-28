@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+@using Core.Services.Interfaces;
+@inject IUserService _userService;
+@{
+    DataLayer.Entities.User.User user = await _userService.GetUserByUsernameAsync(User.Identity!.Name ?? "Admin");
+}
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+    <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon" />
+</head>
+<body>
+    <div class="bg-close">
+    </div>
+    <div class="bg-searchform">
+        <div class="area-searchform">
+            <div class="area-close-search">
+                <a href="#"><i class="fal fa-times"></i></a>
+            </div>
+            <form class="search-form d-flex w-100" action="" method="get">
+                <input type="text" class="form-control input_search" placeholder="دنبال چه میگردید">
+                <button type="submit">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z">
+                        </path>
+                        <path fill-rule="evenodd"
+                              d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z">
+                        </path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <main class="content">
+        <section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+            <div class="container container-Page-account">
+                <div class="row">
+                    <div class="col-12 col-lg-3 container-sidebar-account ">
+                        <div class="sidebar-account">
+                            <div class="avatar-user d-flex flex-column justify-content-center align-items-center mb-5">
+                                <img class="img-avatar-user" src="/images/icons/avatar.png">
+                                <div class="name-avatar-user">
+                                    <h4>@user?.FullName</h4>
+                                </div>
+                            </div>
+                            <div class="account-menu">
+                                <div class="list-group  flex-column">
+                                    <a class="list-group-item  active" href="/Account/UserPanel/Orders" id="orders-tab">
+                                        <i class="fal fa-cart-arrow-down me-3"></i>سفارش ها
+                                    </a>
+                                    <a class="list-group-item" href="/AccountDetailes" id="infoprofile-tab">
+                                        <i class="fal fa-clipboard-list-check me-3"></i>جزییات حساب
+                                    </a>
+                                    <a class="list-group-item" href="/Account/UserPanel/ChangePassword" id="home">
+                                        <i class="fal fa-lock-alt me-3"></i>
+                                        تغییر رمز عبور
+                                    </a>
+                                    <a class="list-group-item" href="#">
+                                        <i class="fal fa-sign-out-alt  me-3"></i>خروج
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-9 container-content-account">
+                        <div class="account-header d-flex justify-content-between justify-content-xl-end">
+                            <div class="icon_meni_bar d-block d-xl-none">
+                                <a><img src="img/menu.png"></a>
+                            </div>
+                            <a class="link-back-home" href="/">صفحه نخست <i class="far fa-home"></i></a>
+                        </div>
+
+                        <div class="account-content content-favorits-account">
+                            <div class="header-tab-content-account text-center mb-4">
+                                <h1 class="title-tabcontent-account me-2">
+                                    @ViewBag.Header
+                                </h1>
+                            </div>
+                            <div class="main-content-account">
+                                @RenderBody()
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+
+    <a class="scrollTo scroll-To-top " href=".topbar-site"></a>
+</body>
+</html>
+
+<script type="text/javascript" src="~/Layout/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="~/Layout/js/bootstrap.min.js"></script>
+@* <script type="text/javascript" src="~/Layout/js/main.js"></script> *@
+<script>
+    $(document).ready(function () {
+        $(".list-group-item").on("click", function () {
+            $('.list-group-item a.active').removeClass('active');
+            $(this).addClass('active');
+            alert('ok');
+        });
+    });
+</script>

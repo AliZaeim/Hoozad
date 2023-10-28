@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DataLayer.Entities.Supplementary.State>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1 class="text-xs-center alert alert-info">Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">ثبت</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.StateName)
+            </th>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.Freight)
+            </th>
+            <th class="text-xs-center align-middle">
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th class="text-xs-center align-middle">عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="text-xs-center align-middle">
+                @Html.DisplayFor(modelItem => item.StateName)
+            </td>
+            <td class="text-xs-center align-middle">
+                @Html.DisplayFor(modelItem => item.Freight)
+            </td>
+            <td class="text-xs-center align-middle">
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td class="text-xs-center align-middle">
+                <a asp-action="Edit" asp-route-id="@item.StateId">ویرایش</a> |
+                <a asp-action="Details" asp-route-id="@item.StateId">جزئیات</a> |
+                <a asp-action="Delete" asp-route-id="@item.StateId">حذف</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

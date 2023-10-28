@@ -1,0 +1,121 @@
+﻿@model DataLayer.Entities.Supplementary.SiteInfo
+@{
+    string cur = Model.SiteCurrency ?? "ریال";
+}
+<footer class="area-footer">
+    <div class="area-content-footer">
+        <div class="container">
+            <div class="row">
+                <div class="wow slideInRight col-12 col-sm-6 col-lg-3 mb-4 mb-lg-0">
+                    <div class="widget_footer">
+                        <div class="title_widget_footer mb-3">
+                            اطلاعات
+                        </div>
+                        <div class="contenet_widget_footer">
+                            <ul>
+                                <li><a href="/About">درباره ما</a></li>
+                                <li><a href="/Contact">تماس با ما</a></li>
+                                <li><a href="#">راهنمای سفارش و خرید</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="wow slideInUp col-12 col-sm-6 col-lg-3 mb-4 mb-lg-0">
+                    <div class="widget_footer">
+                        <div class="title_widget_footer mb-3">
+                            حساب کاربری
+                        </div>
+                        <div class="contenet_widget_footer">
+                            <ul>
+                                <li><a href="#">سفارش های من</a></li>                                
+                                <li><a href="#">پیگیری سفارش</a></li>
+                                <li><a href="#">مشخصات کاربری من</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="wow slideInDown col-12 col-sm-6 col-lg-3 mb-4 mb-sm-0">
+                    <div class="widget_footer">
+                        <div class="title_widget_footer mb-3">
+                            خدمات
+                        </div>
+                        <div class="contenet_widget_footer">
+                            <ul>
+                                <li><a href="javascript:void(0)" id="btnReturn">شرایط ارسال و عودت</a></li>
+                                <li><a href="/FAQ">پرسش های متداول</a></li>
+                                <li><a href="#">رعایت حریم خصوصی</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="wow slideInLeft col-12 col-sm-6 col-lg-3">
+                    <div class="widget_footer">
+                        <div class="title_widget_footer mb-3">
+                            تماس با ما
+                        </div>
+                        <div class="contenet_widget_footer">
+                            <ul class="mb-3">
+                                <li>
+                                    <span>@Model?.Address</span>
+                                </li>
+                                <li>
+                                    <span> شماره تماس: @Model?.Mobile1</span>
+                                </li>
+                                <li>
+                                    <span> تلفن: @Model?.Phone1</span>
+                                </li>
+                            </ul>
+
+                            <div class="area-socialIcon d-flex ">
+                                @if (!string.IsNullOrEmpty(Model?.InstagramLink))
+                                {
+                                    <a href="@Model?.InstagramLink" class="icon instegram text-danger">
+                                        <span class="tooltip-site">اینستاگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model?.TelegramLink))
+                                {
+                                    <a href="@Model?.TelegramLink" class="icon telegram text-primary">
+                                        <span class="tooltip-site">تلگرام</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(Model?.WhatsupLink))
+                                {
+                                    <a href="@Model?.WhatsupLink" class="icon whatsapp text-success">
+                                        <span class="tooltip-site">واتزآپ</span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="area-content-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <center>
+                        <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=361610&amp;Code=AdOOyyOPtSFEbe3t6xnv">
+                            <img referrerpolicy="origin" src="https://Trustseal.eNamad.ir/logo.aspx?id=361610&Code=AdOOyyOPtSFEbe3t6xnv" alt="" style="cursor:pointer" id="AdOOyyOPtSFEbe3t6xnv"></a>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="area-copyright  py-4">
+        <div class="container">
+            <div class="row justify-content-between align-items-center ">
+                <div class="col-12 col-sm-6">
+                    <div class="copyright">
+                        تمامی حقوق مادی و معنوی این سایت متعلق به هوزاد استایل می باشد
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 mt-4 mt-sm-0 d-flex justify-content-start justify-content-sm-end text-white">
+                    هرگونه کپی برداری غیرقانونی محسوب خواهد شد
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

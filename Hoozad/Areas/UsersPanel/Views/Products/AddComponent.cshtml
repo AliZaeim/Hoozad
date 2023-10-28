@@ -1,0 +1,31 @@
+﻿@model Core.DTOs.Admin.ProductComponentVM
+<div class="container-fluid">
+    <div class="row">
+        <form asp-action="AddComponent" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductId" />
+            <div class="form-group row">
+                <div class="col-xs-12">
+                    <label asp-for="ProductCode" class="control-label"></label>
+                    <select asp-for="ProductCode" class="form-control">
+                        <option value="">لطفا انتخاب کنید</option>
+                        @foreach (var item in Model.Products!.Where(w => w.ProductId != Model.ProductId).ToList())
+                        {
+                            if (!Model.BaseProduct!.ProductComponents.Any(x => x.ProductCode == item.ProductCode))
+                            {
+                                <option value="@item.ProductCode">@item.ProductName | کد : @item.ProductCode</option>
+                            }
+                            
+                        }
+                    </select>
+                    <span asp-validation-for="ProductCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="ثبت" class="btn btn-primary col-xs-12" />
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.9/jquery.validate.unobtrusive.min.js"></script>
