@@ -2,8 +2,6 @@
 using DataLayer.Entities.Store;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using NuGet.Common;
-using System.Runtime.InteropServices.JavaScript;
 
 namespace Web.Controllers
 {
