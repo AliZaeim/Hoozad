@@ -1,0 +1,68 @@
+﻿@page
+@model Web.Pages.RulesModel
+@{
+    ViewData["Title"] = "قوانین سفارش و خرید";
+}
+@section CssRefs {
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Layout/css/owl.theme.default.min.css">
+    <!--refrence carousel-->
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel=“canonical” href="https://hoozadstyle.ir/rules/" />
+}
+@section Header {
+    @await Component.InvokeAsync("HeaderComponent")
+}
+<section class="mb-5 pb-sm-2 pb-md-3  pb-lg-4 pb-xl-5">
+    <div class="area-breadcrumb-site">
+        <h1 class="text-center mb-3">قوانین و مقررات خرید از هوزاد استایل</h1>
+        <nav aria-label="breadcrumb" class="mb-4 mb-lg-3">
+            <ol class="breadcrumb breadcrumb-singleProduct">
+                <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                <li class="breadcrumb-item active">قوانین و مقررات خرید از هوزاد</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<main>
+    <section class="mb-5 pb-sm-2 pb-md-3 pb-lg-4 pb-xl-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-center mb-5 font-weight-bold zfs-20">قوانین و مقررات خرید</h1>
+                    <h2 class="zfs-18">نحوه ثبت سفارش و ارسال </h2>
+                    <p class="ztext-justify zline-height-12 zfs-18">
+                        مشتریان گرامی پس از انتخاب محصول موردنپر باید با مطالعه جدول راهنمای سایز، نزدیک ترین اعداد به اندازه های خود را انتخاب نموده و سپس با انتخاب قد لباس، محصول موردنظر را به سبد خرید خود اضافه کنند.
+                        از زمان ثبت نهایی سفارش، حدود 15روز کاری زمان آماده سازی سفارش شما بوده و پس از آن، کالا تحویل شرکت پست میشود. زمان تحویل کالا بسته به مسافت، متغییر بوده و در حوزه وظایف اداره پست می باشد. مسئولیت وارد نمودن ادرس و اطلاعات صحیح بعهده مشتری عزیز بوده و در صورت مرجوع شدن بسته به این علت، هزینه ارسال مجدد بعهده ایشان میباشد . لازم به ذکر است هرگونه آسیب احتمالی در زمان حمل و نقل بعهده هوزاد استایل نبوده و مشتری گرامی موظف است هنگام دریافت بسته از مامور پست، از سلامت فیزیکی آن اطمینان حاصل کند.
+                    </p>
+                    <h2 2 class="zfs-18">آیا امکان لغو سفارش، پس از ثبت نهایی وجود دارد؟</h2>
+                    <p class="ztext-justify zline-height-12 zfs-18">
+                        با توجه به اینکه موجودی پارچه محدود بوده و به محض ثبت سفارش، برای مشتری رزرو میشود (از موجودی پارچه کسر شده و ثبت سفارش برای شخص دیگری انجام نمیشود) امکان لغو یا تغییر سفارش وجود ندارد.
+                    </p>
+                    <h2 class="zfs-18">آیا امکان مرجوعی موجود دارد؟</h2>
+                    <p class="ztext-justify zline-height-12 zfs-18">
+                        به جهت اینکه البسه خریداری شده توسط مشتری، برای شخص ایشان تولید میشود ، هرگونه مرجوعی از لحاظ انتخاب اشتباه توسط مشتری ( انتخاب سایز یا قد اشتباه و یا پسند نشدن مدل پس از تحویل ) با کمال احترام امکان پذیر نمی باشد.
+                        مرجوعی بدون هماهنگی به هیچ عنوان مقبول نبوده و هوزاد استایل مسئولیتی در قبال آن ندارد.
+                        هرگونه شستشوی لباس قبل از ارسال، یا ایرادات ناشی از شستشوی لباس در لباس شویی و آب داغ، بوی عطر یا بوی نامطبوع لباس به هیچ عنوان مقبول نیست.
+                        کلیه کارها قبل از ارسال، از لحاظ دوخت و سایز چک میشوند، اما در صورت وجود هرگونه مغایرت در سایز، رنگ یا مدل انتخابی در سایت و کالای ارسال شده، هرگونه زدگی پارچه یا ایراد دوختی، بلافاصله از طریق روشهای درج شده در قسمت پشتیبانی سایت، موضوع را با ما درمیان بگذارید تا جهت رفع اشکال و مرجوعی شما را راهنمایی کنیم. در صورت بروز این مشکل، لباس مرجوع و اصلاح شده و مجددا برای مشتری ارسال میشود و هزینه ها بعهده هوزاداستایل میباشد.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+@section Footer {
+    @await Component.InvokeAsync("FooterComponent")
+}
+@section JsRefs {
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script src="~/Layout/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+}

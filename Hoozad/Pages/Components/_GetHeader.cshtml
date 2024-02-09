@@ -13,18 +13,25 @@
                                 <i class="far fa-envelope"></i>
                             </a>
                         </div>
-                        <div class="phone">
-                            <a href="tel:@Model?.Mobile1">
-                                <span>@Model?.Mobile1</span>
-                                <i class="fal fa-phone-alt"></i>
-                            </a>
-                        </div>
-                        <div class="phone">
-                            <a href="tel:@Model?.Mobile2">
-                                <span>@Model?.Mobile2</span>
-                                <i class="fal fa-phone-alt"></i>
-                            </a>
-                        </div>
+                        @if (Model!.Mobile1 != null)
+                        {
+                            <div class="phone">
+                                <a href="tel:@Model?.Mobile1">
+                                    <span>@Model?.Mobile1</span>
+                                    <i class="fal fa-phone-alt"></i>
+                                </a>
+                            </div>
+                        }
+                        @if (Model!.Mobile2 != null)
+                        {
+                            <div class="phone">
+                                <a href="tel:@Model?.Mobile2">
+                                    <span>@Model?.Mobile2</span>
+                                    <i class="fal fa-phone-alt"></i>
+                                </a>
+                            </div>
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-4">
@@ -95,6 +102,9 @@
                             </li>
                             <li>
                                 <a href="/About">درباره هوزاد</a>
+                            </li>
+                            <li>
+                                <a href="/Rules">قوانین و مقررات</a>
                             </li>
                             <li>
                                 <a href="/Contact">تماس با هوزاد</a>

@@ -33,7 +33,7 @@ namespace Web.Components
             List<Product> products = await _storeService.GetProductsAsync();
             switch (filterType)
             {
-                case "پرفروش":
+                case "پرفروش" or "پر فروش":
                     {
                         specialProducts.Title = "محصولات پرفروش";
                         products = products.Where(w => w.TagsList.Any(a => a.Trim() == "پرفروش" || a.Trim() == "پر فروش")).ToList();
