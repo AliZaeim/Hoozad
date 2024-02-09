@@ -5,8 +5,6 @@ using DataLayer.Entities.Store;
 using DataLayer.Entities.Supplementary;
 using DataLayer.Entities.User;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 
