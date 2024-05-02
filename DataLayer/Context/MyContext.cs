@@ -65,6 +65,7 @@ namespace DataLayer.Context
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermisison> RolePermisisons { get; set; }
         #endregion
+        
         public static string EncodePasswordtoMd5(string pass) //Encrypt using MD5   
         {
             byte[] data = MD5.HashData(Encoding.UTF8.GetBytes(pass));
@@ -1725,8 +1726,39 @@ namespace DataLayer.Context
                     RegisterDate = DateTime.Now
                 }
             );
-           
+
             #endregion
+
+            //#region Permissions
+            //modelBuilder.Entity<Permission>().HasData(
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
+            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null}
+            //);
+            //#endregion Permissions
+
 
         }
     }

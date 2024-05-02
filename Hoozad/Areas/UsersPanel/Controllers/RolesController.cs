@@ -1,5 +1,7 @@
-﻿using Core.Services.Interfaces;
-using DataLayer.Context;
+﻿using Core.DTOs.Admin;
+using Core.Security;
+using Core.Services.Interfaces;
+using DataLayer.Entities.Permissions;
 using DataLayer.Entities.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,14 +11,62 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("roles")]
     public class RolesController : Controller
     {
         
         private readonly IUserService _userService;
-        public RolesController(IUserService userService)
+        private readonly IPermissionService _permissionService;
+        public RolesController(IUserService userService, IPermissionService permissionService)
         {
             _userService = userService;
+            _permissionService = permissionService;
             
+        }
+        //[PermissionCheckerByPermissionName("rolmanage")]
+        public async Task<IActionResult> PermissionsOfRole(int? roleId)
+        {
+            if (roleId == null)
+            {
+                return NotFound();
+            }
+            Role? role = await _userService.GetRoleAsync(roleId.Value);
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+            PermissionsOfRoleViewModel permissionsOfRoleViewModel = new();
+            List<RolePermisison> rolePermissions = await _permissionService.GetRolePermissionsByRoleId(roleId.Value);
+            permissionsOfRoleViewModel.Permissions = await _permissionService.GetPermissionsAsync();
+            permissionsOfRoleViewModel.RoleId = roleId.Value;
+            permissionsOfRoleViewModel.Role = role;
+            permissionsOfRoleViewModel.RolePermissions = rolePermissions.ToList();
+            permissionsOfRoleViewModel.SelectedPermissionIds = rolePermissions.Select(x => x.PermissionId!.Value).ToList();
+            permissionsOfRoleViewModel.UserName = User.Identity!.Name;
+            return View(permissionsOfRoleViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //[PermissionCheckerByPermissionName("rolmanage")]
+        public async Task<IActionResult> PermissionsOfRole(PermissionsOfRoleViewModel permissionsOfRoleViewModel)
+        {
+
+
+            if (!ModelState.IsValid)
+            {
+                permissionsOfRoleViewModel.Permissions = await _permissionService.GetPermissionsAsync();
+                permissionsOfRoleViewModel.RolePermissions = await _permissionService.GetRolePermissionsByRoleId(permissionsOfRoleViewModel.RoleId);
+                permissionsOfRoleViewModel.Role = await _userService.GetRoleAsync(permissionsOfRoleViewModel.RoleId);
+                return View(permissionsOfRoleViewModel);
+            }
+            permissionsOfRoleViewModel.UserName = User.Identity!.Name;
+            bool save = await _permissionService.UpdatePermisisonsOfRole(permissionsOfRoleViewModel);
+            if (save)
+            {
+                await _permissionService.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: UsersPanel/Roles

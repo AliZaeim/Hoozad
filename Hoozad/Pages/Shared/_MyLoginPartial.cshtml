@@ -1,9 +1,13 @@
 ﻿@if (User.Identity!.IsAuthenticated)
 {
-    <li>
-        <a href="/MyAccount">کاربری (@User.FindFirst("fullname")?.Value)</a>
-    </li>
+    if(User.FindFirst("admin")?.Value !="True")
+    {
+        <li>
+            <a href="/MyAccount">کاربری (@User.FindFirst("fullname")?.Value)</a>
+        </li>
+    }
     
+
 }
 else
 {
@@ -11,3 +15,5 @@ else
         <a href="/Login">کاربری من</a>
     </li>
 }
+
+

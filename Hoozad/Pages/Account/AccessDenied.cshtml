@@ -1,0 +1,33 @@
+﻿@page "/AccessDenied"
+@model Web.Pages.Account.AccessDeniedModel
+@{
+    ViewData["Title"] = "عدم دسترسی";
+}
+@section CssRefs {
+    <link rel="stylesheet" href="~/Layout/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="~/Layout/css/style.css">
+    <link rel="stylesheet" href="~/Layout/css/all.min.css">
+    <link rel="stylesheet" href="~/Layout/css/respansive.css">
+    <link rel="stylesheet" href="~/Layout/css/animate.min.css">
+}
+@section Header {
+    @await Component.InvokeAsync("HeaderComponent")
+}
+<div class="container text-center mt-5">
+    <img src="~/images/icons/accessdenied.jpg" class="w-50" alt="access denied image" />
+    <h3 class="text-danger text-xs-center mt-3">
+        شما مجوز دسترسی به آدرس مورد نظر را ندارید !
+    </h3>
+</div>
+@section Footer {
+    @await Component.InvokeAsync("FooterComponent")
+}
+@section JsRefs {
+    <script src="~/Layout/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Layout/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="~/Layout/js/main.js"></script>
+    <script type="text/javascript" src="~/Layout/js/wow.min.js"></script>
+
+}

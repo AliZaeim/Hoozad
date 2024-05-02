@@ -48,7 +48,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISuppService, SuppService>();
-//builder.Services.AddScoped<IPageBannerService, PageBannerService>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 #endregion IOC
 #region tempkey

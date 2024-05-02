@@ -1,5 +1,7 @@
 /***************************** show password in login js****************************/
 
+/*import { func } from "prop-types";*/
+
 $("#basic-addon2").on("click", function () {
     let passwordField = $("#password");
     let passwordFieldAttr = passwordField.attr("type");
@@ -502,13 +504,16 @@ if ($("#countdown-2").length) {
 /*************************************** search js***************************************/
 
 $(".icon-search ").on("click", function () {
-    $(".bg-searchform").css({ "opacity": "1", "visibility": " visible", "transform": " scaleY(1)" });
+    alert('se');
+    $(document).find(".bg-searchform").css({ "opacity": "1", "visibility": " visible", "transform": " scaleY(1)" });
 });
 
 $(".area-close-search").on("click", function (e) {
     $(".bg-searchform").css({ "opacity": "0", "visibility": "hidden", "transform": " scaleY(0)" });
 });
-
+$("#btnSearch").on("click", function () {
+    alert("s");
+});
 /*************************************** box cart shopping ***************************************/
 
 $(".icon-shooping-cart").on("click", function () {

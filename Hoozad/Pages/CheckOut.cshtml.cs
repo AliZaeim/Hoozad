@@ -270,8 +270,8 @@ namespace Web.Pages
                 await _storeService.SaveChangesAsync();                
                 
                 string userName = "نام کاربری شما : " + CheckoutVModel.BuyerCellphone;
-                bool send = _userService.SendUserName_and_Password(userName, "passwoed", CheckoutVModel.BuyerCellphone!);
-                TempData["successBuy"] = "yes";
+                //bool send = _userService.SendUserName_and_Password(userName, "password", CheckoutVModel.BuyerCellphone!);
+                TempData["successBuy"] = "no";
                 TempData["crtTracknumber"] = TrCode;
                 string cur = "IRR";
                 if (siteInfo != null)
@@ -284,7 +284,8 @@ namespace Web.Pages
                         }
                     }
                 }
-                return RedirectToAction("GoToPayment", "SitePages", new {cartId=crt.Id.ToString(), BackUrl = "https://hoozadstyle.ir", Currency = cur});
+                string retUrl = "/SitePages/Get";//"https://hoozadstyle.ir"
+                return RedirectToAction("GoToPayment", "SitePages", new {cartId=crt.Id.ToString(), BackUrl = retUrl , Currency = cur});
                 //return RedirectToPage(nameof(Index));
                 
 

@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<DataLayer.Entities.User.Role>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _permissionService
 @{
     ViewData["Title"] = "نقشها";
-    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";   
 }
 
 <h1 class="text-xs-center alert alert-info">نقشها</h1>
@@ -19,26 +20,33 @@
             <th class="text-xs-center align-middle">
                 @Html.DisplayNameFor(model => model.RoleTitle)
             </th>
-            
+
             <th class="text-xs-center align-middle">عملیات</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td class="text-xs-center align-middle">
-                @Html.DisplayFor(modelItem => item.RoleName)
-            </td>
-            <td class="text-xs-center align-middle">
-                @Html.DisplayFor(modelItem => item.RoleTitle)
-            </td>
-            
-            <td class="text-xs-center align-middle">
-                <a asp-action="Edit" asp-route-id="@item.RoleId">ویرایش</a> |
-                <a asp-action="Details" asp-route-id="@item.RoleId">جزئیات</a> |
-                <a asp-action="Delete" asp-route-id="@item.RoleId">حذف</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-xs-center align-middle">
+                    @Html.DisplayFor(modelItem => item.RoleName)
+                </td>
+                <td class="text-xs-center align-middle">
+                    @Html.DisplayFor(modelItem => item.RoleTitle)
+                </td>
+
+                <td class="text-xs-center align-middle">
+                    <a asp-action="Edit" asp-route-id="@item.RoleId">ویرایش</a> |
+                    <a asp-action="Details" asp-route-id="@item.RoleId">جزئیات</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RoleId">حذف</a> |
+                    @{
+                        List<DataLayer.Entities.Permissions.RolePermisison> rolePermissions = await _permissionService.GetRolePermissionsAsync();
+                        rolePermissions = rolePermissions.Where(w => w.RoleId == item.RoleId).ToList();
+
+                    }
+                    <a asp-action="PermissionsOfRole" asp-route-roleId="@item.RoleId">افزودن دسترسی <span class="tag tag-danger">@rolePermissions.Count</span></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

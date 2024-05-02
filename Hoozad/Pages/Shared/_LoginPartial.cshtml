@@ -1,33 +1,27 @@
-﻿@if (User.Identity!.IsAuthenticated)
-{
+﻿@{
     string logUrl = "/UserHome";
+
+}
+
+@if (User.Identity!.IsAuthenticated)
+{
     string res = User.FindFirst("admin")?.Value!;
     if (res == "True")
     {
         logUrl = "/UsersPanel/Home/Index";
     }
-    <ul>
-        <li>
-            <a href="@logUrl" class="text-success d-inline-flex" title="@User.FindFirst("fullname")?.Value">پنل کاربری</a>
-            <span>&ensp;|&ensp;</span>
-            <a href="/Login?handler=Logout" class="text-danger d-inline-flex">خروج</a>
-            @*<form method="post" class="d-inline-flex" action="/Login?Logout">
-                <button type="submit" class="text-danger submitLink">خروج</button>
-            </form>*@
-        </li>
-    </ul>
 
+    <li style="list-style:none">
+        <a href="@logUrl" class="text-success d-inline-flex" title="@User.FindFirst("fullname")?.Value">پنل کاربری</a>
+        <span>&ensp;|&ensp;</span>
+        <a href="/Login?handler=Logout" class="text-danger d-inline-flex">خروج</a>
+    </li>
 }
 else
 {
-    <ul>
-        <li>
-            <i class="fal fa-user"></i>&ensp;<a href="/Login">ورود</a>
-            <span>&ensp;|&ensp;</span>
-            <i class="fal fa-user-plus"></i>&ensp;<a href="/Register" class="text-success">عضویت</a>
-        </li>
-    </ul>
-
-
-
+    <li style="list-style:none">
+        <a class="d-inline-flex" href="/Login">ورود</a>
+        <span>&ensp;|&ensp;</span>
+        <a href="/Register" class="text-success d-inline-flex">عضویت</a>
+    </li>
 }

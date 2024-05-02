@@ -244,17 +244,17 @@ body {
     margin-left: 0.8rem;
 }
 
-.topbar-site .email:after, .topbar-site .user-account:after, .item-left-topbar:after, .slider-sidebar .author-post::after, .topbar-site .wishlist-txtico:after {
-    position: absolute;
-    content: '';
-    width: 1px;
-    height: 1rem;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.2);
-}
+    .topbar-site .email:after, .topbar-site .user-account:after, .item-left-topbar:after, .slider-sidebar .author-post::after, .topbar-site .wishlist-txtico:after {
+        position: absolute;
+        content: '';
+        width: 1px;
+        height: 1rem;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.2);
+    }
 
 .topbar-site.bg-dark .user-account:after, .topbar-site.bg-dark .wishlist-txtico:after {
     height: 100%;
@@ -264,7 +264,7 @@ body {
 
 .topbar-site .email a, .topbar-site .phone a, .user-account a, .topbar-site .wishlist-txtico a, .topbar-site div {
     font-size: .85rem;
-    color: rgba(0, 0, 0, 0.6);
+    color: #d1a04d !important ;
     font-weight: 400;
     transition: all 0.3s ease-in-out;
 }
@@ -285,7 +285,7 @@ ul.serv-socialicon li a:hover i {
 .topbar-site .email a i, .topbar-site .phone a i, .user-account a i, ul.serv-socialicon li a i {
     font-weight: 400;
     font-size: 0.95rem;
-    color: rgba(0, 0, 0, 0.6);
+    color:#fff;
     margin-right: 0.1rem;
     transition: all 0.3s ease-in-out;
 }
@@ -434,10 +434,10 @@ nav.serv-navbar {
     height: 100%;
 }
 
-.main_menu>ul>li>a {
+.main_menu > ul > li > a {
     margin: 0 1.2rem;
     font-size: 0.95rem;
-    color: #5a5b75;
+    color: #b77505;
     position: relative;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
@@ -481,7 +481,7 @@ nav.serv-navbar {
 }
 
 .main_menu>ul>li:hover>a {
-    color: #d1a04d;
+    color: #785036;
 }
 
 .main_menu>ul>li>a::after {
@@ -1079,13 +1079,13 @@ input[type="date"] {
 
 .area-title-category span.title-category {
     font-size: 1.5rem;
-    color: #000000;
+    color: #fff;
     font-weight: 700;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
 }
 span.title-category {
-    background-color: #7687fa;
+    background-color: #420c00;
     padding:3px;
     min-width:20mm;
     text-align:center;
@@ -1177,11 +1177,11 @@ span.title-category {
     .product_cart .zNoSale {
         height: 6mm;
         max-height: 6mm;
-        background-color: #f30a0a;
+        background-color: #fff;
         min-width: 8mm;
         width: auto;
         text-align: center;
-        color: #fff;
+        color: #420c00;
         padding: 2mm;
         border-radius: 5px;
         line-height: 19px;
@@ -1556,7 +1556,7 @@ span.star-icon i {
 }
 
 .area-footer {
-    background-color: #080808;
+    background-color: #D2ba9e;
 }
 
 .area-footer.footer2 {
@@ -1579,7 +1579,7 @@ span.star-icon i {
 footer .title_widget_footer {
     font-size: 1.3rem;
     font-weight: 500;
-    color: #d1a04d;
+    color: #785036;
 }
 
 footer .contenet_widget_footer ul li a, .contenet_widget_footer ul li span {
@@ -1623,7 +1623,7 @@ footer .contenet_widget_footer ul li a:hover::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #626262;
+    background-color: #d1c5b8;
 }
 
 .area-socialIcon a:hover {
@@ -1721,7 +1721,7 @@ a:hover span.tooltip-site {
 }
 
 .area-newsletter {
-    background: url(/img/img55.png) no-repeat right bottom;
+    background: url(/img/bg_topMfooter.jpg) no-repeat right bottom;
     background-size: cover;
     height: 180px;
 }
@@ -1732,7 +1732,7 @@ a:hover span.tooltip-site {
 }
 
 .newsletter-email form input {
-    background-color: #e6e6e6;
+    background-color: #fff;
     padding: 0.7rem 1rem;
     font-size: 1rem;
     border-radius: 0.1rem;
@@ -1945,14 +1945,17 @@ h2.title-post a:hover {
     align-items: center;
     -webkit-align-items: center;
     color: #fff;
-    background-color: #18ac39;
-    border-color: #18ac39;
+    background-color: #c8a37b;
+    border-color: #fff;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
     display: flex;
     justify-content: center;
     -webkit-justify-content: center;
 }
+    .btn-add-to-cart:hover {
+        color: #000;
+    }
 
 .link-show-cart a:hover {
     color: #212529;
@@ -5664,6 +5667,13 @@ div#demonote {
     font-size:1.2rem;
     font-weight:900;
 }
+    .h1Title a {
+        text-decoration: none;
+        color: #d1a04d;
+    }
+.h1Title a:hover{
+    color:#000;
+}
 .zcolorPalet{
     max-width:50mm;
     width:50mm;
@@ -5961,4 +5971,11 @@ div#demonote {
 }
 .zline-height-12{
     line-height:12mm;
+}
+.sppSection {
+    background-color: #f4e8dc;
+}
+#wheader {
+    background-color: #f4e8dc; /*D2ba9e*/
+    color: #d1a04d !important
 }

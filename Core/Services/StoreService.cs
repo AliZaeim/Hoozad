@@ -731,12 +731,12 @@ namespace Core.Services
                 }
                 else
                 {
-                    List<string?> orderNumbers = new();
+                    List<string> orderNumbers = new();
                     if (await _context.Carts!.ToListAsync() != null)
                     {
-                        orderNumbers = await _context.Carts!.Select(_ => _.OrderNumber).ToListAsync();
+                        orderNumbers = await _context.Carts?.Select(_ => _.OrderNumber).ToListAsync();
                     }
-                    string neworderNumber = Prodocers.Generators.GenerateKey(orderNumbers.ToList()!, 8);
+                    string neworderNumber = Prodocers.Generators.GenerateUniqueString(orderNumbers!.ToList(), 0, 0, 10, 0);
                     SiteInfo? siteInfo = await _context.SiteInfos!.OrderByDescending(x => x.RegDate).FirstOrDefaultAsync();
                     string cur = "ریال";
                     if (siteInfo != null)

@@ -1,0 +1,160 @@
+﻿@model Core.DTOs.Admin.PermissionsOfRoleViewModel
+@using Core.Services.Interfaces;
+@inject IPermissionService _permissionService
+@{
+    ViewData["Title"] = " دسترسی های نقش" + " " + Model.Role?.RoleTitle;
+    Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
+    bool ExistAll = false;
+    if (Model.SelectedPermissionIds.Count == Model.RolePermissions.Count)
+    {
+        ExistAll = true;
+    }
+}
+<h1 class="text-xs-center alert alert-info"> دسترسی های نقش @Model.Role?.RoleTitle <span class="tag tag-success tag-square">@Model.RolePermissions.Count</span></h1>
+
+<style>
+    .panel-collapse {
+        margin-right: 5mm;
+    }
+
+    .last {
+        margin-right: 5mm;
+    }
+
+    #chkAll {
+        margin-bottom: 5mm;
+    }
+</style>
+<form method="post">
+    <input type="hidden" asp-for="RoleId" />
+    <div class="container">
+        <h2>دسترسی های <span class="text-success">@Model.Role?.RoleTitle</span></h2>
+        <input id="chkAll" type="checkbox" @((ExistAll) ? "checked" : "") /> &ensp; <span>هــمه</span>
+        <div class="panel-group">
+            <div class="panel panel-default">
+                @foreach (var item1 in Model.Permissions.Where(w => w.ParentId == null).ToList())
+                {
+                    List<DataLayer.Entities.Permissions.Permission>? item1Permissions = await _permissionService.GetChildPermissionsOfPermission(item1.PermissionId);
+                    string hreff1 = "collapse" + item1.PermissionId.ToString();
+                    bool x = Model.SelectedPermissionIds.Any(z => z == item1.PermissionId);
+                    <div class="panel-heading">
+                        <h6 class="panel-title">
+                            <a data-toggle="collapse" href="#@hreff1">
+                                <span class="@((item1Permissions?.Count > 0)? "fa fa-plus-circle":"")"></span>
+                            </a>
+                            <input name="SelectedPermissionIds" value="@item1.PermissionId" type="checkbox" @((Model.SelectedPermissionIds.Any(z => z == item1.PermissionId) ? "checked" : "")) />
+                            <span>&ensp; @item1.PermissionTitle - &ensp;(@item1.PermissionName)</span>
+                        </h6>
+                    </div>
+                    @if (item1Permissions?.Count > 0)
+                    {
+                        <div id="@hreff1" class="panel-collapse collapse">
+                            @foreach (var item2 in item1Permissions.ToList())
+                            {
+                                List<DataLayer.Entities.Permissions.Permission>? item2Permissions = await _permissionService.GetChildPermissionsOfPermission(item2.PermissionId);
+                                string hreff2 = "collapse2" + item2.PermissionId.ToString();
+                                <div class="panel-heading">
+                                    <h6 class="panel-title">
+                                        <a data-toggle="collapse" href="#@hreff2">
+                                            <span class="@((item2Permissions?.Count>0)? "fa fa-plus-circle":"")"></span>
+                                        </a>
+                                        <input name="SelectedPermissionIds" value="@item2.PermissionId" type="checkbox" @((Model.SelectedPermissionIds.Any(z => z == item2.PermissionId) ? "checked" : "")) />
+                                        <span>&ensp; @item2.PermissionTitle - &ensp;(@item2.PermissionName)</span>
+                                    </h6>
+                                </div>
+                                @if (item2Permissions?.Count > 0)
+                                {
+                                    <div id="@hreff2" class="panel-collapse collapse">
+                                        @foreach (var item3 in item2Permissions!.ToList())
+                                        {
+                                            List<DataLayer.Entities.Permissions.Permission>? item3Permissions = await _permissionService.GetChildPermissionsOfPermission(item3.PermissionId);
+                                            string hreff3 = "collapse3" + item3.PermissionId.ToString();
+                                            <div class="panel-heading">
+                                                <h6 class="panel-title">
+                                                    <a data-toggle="collapse" href="#@hreff3">
+                                                        <span class="@((item3Permissions?.Count>0)? "fa fa-plus-circle":"")"></span>
+                                                    </a>
+                                                    <input name="SelectedPermissionIds" value="@item3.PermissionId" type="checkbox" @((Model.SelectedPermissionIds.Any(z => z == item3.PermissionId) ? "checked" : "")) />
+                                                    <span>&ensp; @item3.PermissionTitle - &ensp;(@item3.PermissionName)</span>
+                                                </h6>
+                                            </div>
+                                            @if (item3Permissions?.Count > 0)
+                                            {
+                                                <div id="@hreff3" class="panel-collapse collapse">
+                                                    @foreach (var item4 in item3Permissions!.ToList())
+                                                    {
+                                                        List<DataLayer.Entities.Permissions.Permission>? item4Permissions = await _permissionService.GetChildPermissionsOfPermission(item4.PermissionId);
+                                                        string hreff4 = "collapse4" + item4.PermissionId.ToString();
+                                                        <div class="panel-heading">
+                                                            <h6 class="panel-title">
+                                                                <a data-toggle="collapse" href="#@hreff4">
+                                                                    <span class="@((item4Permissions?.Count>0)? "fa fa-plus-circle":"")"></span>
+                                                                </a>
+                                                                <input name="SelectedPermissionIds" value="@item4.PermissionId" type="checkbox" @((Model.SelectedPermissionIds.Any(z => z == item4.PermissionId) ? "checked" : "")) />
+                                                                <span>&ensp; @item4.PermissionTitle - &ensp;(@item4.PermissionName)</span>
+                                                            </h6>
+                                                        </div>
+                                                        @if (item4Permissions?.Count > 0)
+                                                        {
+                                                            <div id="@hreff4" class="panel-collapse collapse">
+                                                                @foreach (var item5 in item4Permissions?.ToList()!)
+                                                                {
+                                                                    List<DataLayer.Entities.Permissions.Permission>? item5Permissions = await _permissionService.GetChildPermissionsOfPermission(item5.PermissionId);
+                                                                    string hreff5 = "collapse5" + item5.PermissionId.ToString();
+                                                                    <div class="panel-heading">
+                                                                        <h6 class="panel-title">
+                                                                            <a data-toggle="collapse" href="#@hreff5">
+                                                                                <span class="@((item5Permissions?.Count>0)? "fa fa-plus-circle":"last")"></span>
+                                                                            </a>
+                                                                            <input name="SelectedPermissionIds" value="@item5.PermissionId" type="checkbox" @((Model.SelectedPermissionIds.Any(z => z == item5.PermissionId) ? "checked" : "")) />
+                                                                            <span>&ensp; @item5.PermissionTitle - &ensp;(@item5.PermissionName)</span>
+                                                                        </h6>
+                                                                    </div>
+
+
+                                                                }
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="ثبت تغییرات" class="btn btn-primary" />
+        <a type="button" href="/UsersPanel/Roles/Index" class="btn btn-info">نقشها</a>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".fa").click(function () {
+                $(this).toggleClass("fa-plus-circle fa-minus-circle");
+            });
+            $("#chkAll").click(function () {
+                $("input:checkbox").prop('checked', $(this).prop("checked"));
+            });
+            $('input[type=checkbox]').click(function () {
+                if ($(this).attr("id") !== "chkAll") {
+                    if (!$(this).is(':checked')) {
+                        $("#chkAll").prop("checked", false);
+                    }
+                }
+            })
+        })
+    </script>
+
+}
+

@@ -3,7 +3,7 @@ using DataLayer.Context;
 using DataLayer.Entities.Supplementary;
 using DataLayer.Entities.User;
 using Microsoft.EntityFrameworkCore;
-using SmsIrRestfulNetCore;
+
 using System.Text;
 
 namespace Core.Services
@@ -125,8 +125,8 @@ namespace Core.Services
         }
 
         public async Task<List<User>> GetUsersAsync()
-        {
-            return await _context.Users!.Include(x => x.UserRoles).Include(_ => _.County).Include(_ => _.County!.State).ToListAsync();
+        {            
+            return await _context.Users!.Include(x => x.UserRoles).Include(_ => _.County).Include(_ => _.County!.State).ToListAsync();            
         }
         public async Task<bool> SendVerificationCodeAsync(string code, string phoneNumber)
         {
@@ -151,74 +151,55 @@ namespace Core.Services
         }
         public bool SendUserName_and_Password(string userName, string password, string phoneNumber)
         {
-            var token = new Token().GetToken("VBce8m4NreqXhRfWBFLQR7PsM38FoDkHALPgiZS4SMpBkxABcNeErp70HGhHpdtJ", "alinaderi&alinaderi");
+            //SmsIr smsIr = new SmsIr("VBce8m4NreqXhRfWBFLQR7PsM38FoDkHALPgiZS4SMpBkxABcNeErp70HGhHpdtJ");
 
-            var ultraFastSend = new UltraFastSend()
-            {
-                Mobile = long.Parse(phoneNumber),
-                TemplateId = 48138,
-                ParameterArray = new List<UltraFastParameters>()
-            {
-                new UltraFastParameters()
-                {
-                    Parameter="username", ParameterValue=userName
-
-                },
-                new UltraFastParameters()
-                {
-                     Parameter = "password" , ParameterValue = password
-                }
-            }.ToArray()
-
-            };
-
-            UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(token, ultraFastSend);
-
-            return ultraFastSendRespone.IsSuccessful;
+            return true;
         }
         public bool SendPassword(string pass, string phoneNumber)
         {
-            var token = new Token().GetToken("VBce8m4NreqXhRfWBFLQR7PsM38FoDkHALPgiZS4SMpBkxABcNeErp70HGhHpdtJ", "alinaderi&alinaderi");
+            //var token = new Token().GetToken("VBce8m4NreqXhRfWBFLQR7PsM38FoDkHALPgiZS4SMpBkxABcNeErp70HGhHpdtJ", "alinaderi&alinaderi");
 
-            var ultraFastSend = new UltraFastSend()
-            {
-                Mobile = long.Parse(phoneNumber),
-                TemplateId = 46671,
-                ParameterArray = new List<UltraFastParameters>()
-            {
-                new UltraFastParameters()
-                {
-                    Parameter = "password" , ParameterValue = pass
-                }
-            }.ToArray()
+            //var ultraFastSend = new UltraFastSend()
+            //{
+            //    Mobile = long.Parse(phoneNumber),
+            //    TemplateId = 46671,
+            //    ParameterArray = new List<UltraFastParameters>()
+            //{
+            //    new UltraFastParameters()
+            //    {
+            //        Parameter = "password" , ParameterValue = pass
+            //    }
+            //}.ToArray()
 
-            };
+            //};
 
-            UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(token, ultraFastSend);
+            //UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(token, ultraFastSend);
 
-            return ultraFastSendRespone.IsSuccessful;
+            //return ultraFastSendRespone.IsSuccessful;
+            return true;
         }
         public bool SendVerification(string code, string phoneNumber)
         {
-            var token = new Token().GetToken("VBce8m4NreqXhRfWBFLQR7PsM38FoDkHALPgiZS4SMpBkxABcNeErp70HGhHpdtJ", "alinaderi&alinaderi");
+            //var token = new Token().GetToken("VBce8m4NreqXhRfWBFLQR7PsM38FoDkHALPgiZS4SMpBkxABcNeErp70HGhHpdtJ", "alinaderi&alinaderi");
 
-            var ultraFastSend = new UltraFastSend()
-            {
-                Mobile = long.Parse(phoneNumber),
-                TemplateId = 46669,
-                ParameterArray = new List<UltraFastParameters>()
-            {
-                new UltraFastParameters()
-                {
-                     Parameter= "RegisterCode" , ParameterValue = code
-                }
-            }.ToArray()
+            //var ultraFastSend = new UltraFastSend()
+            //{
+            //    Mobile = long.Parse(phoneNumber),
+            //    TemplateId = 46669,
+            //    ParameterArray = new List<UltraFastParameters>()
+            //{
+            //    new UltraFastParameters()
+            //    {
+            //         Parameter= "RegisterCode" , ParameterValue = code
+            //    }
+            //}.ToArray()
 
-            };
+            //};
 
-            UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(token, ultraFastSend);
+            //UltraFastSendRespone ultraFastSendRespone = new UltraFast().Send(token, ultraFastSend);
 
-            return ultraFastSendRespone.IsSuccessful;
+            //return ultraFastSendRespone.IsSuccessful;
+            return true;
         }
         public void SaveChanges()
         {

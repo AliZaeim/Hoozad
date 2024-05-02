@@ -1,4 +1,5 @@
-﻿using Core.Services.Interfaces;
+﻿using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Supplementary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("siteinfo")]
     public class SiteInfoesController : Controller
     {
 

@@ -27,17 +27,18 @@
 <main class="content">
     @await Component.InvokeAsync("SliderHeaderComponent")
     <partial name="_SiteModal" />
-    <partial name="_ColElementMulti" />
+    @if (await _suppService.ExistColBannerAsync(4, 1))
+    {
+        @await Component.InvokeAsync("BannerComponent", new { count = 4, priority = 1 })
+    }
+    @* <partial name="_ColElementMulti" /> *@
     @await Component.InvokeAsync("ProductCategoryComponent")
     @if (Model.ExistNewProducts)
     {
         @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType="جدید"})
     }
 
-    @if (await _suppService.ExistColBannerAsync(4,1))
-    {
-        @await Component.InvokeAsync("BannerComponent", new { count = 4, priority = 1})
-    }
+   
     @if (Model.ExistBestSaleProducts)
     {
         @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType = "پرفروش"})
@@ -46,7 +47,7 @@
     {
         @await Component.InvokeAsync("BannerComponent" , new { count = 2, priority = 1})
     }
-    @await Component.InvokeAsync("AmazingOffersComponent")
+    @* @await Component.InvokeAsync("AmazingOffersComponent") *@
     @if (Model.ExistSuggestedProducts)
     {
         @await Component.InvokeAsync("SpecialProductsComponent", new{ filterType = "پیشنهادی"})
@@ -85,7 +86,7 @@
                 <div class="row w-100">
                     <div class="col-12  d-flex  flex-column flex-xl-row align-items-center justify-content-center justify-content-xl-between">
                         <div class="title-newsletter mb-4 mb-xl-0 text-center">
-                            با عضویت در مجله مزون هوزاد، شما می توانید از
+                            با عضویت در سایت مزون هوزاد، شما می توانید از
                             مهمترین تخفیف ها و بروزترین
                             اخبار
                             مطلع شوید

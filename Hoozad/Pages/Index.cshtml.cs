@@ -1,4 +1,5 @@
 ﻿using Core.Services.Interfaces;
+using DataLayer.Entities.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http;
@@ -11,7 +12,7 @@ namespace Hoozad.Pages
         private readonly ISuppService _suppService;
         private readonly IStoreService _storeService;
         private IUserService _userService;
-
+        
         public IndexModel(ISuppService suppService, IStoreService storeService, IUserService userService)
         {
             _suppService = suppService;
@@ -28,8 +29,9 @@ namespace Hoozad.Pages
         public bool ExistSeasonProducts { get; set; }
         public bool ExistBlogs { get; set; }
         
-        public async Task OnGet()
+        public async Task OnGet(string? search)
         {
+            //List<User> users = await _userService.GetUsersAsync();
             Exist4Banner = await _suppService.ExistFourBannerAsync();
             Exist2Banner = await _suppService.ExistTwoBannerAsync();
             ExistNewProducts = await _storeService.ExistNewProductsAsync();
@@ -39,7 +41,7 @@ namespace Hoozad.Pages
             ExistPopulareProducts = await _storeService.ExistPopulareProductsAsync();
             ExistSeasonProducts = await _storeService.ExistSeasonProductsAsync();
             ExistBlogs = await _suppService.ExistAnyBlogAsync();
-
+            
             //HttpClient httpClient = new HttpClient();
             //httpClient.DefaultRequestHeaders.Add("x-api-key", "VBce8m4NreqXhRfWBFLQR7PsM38FoDkHALPgiZS4SMpBkxABcNeErp70HGhHpdtJ");
             //var payload = @"{" + "\n" +
@@ -55,6 +57,12 @@ namespace Hoozad.Pages
             //HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
             //var response = await httpClient.PostAsync("https://api.sms.ir/v1/send/likeToLike", content);
             //var result = await response.Content.ReadAsStringAsync();
+        }
+        [BindProperty]
+        public string Search { get; set; }
+        public IActionResult OnPostIndex()
+        {
+            return Page();
         }
         public async Task<IActionResult> OnPostAddCellphone(string cellphone)
         {

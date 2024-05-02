@@ -2,20 +2,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Core.Security
 {
-    public class PermissionCheckerByPermissionNameAttribute : AuthorizeAttribute, IAuthorizationFilter
+    public class PermissionCheckerByPermissionNameAttribute(string permissionName) : AuthorizeAttribute, IAuthorizationFilter
     {
-        private IPermissionService _permissionService;
-        private readonly string _permissionName;
-        public PermissionCheckerByPermissionNameAttribute(string permissionName)
-        {
-            _permissionName = permissionName;
-        }
+        private IPermissionService? _permissionService;
+        private readonly string _permissionName = permissionName;
+
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             _permissionService = (IPermissionService)context.HttpContext.RequestServices.GetService(typeof(IPermissionService))!;
+
             if (context.HttpContext.User.Identity!.IsAuthenticated)
             {
                 string username = context.HttpContext.User.Identity!.Name!;

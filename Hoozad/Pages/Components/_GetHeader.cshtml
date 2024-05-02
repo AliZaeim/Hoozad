@@ -1,7 +1,7 @@
 ﻿@model DataLayer.Entities.Supplementary.SiteInfo;
 @using Core.Services.Interfaces;
 @inject ISuppService _suppService;
-<header>
+<header id="wheader" >
     <div class="topbar-site d-none d-lg-block">
         <div class="container">
             <div class="row">
@@ -81,15 +81,15 @@
             <div class="row">
                 <div class="col-4 col-lg-2 order-2 order-lg-1 d-flex justify-content-center justify-content-lg-start">
                     <div class="area-logo">
-                        <a href="/"><img src="/images/icons/logo48golden.png" /></a>
+                        <a href="/"><img src="/images/icons/logo48.png" /></a>
                     </div>
-                    <h1 class="d-flex justify-content-center align-items-center h1Title"><a href="/">هوزاد استایل</a></h1>
+                    <h1 class="d-flex justify-content-center align-items-center h1Title"><a  href="/">هوزاد استایل</a></h1>
                 </div>
                 <div class="col-4 col-lg-8 order-1 order-lg-2 d-flex align-items-center col-main_menu">
                     <div class="main_menu h-100 d-none d-lg-block">
                         <ul class="d-flex h-100 align-items-center ">
                             <li>
-                                <a href="/">صفحه اصلی</a>
+                                <a href="/" >صفحه اصلی</a>
                             </li>
                             @if (await _suppService.ExistAnyBlogAsync())
                             {
@@ -107,10 +107,11 @@
                                 <a href="/Rules">قوانین و مقررات</a>
                             </li>
                             <li>
-                                <a href="/Contact">تماس با هوزاد</a>
+                                <a href="/Contact" >تماس با هوزاد</a>
                             </li>
-                            <partial name="_MyLoginPartial" />
+                            
                         </ul>
+                        
                     </div>
                     <div class="icon_meni_bar">
                         <a class="d-block d-lg-none"><i class="fas fa-bars"></i></a>
@@ -127,11 +128,11 @@
                         <div class="area_menu_mobile menu-top-menu-container" id="accordian">
                             <ul class="menu-multi-level">
                                 <li>
-                                    <a href="/">صفحه اصلی</a>
+                                    <a href="/" >صفحه اصلی</a>
                                 </li>
                                 @if (await _suppService.ExistAnyBlogAsync())
                                 {
-                                    <li>
+                                    <li s>
                                         <a href="/blogs">مجله</a>
                                     </li>
                                 }
@@ -139,16 +140,18 @@
                                     <a href="/Products">فروشگاه</a>
                                 </li>
                                 <li>
-                                    <a href="/About">درباره هوزاد</a>
+                                    <a href="/About" >درباره هوزاد</a>
                                 </li>
                                 <li>
                                     <a href="/Rules">قوانین و مقررات</a>
                                 </li>
                                 <li>
-                                    <a href="/Contact">تماس با هوزاد</a>
+                                    <a href="/Contact">با هوزاد</a>
                                 </li>
-                                <partial name="_MyLoginPartial" />
+                                <partial name="_LoginPartial" />
+                                
                             </ul>
+                          
                         </div>
                     </div>
                 </div>
