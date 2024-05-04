@@ -23,7 +23,7 @@ namespace Web.Areas.UsersPanel.Controllers
             _permissionService = permissionService;
             
         }
-        //[PermissionCheckerByPermissionName("rolmanage")]
+        [PermissionCheckerByPermissionName("rolmanage")]
         public async Task<IActionResult> PermissionsOfRole(int? roleId)
         {
             if (roleId == null)
@@ -48,7 +48,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[PermissionCheckerByPermissionName("rolmanage")]
+        [PermissionCheckerByPermissionName("rolmanage")]
         public async Task<IActionResult> PermissionsOfRole(PermissionsOfRoleViewModel permissionsOfRoleViewModel)
         {
 
@@ -76,6 +76,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Roles/Details/5
+        [PermissionCheckerByPermissionName("roldet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _userService.GetRolesAsync() == null)
@@ -93,6 +94,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Roles/Create
+        [PermissionCheckerByPermissionName("roladd")]
         public IActionResult Create()
         {
             return View();
@@ -103,6 +105,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("roladd")]
         public async Task<IActionResult> Create(Role role)
         {
             if (ModelState.IsValid)
@@ -115,6 +118,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Roles/Edit/5
+        [PermissionCheckerByPermissionName("roledit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _userService.GetRolesAsync() == null)
@@ -135,6 +139,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("roledit")]
         public async Task<IActionResult> Edit(int id, Role role)
         {
             if (id != role.RoleId)
@@ -166,6 +171,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Roles/Delete/5
+        [PermissionCheckerByPermissionName("roldel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _userService.GetRolesAsync() == null)
@@ -185,6 +191,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("roldel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _userService.GetRolesAsync() == null)

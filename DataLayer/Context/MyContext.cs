@@ -1729,35 +1729,168 @@ namespace DataLayer.Context
 
             #endregion
 
-            //#region Permissions
-            //modelBuilder.Entity<Permission>().HasData(
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null},
-            //    new Permission() { PermissionId = 1,PermissionTitle = "مدیریت",ParentId = null}
-            //);
-            //#endregion Permissions
+            #region Permissions
+            modelBuilder.Entity<Permission>().HasData(
+                new Permission() { PermissionId = 1, PermissionTitle = "مدیریت", PermissionName = "mnage", ParentId = null },
+                new Permission() { PermissionId = 2, PermissionTitle = "امکانات سایت", PermissionName="sitefaci", ParentId = 1 },
+
+                new Permission() { PermissionId = 3, PermissionTitle = "اسلایدر", PermissionName="slides", ParentId = 2 },
+                new Permission() { PermissionId = 4, PermissionTitle = "افزودن", PermissionName = "sliadd", ParentId = 3 },
+                new Permission() { PermissionId = 5, PermissionTitle = "ویرایش", PermissionName = "sliedit", ParentId = 3 },
+                new Permission() { PermissionId = 6, PermissionTitle = "جزئیات", PermissionName = "slidet", ParentId = 3 },
+                new Permission() { PermissionId = 7, PermissionTitle = "حذف", PermissionName = "slidele", ParentId = 3 },
+
+                new Permission() { PermissionId = 8, PermissionTitle = "بنرهای صفحه اصلی", PermissionName = "banners", ParentId = 2 },
+                new Permission() { PermissionId = 9, PermissionTitle = "افزودن", PermissionName = "bnadd", ParentId = 8 },
+                new Permission() { PermissionId = 10, PermissionTitle = "ویرایش", PermissionName = "bnedit", ParentId = 8 },
+                new Permission() { PermissionId = 11, PermissionTitle = "جزئیات", PermissionName = "bndet", ParentId = 8 },
+                new Permission() { PermissionId = 12, PermissionTitle = "حذف", PermissionName = "bndel", ParentId = 8 },
+
+                new Permission() { PermissionId = 13, PermissionTitle = "اطلاعات سایت", PermissionName = "siteinfo", ParentId = 2 },
+                new Permission() { PermissionId = 14, PermissionTitle = "افزودن", PermissionName = "sinfadd", ParentId = 13 },
+                new Permission() { PermissionId = 15, PermissionTitle = "ویرایش", PermissionName = "sinfedit", ParentId = 13 },
+                new Permission() { PermissionId = 16, PermissionTitle = "جزئیات", PermissionName = "sinfdet", ParentId = 13 },
+                new Permission() { PermissionId = 17, PermissionTitle = "حذف", PermissionName = "sinfdele", ParentId = 13 },
+
+                new Permission() { PermissionId = 18, PermissionTitle = "مجله", PermissionName = "journal", ParentId = 2 },
+                
+                new Permission() { PermissionId = 19, PermissionTitle = "گروه های خبر", PermissionName = "gnews", ParentId = 18 },
+                new Permission() { PermissionId = 20, PermissionTitle = "افزودن", PermissionName = "gneadd", ParentId = 19 },
+                new Permission() { PermissionId = 21, PermissionTitle = "ویرایش", PermissionName = "gneedit", ParentId = 19 },
+                new Permission() { PermissionId = 22, PermissionTitle = "جزئیات", PermissionName = "gnedet", ParentId = 19 },
+                new Permission() { PermissionId = 23, PermissionTitle = "حذف", PermissionName = "gnedel", ParentId = 19 },
+
+                new Permission() { PermissionId = 24, PermissionTitle = "خبر", PermissionName = "news", ParentId = 18 },
+                new Permission() { PermissionId = 25, PermissionTitle = "افزودن", PermissionName = "neadd", ParentId = 24 },
+                new Permission() { PermissionId = 26, PermissionTitle = "ویرایش", PermissionName = "needit", ParentId = 24 },
+                new Permission() { PermissionId = 27, PermissionTitle = "جزئیات", PermissionName = "nedet", ParentId = 24 },
+                new Permission() { PermissionId = 28, PermissionTitle = "حذف", PermissionName = "nedel", ParentId = 24 },
+
+                new Permission() { PermissionId = 29, PermissionTitle = "پرسش و پاسخ", PermissionName = "faqs", ParentId = 2 },
+                new Permission() { PermissionId = 30, PermissionTitle = "افزودن", PermissionName = "faqadd", ParentId = 24 },
+                new Permission() { PermissionId = 31, PermissionTitle = "ویرایش", PermissionName = "faqedit", ParentId = 24 },
+                new Permission() { PermissionId = 32, PermissionTitle = "جزئیات", PermissionName = "faqdet", ParentId = 24 },
+                new Permission() { PermissionId = 33, PermissionTitle = "حذف", PermissionName = "faqdel", ParentId = 24 },
+
+                new Permission() { PermissionId = 34, PermissionTitle = "وضعیتهای سفارش", PermissionName = "orstatus", ParentId = 2 },
+                new Permission() { PermissionId = 35, PermissionTitle = "افزودن", PermissionName = "orsadd", ParentId = 34 },
+                new Permission() { PermissionId = 36, PermissionTitle = "ویرایش", PermissionName = "orsedit", ParentId = 34 },
+                new Permission() { PermissionId = 37, PermissionTitle = "جزئیات", PermissionName = "orsdet", ParentId = 34 },
+                new Permission() { PermissionId = 38, PermissionTitle = "حذف", PermissionName = "orsdel", ParentId = 34 },
+
+                new Permission() { PermissionId = 39, PermissionTitle = "دسترسی ها", PermissionName = "perms", ParentId = 2 },
+                new Permission() { PermissionId = 40, PermissionTitle = "افزودن", PermissionName = "peradd", ParentId = 39 },
+                new Permission() { PermissionId = 41, PermissionTitle = "ویرایش", PermissionName = "peredit", ParentId = 39 },
+                new Permission() { PermissionId = 42, PermissionTitle = "جزئیات", PermissionName = "perdet", ParentId = 39 },
+                new Permission() { PermissionId = 43, PermissionTitle = "حذف", PermissionName = "perdel", ParentId = 39 },
+
+                new Permission() { PermissionId = 44, PermissionTitle = "نقش ها", PermissionName = "roles", ParentId = 2 },
+                new Permission() { PermissionId = 45, PermissionTitle = "افزودن", PermissionName = "roladd", ParentId = 44 },
+                new Permission() { PermissionId = 46, PermissionTitle = "ویرایش", PermissionName = "roledit", ParentId = 44 },
+                new Permission() { PermissionId = 47, PermissionTitle = "جزئیات", PermissionName = "roldet", ParentId = 44 },
+                new Permission() { PermissionId = 48, PermissionTitle = "حذف", PermissionName = "roldel", ParentId = 44 },
+                new Permission() { PermissionId = 49, PermissionTitle = "افزودن دسترسی", PermissionName = "rolmanage", ParentId = 44 },
+
+                new Permission() { PermissionId = 100, PermissionTitle = "فروشگاه", PermissionName = "store", ParentId = 1 },
+
+                new Permission() { PermissionId = 101, PermissionTitle = "گروه های محصول", PermissionName = "pgroups", ParentId = 100 },
+                new Permission() { PermissionId = 102, PermissionTitle = "افزودن", PermissionName = "pgradd", ParentId = 101 },
+                new Permission() { PermissionId = 103, PermissionTitle = "ویرایش", PermissionName = "pgredit", ParentId = 101 },
+                new Permission() { PermissionId = 104, PermissionTitle = "جزئیات", PermissionName = "pgrdet", ParentId = 101 },
+                new Permission() { PermissionId = 105, PermissionTitle = "حذف", PermissionName = "pgrdel", ParentId = 101 },
+
+                new Permission() { PermissionId = 106, PermissionTitle = "محصولات", PermissionName = "prducts", ParentId = 100 },
+                new Permission() { PermissionId = 107, PermissionTitle = "افزودن", PermissionName = "pradd", ParentId = 106 },
+                new Permission() { PermissionId = 108, PermissionTitle = "ویرایش", PermissionName = "predit", ParentId = 106 },
+                new Permission() { PermissionId = 109, PermissionTitle = "جزئیات", PermissionName = "prdet", ParentId = 106 },
+                new Permission() { PermissionId = 110, PermissionTitle = "حذف", PermissionName = "prdel", ParentId = 106 },
+                new Permission() { PermissionId = 111, PermissionTitle = "ثبت قیمت", PermissionName = "priceadd", ParentId = 106 },
+                new Permission() { PermissionId = 112, PermissionTitle = "ثبت رنگ", PermissionName = "coloradd", ParentId = 106 },
+                new Permission() { PermissionId = 113, PermissionTitle = "افزودن آیتم", PermissionName = "itemadd", ParentId = 106 },
+
+                new Permission() { PermissionId = 114, PermissionTitle = "سایز محصولات", PermissionName = "prsizes", ParentId = 100 },
+                new Permission() { PermissionId = 115, PermissionTitle = "افزودن", PermissionName = "prsadd", ParentId = 114 },
+                new Permission() { PermissionId = 116, PermissionTitle = "ویرایش", PermissionName = "prsedit", ParentId = 114 },
+                new Permission() { PermissionId = 117, PermissionTitle = "جزئیات", PermissionName = "prsdet", ParentId = 114 },
+                new Permission() { PermissionId = 118, PermissionTitle = "حذف", PermissionName = "prsdel", ParentId = 114 },
+
+                new Permission() { PermissionId = 119, PermissionTitle = "کوپن تخفیف", PermissionName = "disco", ParentId = 100 },
+                new Permission() { PermissionId = 120, PermissionTitle = "افزودن", PermissionName = "dcadd", ParentId = 114 },
+                new Permission() { PermissionId = 121, PermissionTitle = "ویرایش", PermissionName = "dcedit", ParentId = 114 },
+                new Permission() { PermissionId = 122, PermissionTitle = "جزئیات", PermissionName = "dcdet", ParentId = 114 },
+                new Permission() { PermissionId = 123, PermissionTitle = "حذف", PermissionName = "dcdel", ParentId = 114 },
+
+                new Permission() { PermissionId = 124, PermissionTitle = "دفتر انبار", PermissionName = "werh", ParentId = 100 },
+                new Permission() { PermissionId = 125, PermissionTitle = "افزودن", PermissionName = "whadd", ParentId = 124 },
+                new Permission() { PermissionId = 126, PermissionTitle = "ویرایش", PermissionName = "whedit", ParentId = 124 },
+                new Permission() { PermissionId = 127, PermissionTitle = "جزئیات", PermissionName = "whdet", ParentId = 124 },
+                new Permission() { PermissionId = 128, PermissionTitle = "حذف", PermissionName = "whdel", ParentId = 124 },
+
+
+                new Permission() { PermissionId = 200, PermissionTitle = "گزارشات", PermissionName = "reports", ParentId = 1 },
+
+                new Permission() { PermissionId = 201, PermissionTitle = "سبدهای خرید", PermissionName = "carts", ParentId = 200 },
+                new Permission() { PermissionId = 202, PermissionTitle = "جزئیات", PermissionName = "crdet", ParentId = 201 },
+
+                new Permission() { PermissionId = 203, PermissionTitle = "سفارشات", PermissionName = "ordes", ParentId = 200 },
+                new Permission() { PermissionId = 204, PermissionTitle = "جزئیات", PermissionName = "ordet", ParentId = 203 },
+
+                new Permission() { PermissionId = 205, PermissionTitle = "پیامهای مشتریان", PermissionName = "cmess", ParentId = 200 },
+                new Permission() { PermissionId = 206, PermissionTitle = "افزودن", PermissionName = "cmadd", ParentId = 205 },
+                new Permission() { PermissionId = 207, PermissionTitle = "ویرایش", PermissionName = "cmedit", ParentId = 205 },
+                new Permission() { PermissionId = 208, PermissionTitle = "جزئیات", PermissionName = "cmdet", ParentId = 205 },
+                new Permission() { PermissionId = 209, PermissionTitle = "حذف", PermissionName = "cmdel", ParentId = 205 },
+
+                new Permission() { PermissionId = 210, PermissionTitle = "کاربران", PermissionName = "users", ParentId = 200 },
+                new Permission() { PermissionId = 211, PermissionTitle = "افزودن", PermissionName = "usadd", ParentId = 210 },
+                new Permission() { PermissionId = 212, PermissionTitle = "ویرایش", PermissionName = "usedit", ParentId = 210 },
+                new Permission() { PermissionId = 213, PermissionTitle = "جزئیات", PermissionName = "usdet", ParentId = 210 },
+                new Permission() { PermissionId = 214, PermissionTitle = "حذف", PermissionName = "usdel", ParentId = 210 },
+
+                 new Permission() { PermissionId = 215, PermissionTitle = "بانک تلفن همراه", PermissionName = "chbanks", ParentId = 200 }
+            );
+            #endregion Permissions
+            #region RolePermisison
+            List<RolePermisison> rolePermisisons1 = [];
+            for (int i = 1; i <= 49; i++)
+            {
+                rolePermisisons1.Add(new RolePermisison()
+                {
+                    RP_Id = i,
+                    RoleId = 1,
+                    PermissionId = i,
+                });
+            }
+            modelBuilder.Entity<RolePermisison>().HasData(rolePermisisons1.ToList());
+
+            List<RolePermisison> rolePermisisons2 = [];
+            int jid = 50;
+            for (int j = 100; j <= 128; j++)
+            {
+                rolePermisisons2.Add(new RolePermisison()
+                {
+                    RP_Id = jid,
+                    RoleId = 1,
+                    PermissionId = j,
+                });
+                jid++;
+            }
+            modelBuilder.Entity<RolePermisison>().HasData(rolePermisisons2.ToList());
+            List<RolePermisison> rolePermisisons3 = [];
+            int kid = 79;
+            for (int k = 200; k <= 215; k++)
+            {
+                rolePermisisons3.Add(new RolePermisison()
+                {
+                    RP_Id = kid,
+                    RoleId = 1,
+                    PermissionId = k,
+                });
+                kid++;
+            }
+            modelBuilder.Entity<RolePermisison>().HasData(rolePermisisons3.ToList());
+
+            #endregion RolePermisison
 
 
         }

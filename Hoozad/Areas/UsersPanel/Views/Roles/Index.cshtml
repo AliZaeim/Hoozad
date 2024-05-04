@@ -1,16 +1,19 @@
 ﻿@model IEnumerable<DataLayer.Entities.User.Role>
 @using Core.Services.Interfaces;
-@inject IPermissionService _permissionService
+@inject IPermissionService _perService
 @{
     ViewData["Title"] = "نقشها";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";   
 }
 
 <h1 class="text-xs-center alert alert-info">نقشها</h1>
+@if (_perService.CheckPermissionByName("roladd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت</a>
-</p>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -36,15 +39,29 @@
                 </td>
 
                 <td class="text-xs-center align-middle">
-                    <a asp-action="Edit" asp-route-id="@item.RoleId">ویرایش</a> |
-                    <a asp-action="Details" asp-route-id="@item.RoleId">جزئیات</a> |
-                    <a asp-action="Delete" asp-route-id="@item.RoleId">حذف</a> |
+                    @if (_perService.CheckPermissionByName("roledit", User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.RoleId">ویرایش</a><span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("roldet", User.Identity!.Name!))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.RoleId">جزئیات</a><span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("roldel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.RoleId">حذف</a>
+                    }
+                    
                     @{
-                        List<DataLayer.Entities.Permissions.RolePermisison> rolePermissions = await _permissionService.GetRolePermissionsAsync();
+                        List<DataLayer.Entities.Permissions.RolePermisison> rolePermissions = await _perService.GetRolePermissionsAsync();
                         rolePermissions = rolePermissions.Where(w => w.RoleId == item.RoleId).ToList();
 
                     }
-                    <a asp-action="PermissionsOfRole" asp-route-roleId="@item.RoleId">افزودن دسترسی <span class="tag tag-danger">@rolePermissions.Count</span></a>
+                    @if (_perService.CheckPermissionByName("rolmanage", User.Identity!.Name!))
+                    {
+                        <a asp-action="PermissionsOfRole" asp-route-roleId="@item.RoleId">افزودن دسترسی <span class="tag tag-danger">@rolePermissions.Count</span></a>
+                    }
+
                 </td>
             </tr>
         }

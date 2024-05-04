@@ -1,4 +1,5 @@
 ﻿using Core.DTOs.General;
+using Core.Security;
 using Core.Services.Interfaces;
 using Core.Utility;
 using DataLayer.Entities.Store;
@@ -13,6 +14,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("pgroups")]
     public class ProductGroupsController : Controller
     {
         private readonly IStoreService _storeService;
@@ -28,6 +30,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: ProductGroupController/Details/5
+        [PermissionCheckerByPermissionName("pgrdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,6 +46,7 @@ namespace Web.Areas.UsersPanel.Controllers
 
             return View(productGroup);
         }
+        [PermissionCheckerByPermissionName("pgredit")]
         public async Task<bool> ChangeStatusGroup(int id, int status)
         {
             ProductGroup? productGroup = await _storeService.GetProductGroupAsync(id);
@@ -63,6 +67,7 @@ namespace Web.Areas.UsersPanel.Controllers
 
         }
         // GET: ProductGroupController/Create
+        [PermissionCheckerByPermissionName("pgradd")]
         public async Task<ActionResult> Create()
         {
             ViewData["ParentId"] = new SelectList(await _storeService.GetProductGroupsAsync(), "Id", "EnTitle");
@@ -72,6 +77,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: ProductGroupController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("pgradd")]
         public async Task<ActionResult> Create(ProductGroup productGroup, IFormFile? Image)
         {
             if (ModelState.IsValid)
@@ -99,6 +105,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: ProductGroupController/Edit/5
+        [PermissionCheckerByPermissionName("pgredit")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -120,6 +127,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: ProductGroupController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("pgredit")]
         public async Task<IActionResult> Edit(int id, ProductGroup productGroup, IFormFile? Image)
         {
             if (id != productGroup.Id)
@@ -172,6 +180,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: ProductGroupController/Delete/5
+        [PermissionCheckerByPermissionName("pgrdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -190,6 +199,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/ProductGroups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("pgrdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             

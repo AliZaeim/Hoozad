@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataLayer.Context;
-using DataLayer.Entities.Supplementary;
+﻿using Core.Security;
 using Core.Services.Interfaces;
+using DataLayer.Entities.Supplementary;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("orstatus")]
     public class StatusController : Controller
     {
         private readonly IGenericService<Status> _Statusservice;
@@ -29,6 +25,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Status/Details/5
+        [PermissionCheckerByPermissionName("orsadd")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _Statusservice.GetAllAsync() == null)
@@ -46,6 +43,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Status/Create
+        [PermissionCheckerByPermissionName("orsadd")]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +54,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("orsadd")]
         public async Task<IActionResult> Create(Status status)
         {
             if (ModelState.IsValid)
@@ -68,6 +67,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Status/Edit/5
+        [PermissionCheckerByPermissionName("orsedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _Statusservice.GetAllAsync() == null)
@@ -88,6 +88,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("orsedit")]
         public async Task<IActionResult> Edit(int id, Status status)
         {
             if (id != status.Id)
@@ -119,6 +120,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Status/Delete/5
+        [PermissionCheckerByPermissionName("orsdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _Statusservice.GetAllAsync() == null)
@@ -139,6 +141,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/Status/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("orsdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _Statusservice.GetAllAsync() == null)

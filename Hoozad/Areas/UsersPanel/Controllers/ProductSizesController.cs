@@ -1,5 +1,7 @@
-﻿using Core.Services.Interfaces;
+﻿using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Store;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
+    [Authorize]
+    [PermissionCheckerByPermissionName("prsizes")]
     public class ProductSizesController : Controller
     {
         
@@ -25,6 +29,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ProductSizes/Details/5
+        [PermissionCheckerByPermissionName("prsdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _storeService.GetProductSizesAsync() == null)
@@ -42,6 +47,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ProductSizes/Create
+        [PermissionCheckerByPermissionName("prsadd")]
         public async Task<IActionResult> Create()
         {
             ViewData["ProductId"] = new SelectList(await _storeService.GetProductsAsync(), "ProductId", "ProductName");
@@ -53,6 +59,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("prsadd")]
         public async Task<IActionResult> Create(ProductSize productSize)
         {
             if (ModelState.IsValid)
@@ -66,6 +73,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ProductSizes/Edit/5
+        [PermissionCheckerByPermissionName("prsedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _storeService.GetProductSizesAsync() == null)
@@ -87,6 +95,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("prsedit")]
         public async Task<IActionResult> Edit(int id, ProductSize productSize)
         {
             if (id != productSize.Id)
@@ -119,6 +128,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ProductSizes/Delete/5
+        [PermissionCheckerByPermissionName("prsdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _storeService!.GetProductSizesAsync() == null)
@@ -138,6 +148,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/ProductSizes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("prsdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _storeService.GetProductSizesAsync()== null)

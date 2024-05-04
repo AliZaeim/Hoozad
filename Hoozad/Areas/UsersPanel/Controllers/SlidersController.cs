@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataLayer.Context;
-using DataLayer.Entities.Supplementary;
+﻿using Core.DTOs.General;
+using Core.Security;
 using Core.Services.Interfaces;
-using Core.DTOs.General;
 using Core.Utility;
-using DataLayer.Entities.Store;
+using DataLayer.Entities.Supplementary;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
+    [Authorize]
+    [PermissionCheckerByPermissionName("slides")]
     public class SlidersController : Controller
     {       
         private readonly ISuppService _suppService;
@@ -30,6 +27,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Sliders/Details/5
+        [PermissionCheckerByPermissionName("slidet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _suppService.GetSlidersAsync() == null)
@@ -47,6 +45,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Sliders/Create
+        [PermissionCheckerByPermissionName("sliadd")]
         public IActionResult Create()
         {
             return View();
@@ -57,6 +56,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("sliadd")]
         public async Task<IActionResult> Create(Slider slider, IFormFile? Image,IFormFile? MobileImage)
         {
             if (ModelState.IsValid)
@@ -103,6 +103,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Sliders/Edit/5
+        [PermissionCheckerByPermissionName("sliedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _suppService.GetSlidersAsync() == null)
@@ -122,6 +123,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("sliedit")]
         public async Task<IActionResult> Edit(int id,Slider slider, IFormFile? Image,IFormFile? MobileImage)
         {
             if (id != slider.Id)
@@ -177,6 +179,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Sliders/Delete/5
+        [PermissionCheckerByPermissionName("slidel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _suppService.GetSlidersAsync() == null)
@@ -196,6 +199,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/Sliders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("slidel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _suppService.GetSlidersAsync() == null)

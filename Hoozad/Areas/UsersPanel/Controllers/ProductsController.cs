@@ -1,5 +1,6 @@
 ﻿using Core.DTOs.Admin;
 using Core.DTOs.General;
+using Core.Security;
 using Core.Services.Interfaces;
 using Core.Utility;
 using DataLayer.Entities.Store;
@@ -11,6 +12,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("prducts")]
     public class ProductsController : Controller
     {
         private readonly IStoreService _storeService;
@@ -42,6 +44,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: ProductsController/Details/5
+        [PermissionCheckerByPermissionName("prdet")]
         public async Task<ActionResult> Details(Guid? id)
         {
             if (id == null || await _storeService.GetProductsAsync() == null)
@@ -77,6 +80,7 @@ namespace Web.Areas.UsersPanel.Controllers
             }
 
         }
+        [PermissionCheckerByPermissionName("pricedd")]
         public async Task<IActionResult> AddPrice(string pId)
         {
             if (pId == null)
@@ -98,6 +102,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("pricedd")]
         public async Task<IActionResult> AddPrice(ProductPriceViewModel productPriceViewModel)
         {
             if (!ModelState.IsValid)
@@ -125,6 +130,7 @@ namespace Web.Areas.UsersPanel.Controllers
 
             return RedirectToAction("Index");
         }
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> EditPrice(int? prId)
         {
             if (prId == null)
@@ -141,6 +147,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> EditPrice(ProductPrice productPrice)
         {
             if (!ModelState.IsValid)
@@ -156,6 +163,7 @@ namespace Web.Areas.UsersPanel.Controllers
             }
             return RedirectToAction("Index");
         }
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> RemovePrice(int? prId)
         {
             if (prId == null)
@@ -172,6 +180,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> RemovePrice(int id)
         {
             ProductPrice productPrice = await _storeService.GetProductPriceById(id);
@@ -179,6 +188,7 @@ namespace Web.Areas.UsersPanel.Controllers
             await _storeService.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        [PermissionCheckerByPermissionName("coloradd")]
         public async Task<IActionResult> AddColor(string pId)
         {
             if (pId == null)
@@ -198,6 +208,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("coloradd")]
         public async Task<IActionResult> AddColor(ProductColorVM productColorVM)
         {
             if (!ModelState.IsValid)
@@ -208,6 +219,7 @@ namespace Web.Areas.UsersPanel.Controllers
             await _storeService.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> EditColor(int? PrcId)
         {
             if (PrcId == null)
@@ -224,6 +236,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> EditColor(ProductColor productColor)
         {
             if (!ModelState.IsValid)
@@ -234,6 +247,7 @@ namespace Web.Areas.UsersPanel.Controllers
             await _storeService.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> RemoveColor(int? prcId)
         {
             if (prcId == null)
@@ -250,6 +264,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> RemoveColor(int id)
         {
             ProductColor productColor = await _storeService.GetProductColorByIdAsync(id);
@@ -265,6 +280,7 @@ namespace Web.Areas.UsersPanel.Controllers
             }
             
         }
+        [PermissionCheckerByPermissionName("prsadd")]
         public async Task<IActionResult> AddSize(string pId)
         {
             if (pId == null)
@@ -284,6 +300,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("prsadd")]
         public async Task<IActionResult> AddSize(ProductSizeVM productSizeVM)
         {
             if (!ModelState.IsValid)
@@ -303,6 +320,7 @@ namespace Web.Areas.UsersPanel.Controllers
             await _storeService.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        [PermissionCheckerByPermissionName("itemadd")]
         public async Task<IActionResult> AddComponent(string pId)
         {
             if (pId == null)
@@ -326,6 +344,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("itemadd")]
         public async Task<IActionResult> AddComponent(ProductComponentVM productComponentVM)
         {
             if (!ModelState.IsValid)
@@ -345,6 +364,7 @@ namespace Web.Areas.UsersPanel.Controllers
             await _storeService.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> RemoveComponent(int? id)
         {
             if (id == null)
@@ -361,6 +381,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<IActionResult> RemoveComponent(int id)
         {
             ProductComponent? productComponent = await _storeService.GetProductComponentByIdAsync(id);
@@ -377,6 +398,7 @@ namespace Web.Areas.UsersPanel.Controllers
 
         }
         // GET: ProductsController/Create
+        [PermissionCheckerByPermissionName("pradd")]
         public async Task<ActionResult> Create(int? gid)
         {
             List<ProductGroup> groups = await _storeService.GetProductGroupsAsync();
@@ -396,6 +418,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: ProductsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("pradd")]
         public async Task<ActionResult> Create(Product product, IFormFile? ProductImage1, IFormFile? ProductImage2, IFormFile? ProductImage3, IFormFile? ProductImage4)
         {
             try
@@ -474,6 +497,7 @@ namespace Web.Areas.UsersPanel.Controllers
                 return View(product);
             }
         }
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<bool> ChangeStatus(string id, int status)
         {
             Product product = await _storeService.GetProductAsync(Guid.Parse(id));
@@ -493,6 +517,7 @@ namespace Web.Areas.UsersPanel.Controllers
             return st;
 
         }
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<bool> ChangeBuyStatus(string id, int status)
         {
             Product product = await _storeService.GetProductAsync(Guid.Parse(id));
@@ -513,6 +538,7 @@ namespace Web.Areas.UsersPanel.Controllers
 
         }
         // GET: ProductsController/Edit/5
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -533,6 +559,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: ProductsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("predit")]
         public async Task<ActionResult> Edit(Guid id, Product product, IFormFile? ProductImage1, IFormFile? ProductImage2, IFormFile? ProductImage3, IFormFile? ProductImage4)
         {
             try
@@ -614,6 +641,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: ProductsController/Delete/5
+        [PermissionCheckerByPermissionName("prdel")]
         public async Task<ActionResult> Delete(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -631,6 +659,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: ProductsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("prdel")]
         public async Task<ActionResult> Delete(Guid id)
         {
             try

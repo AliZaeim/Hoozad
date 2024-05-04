@@ -13,19 +13,18 @@ using DataLayer.Entities.Store;
 using System.Text.RegularExpressions;
 using Core.DTOs.General;
 using Core.Utility;
+using Core.Security;
 
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("news")]
     public class BlogsController : Controller
-    {
-        private readonly MyContext _context;
+    {        
         private ISuppService _suppService;
-
-        public BlogsController(MyContext context, ISuppService suppService)
-        {
-            _context = context;
+        public BlogsController(ISuppService suppService)
+        {            
             _suppService = suppService;
         }
 
@@ -36,9 +35,10 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Blogs/Details/5
+        [PermissionCheckerByPermissionName("nedet")]
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Blogs == null)
+            if (id == null || await _suppService.GetBlogsAsync() == null)
             {
                 return NotFound();
             }
@@ -53,6 +53,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Blogs/Create
+        [PermissionCheckerByPermissionName("neadd")]
         public async Task<IActionResult> Create()
         {
             List<BlogGroup> blogGroups = await _suppService.GetBlogGroupsAsync();
@@ -66,6 +67,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("neadd")]
         public async Task<IActionResult> Create(Blog blog, IFormFile BlogImageInBlog,IFormFile BlogImageInBlogDetails)
         {
             List<BlogGroup> blogGroups = await _suppService.GetBlogGroupsAsync();
@@ -124,6 +126,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Blogs/Edit/5
+        [PermissionCheckerByPermissionName("needit")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || await _suppService.GetBlogsAsync() == null)
@@ -146,6 +149,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("needit")]
         public async Task<IActionResult> Edit(Guid id, Blog blog, IFormFile? BlogImageInBlog, IFormFile? BlogImageInBlogDetails)
         {
             if (id != blog.BlogId)
@@ -207,6 +211,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Blogs/Delete/5
+        [PermissionCheckerByPermissionName("nedel")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || await _suppService.GetBlogsAsync() == null)
@@ -225,6 +230,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/Blogs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("nedel")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (await _suppService.GetBlogsAsync() == null)
@@ -236,7 +242,7 @@ namespace Web.Areas.UsersPanel.Controllers
             {
                 blog.IsDeleted = true;
                 _suppService.UpdateBlog(blog);
-                await _context.SaveChangesAsync();
+                await _suppService.SaveChangesAsync();
             }
             
             

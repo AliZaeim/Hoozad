@@ -1,14 +1,15 @@
 ﻿using Core.DTOs.Admin;
+using Core.Security;
 using Core.Services.Interfaces;
 using DataLayer.Entities.Store;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("reports")]
     public class ReportsController : Controller
     {
         private readonly IStoreService _storeService;
@@ -16,13 +17,14 @@ namespace Web.Areas.UsersPanel.Controllers
         {
             _storeService = storeService;
         }
-
+        [PermissionCheckerByPermissionName("carts")]
         public async Task<IActionResult> GetCarts()
         {
             List<Cart> carts = await _storeService.GetCartsAsync();
             carts = carts.Where(w => !w.CheckOut).ToList();
             return View(carts);
         }
+        [PermissionCheckerByPermissionName("crdet")]
         public async Task<IActionResult> CartDetails(Guid? id)
         {
             if (id == null || await _storeService.GetProductsAsync() == null)
@@ -36,11 +38,13 @@ namespace Web.Areas.UsersPanel.Controllers
             }
             return View(cart);
         }
+        [PermissionCheckerByPermissionName("ordes")]
         public async Task<IActionResult> GetOrders()
         {
             List<Cart> carts = await _storeService.GetCartsAsOrders();
             return View(carts);
         }
+        [PermissionCheckerByPermissionName("ordet")]
         public async Task<IActionResult> GetOrderDetails(Guid? id)
         {
             if (id == null) { return NotFound(); }

@@ -17,7 +17,7 @@ namespace DataLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -214,6 +214,665 @@ namespace DataLayer.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Permissions");
+
+                    b.HasData(
+                        new
+                        {
+                            PermissionId = 1,
+                            PermissionName = "mnage",
+                            PermissionTitle = "مدیریت"
+                        },
+                        new
+                        {
+                            PermissionId = 2,
+                            ParentId = 1,
+                            PermissionName = "sitefaci",
+                            PermissionTitle = "امکانات سایت"
+                        },
+                        new
+                        {
+                            PermissionId = 3,
+                            ParentId = 2,
+                            PermissionName = "slides",
+                            PermissionTitle = "اسلایدر"
+                        },
+                        new
+                        {
+                            PermissionId = 4,
+                            ParentId = 3,
+                            PermissionName = "sliadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 5,
+                            ParentId = 3,
+                            PermissionName = "sliedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 6,
+                            ParentId = 3,
+                            PermissionName = "slidet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 7,
+                            ParentId = 3,
+                            PermissionName = "slidele",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 8,
+                            ParentId = 2,
+                            PermissionName = "banners",
+                            PermissionTitle = "بنرهای صفحه اصلی"
+                        },
+                        new
+                        {
+                            PermissionId = 9,
+                            ParentId = 8,
+                            PermissionName = "bnadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 10,
+                            ParentId = 8,
+                            PermissionName = "bnedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 11,
+                            ParentId = 8,
+                            PermissionName = "bndet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 12,
+                            ParentId = 8,
+                            PermissionName = "bndel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 13,
+                            ParentId = 2,
+                            PermissionName = "siteinfo",
+                            PermissionTitle = "اطلاعات سایت"
+                        },
+                        new
+                        {
+                            PermissionId = 14,
+                            ParentId = 13,
+                            PermissionName = "sinfadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 15,
+                            ParentId = 13,
+                            PermissionName = "sinfedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 16,
+                            ParentId = 13,
+                            PermissionName = "sinfdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 17,
+                            ParentId = 13,
+                            PermissionName = "sinfdele",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 18,
+                            ParentId = 2,
+                            PermissionName = "journal",
+                            PermissionTitle = "مجله"
+                        },
+                        new
+                        {
+                            PermissionId = 19,
+                            ParentId = 18,
+                            PermissionName = "gnews",
+                            PermissionTitle = "گروه های خبر"
+                        },
+                        new
+                        {
+                            PermissionId = 20,
+                            ParentId = 19,
+                            PermissionName = "gneadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 21,
+                            ParentId = 19,
+                            PermissionName = "gneedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 22,
+                            ParentId = 19,
+                            PermissionName = "gnedet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 23,
+                            ParentId = 19,
+                            PermissionName = "gnedel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 24,
+                            ParentId = 18,
+                            PermissionName = "news",
+                            PermissionTitle = "خبر"
+                        },
+                        new
+                        {
+                            PermissionId = 25,
+                            ParentId = 24,
+                            PermissionName = "neadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 26,
+                            ParentId = 24,
+                            PermissionName = "needit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 27,
+                            ParentId = 24,
+                            PermissionName = "nedet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 28,
+                            ParentId = 24,
+                            PermissionName = "nedel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 29,
+                            ParentId = 2,
+                            PermissionName = "faqs",
+                            PermissionTitle = "پرسش و پاسخ"
+                        },
+                        new
+                        {
+                            PermissionId = 30,
+                            ParentId = 24,
+                            PermissionName = "faqadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 31,
+                            ParentId = 24,
+                            PermissionName = "faqedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 32,
+                            ParentId = 24,
+                            PermissionName = "faqdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 33,
+                            ParentId = 24,
+                            PermissionName = "faqdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 34,
+                            ParentId = 2,
+                            PermissionName = "orstatus",
+                            PermissionTitle = "وضعیتهای سفارش"
+                        },
+                        new
+                        {
+                            PermissionId = 35,
+                            ParentId = 34,
+                            PermissionName = "orsadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 36,
+                            ParentId = 34,
+                            PermissionName = "orsedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 37,
+                            ParentId = 34,
+                            PermissionName = "orsdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 38,
+                            ParentId = 34,
+                            PermissionName = "orsdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 39,
+                            ParentId = 2,
+                            PermissionName = "perms",
+                            PermissionTitle = "دسترسی ها"
+                        },
+                        new
+                        {
+                            PermissionId = 40,
+                            ParentId = 39,
+                            PermissionName = "peradd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 41,
+                            ParentId = 39,
+                            PermissionName = "peredit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 42,
+                            ParentId = 39,
+                            PermissionName = "perdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 43,
+                            ParentId = 39,
+                            PermissionName = "perdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 44,
+                            ParentId = 2,
+                            PermissionName = "roles",
+                            PermissionTitle = "نقش ها"
+                        },
+                        new
+                        {
+                            PermissionId = 45,
+                            ParentId = 44,
+                            PermissionName = "roladd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 46,
+                            ParentId = 44,
+                            PermissionName = "roledit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 47,
+                            ParentId = 44,
+                            PermissionName = "roldet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 48,
+                            ParentId = 44,
+                            PermissionName = "roldel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 49,
+                            ParentId = 44,
+                            PermissionName = "rolmanage",
+                            PermissionTitle = "افزودن دسترسی"
+                        },
+                        new
+                        {
+                            PermissionId = 100,
+                            ParentId = 1,
+                            PermissionName = "store",
+                            PermissionTitle = "فروشگاه"
+                        },
+                        new
+                        {
+                            PermissionId = 101,
+                            ParentId = 100,
+                            PermissionName = "pgroups",
+                            PermissionTitle = "گروه های محصول"
+                        },
+                        new
+                        {
+                            PermissionId = 102,
+                            ParentId = 101,
+                            PermissionName = "pgradd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 103,
+                            ParentId = 101,
+                            PermissionName = "pgredit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 104,
+                            ParentId = 101,
+                            PermissionName = "pgrdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 105,
+                            ParentId = 101,
+                            PermissionName = "pgrdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 106,
+                            ParentId = 100,
+                            PermissionName = "prducts",
+                            PermissionTitle = "محصولات"
+                        },
+                        new
+                        {
+                            PermissionId = 107,
+                            ParentId = 106,
+                            PermissionName = "pradd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 108,
+                            ParentId = 106,
+                            PermissionName = "predit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 109,
+                            ParentId = 106,
+                            PermissionName = "prdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 110,
+                            ParentId = 106,
+                            PermissionName = "prdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 111,
+                            ParentId = 106,
+                            PermissionName = "priceadd",
+                            PermissionTitle = "ثبت قیمت"
+                        },
+                        new
+                        {
+                            PermissionId = 112,
+                            ParentId = 106,
+                            PermissionName = "coloradd",
+                            PermissionTitle = "ثبت رنگ"
+                        },
+                        new
+                        {
+                            PermissionId = 113,
+                            ParentId = 106,
+                            PermissionName = "itemadd",
+                            PermissionTitle = "افزودن آیتم"
+                        },
+                        new
+                        {
+                            PermissionId = 114,
+                            ParentId = 100,
+                            PermissionName = "prsizes",
+                            PermissionTitle = "سایز محصولات"
+                        },
+                        new
+                        {
+                            PermissionId = 115,
+                            ParentId = 114,
+                            PermissionName = "prsadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 116,
+                            ParentId = 114,
+                            PermissionName = "prsedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 117,
+                            ParentId = 114,
+                            PermissionName = "prsdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 118,
+                            ParentId = 114,
+                            PermissionName = "prsdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 119,
+                            ParentId = 100,
+                            PermissionName = "disco",
+                            PermissionTitle = "کوپن تخفیف"
+                        },
+                        new
+                        {
+                            PermissionId = 120,
+                            ParentId = 114,
+                            PermissionName = "dcadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 121,
+                            ParentId = 114,
+                            PermissionName = "dcedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 122,
+                            ParentId = 114,
+                            PermissionName = "dcdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 123,
+                            ParentId = 114,
+                            PermissionName = "dcdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 124,
+                            ParentId = 100,
+                            PermissionName = "werh",
+                            PermissionTitle = "دفتر انبار"
+                        },
+                        new
+                        {
+                            PermissionId = 125,
+                            ParentId = 124,
+                            PermissionName = "whadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 126,
+                            ParentId = 124,
+                            PermissionName = "whedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 127,
+                            ParentId = 124,
+                            PermissionName = "whdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 128,
+                            ParentId = 124,
+                            PermissionName = "whdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 200,
+                            ParentId = 1,
+                            PermissionName = "reports",
+                            PermissionTitle = "گزارشات"
+                        },
+                        new
+                        {
+                            PermissionId = 201,
+                            ParentId = 200,
+                            PermissionName = "carts",
+                            PermissionTitle = "سبدهای خرید"
+                        },
+                        new
+                        {
+                            PermissionId = 202,
+                            ParentId = 201,
+                            PermissionName = "crdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 203,
+                            ParentId = 200,
+                            PermissionName = "ordes",
+                            PermissionTitle = "سفارشات"
+                        },
+                        new
+                        {
+                            PermissionId = 204,
+                            ParentId = 203,
+                            PermissionName = "ordet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 205,
+                            ParentId = 200,
+                            PermissionName = "cmess",
+                            PermissionTitle = "پیامهای مشتریان"
+                        },
+                        new
+                        {
+                            PermissionId = 206,
+                            ParentId = 205,
+                            PermissionName = "cmadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 207,
+                            ParentId = 205,
+                            PermissionName = "cmedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 208,
+                            ParentId = 205,
+                            PermissionName = "cmdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 209,
+                            ParentId = 205,
+                            PermissionName = "cmdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 210,
+                            ParentId = 200,
+                            PermissionName = "users",
+                            PermissionTitle = "کاربران"
+                        },
+                        new
+                        {
+                            PermissionId = 211,
+                            ParentId = 210,
+                            PermissionName = "usadd",
+                            PermissionTitle = "افزودن"
+                        },
+                        new
+                        {
+                            PermissionId = 212,
+                            ParentId = 210,
+                            PermissionName = "usedit",
+                            PermissionTitle = "ویرایش"
+                        },
+                        new
+                        {
+                            PermissionId = 213,
+                            ParentId = 210,
+                            PermissionName = "usdet",
+                            PermissionTitle = "جزئیات"
+                        },
+                        new
+                        {
+                            PermissionId = 214,
+                            ParentId = 210,
+                            PermissionName = "usdel",
+                            PermissionTitle = "حذف"
+                        },
+                        new
+                        {
+                            PermissionId = 215,
+                            ParentId = 200,
+                            PermissionName = "chbanks",
+                            PermissionTitle = "بانک تلفن همراه"
+                        });
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Permissions.RolePermisison", b =>
@@ -239,6 +898,572 @@ namespace DataLayer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RolePermisisons");
+
+                    b.HasData(
+                        new
+                        {
+                            RP_Id = 1,
+                            PermissionId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 2,
+                            PermissionId = 2,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 3,
+                            PermissionId = 3,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 4,
+                            PermissionId = 4,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 5,
+                            PermissionId = 5,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 6,
+                            PermissionId = 6,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 7,
+                            PermissionId = 7,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 8,
+                            PermissionId = 8,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 9,
+                            PermissionId = 9,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 10,
+                            PermissionId = 10,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 11,
+                            PermissionId = 11,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 12,
+                            PermissionId = 12,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 13,
+                            PermissionId = 13,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 14,
+                            PermissionId = 14,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 15,
+                            PermissionId = 15,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 16,
+                            PermissionId = 16,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 17,
+                            PermissionId = 17,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 18,
+                            PermissionId = 18,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 19,
+                            PermissionId = 19,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 20,
+                            PermissionId = 20,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 21,
+                            PermissionId = 21,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 22,
+                            PermissionId = 22,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 23,
+                            PermissionId = 23,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 24,
+                            PermissionId = 24,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 25,
+                            PermissionId = 25,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 26,
+                            PermissionId = 26,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 27,
+                            PermissionId = 27,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 28,
+                            PermissionId = 28,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 29,
+                            PermissionId = 29,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 30,
+                            PermissionId = 30,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 31,
+                            PermissionId = 31,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 32,
+                            PermissionId = 32,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 33,
+                            PermissionId = 33,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 34,
+                            PermissionId = 34,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 35,
+                            PermissionId = 35,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 36,
+                            PermissionId = 36,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 37,
+                            PermissionId = 37,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 38,
+                            PermissionId = 38,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 39,
+                            PermissionId = 39,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 40,
+                            PermissionId = 40,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 41,
+                            PermissionId = 41,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 42,
+                            PermissionId = 42,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 43,
+                            PermissionId = 43,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 44,
+                            PermissionId = 44,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 45,
+                            PermissionId = 45,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 46,
+                            PermissionId = 46,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 47,
+                            PermissionId = 47,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 48,
+                            PermissionId = 48,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 49,
+                            PermissionId = 49,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 50,
+                            PermissionId = 100,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 51,
+                            PermissionId = 101,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 52,
+                            PermissionId = 102,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 53,
+                            PermissionId = 103,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 54,
+                            PermissionId = 104,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 55,
+                            PermissionId = 105,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 56,
+                            PermissionId = 106,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 57,
+                            PermissionId = 107,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 58,
+                            PermissionId = 108,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 59,
+                            PermissionId = 109,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 60,
+                            PermissionId = 110,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 61,
+                            PermissionId = 111,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 62,
+                            PermissionId = 112,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 63,
+                            PermissionId = 113,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 64,
+                            PermissionId = 114,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 65,
+                            PermissionId = 115,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 66,
+                            PermissionId = 116,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 67,
+                            PermissionId = 117,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 68,
+                            PermissionId = 118,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 69,
+                            PermissionId = 119,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 70,
+                            PermissionId = 120,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 71,
+                            PermissionId = 121,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 72,
+                            PermissionId = 122,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 73,
+                            PermissionId = 123,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 74,
+                            PermissionId = 124,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 75,
+                            PermissionId = 125,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 76,
+                            PermissionId = 126,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 77,
+                            PermissionId = 127,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 78,
+                            PermissionId = 128,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 79,
+                            PermissionId = 200,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 80,
+                            PermissionId = 201,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 81,
+                            PermissionId = 202,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 82,
+                            PermissionId = 203,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 83,
+                            PermissionId = 204,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 84,
+                            PermissionId = 205,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 85,
+                            PermissionId = 206,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 86,
+                            PermissionId = 207,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 87,
+                            PermissionId = 208,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 88,
+                            PermissionId = 209,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 89,
+                            PermissionId = 210,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 90,
+                            PermissionId = 211,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 91,
+                            PermissionId = 212,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 92,
+                            PermissionId = 213,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 93,
+                            PermissionId = 214,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            RP_Id = 94,
+                            PermissionId = 215,
+                            RoleId = 1
+                        });
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Store.Cart", b =>
@@ -11733,7 +12958,7 @@ namespace DataLayer.Migrations
                             IsDeleted = false,
                             Name = "مدیر",
                             Password = "marjan1377hooz",
-                            RegDate = new DateTime(2023, 10, 13, 19, 2, 59, 871, DateTimeKind.Local).AddTicks(4886),
+                            RegDate = new DateTime(2024, 5, 4, 11, 54, 15, 368, DateTimeKind.Local).AddTicks(5380),
                             UserName = "majihoozad"
                         });
                 });
@@ -11777,7 +13002,7 @@ namespace DataLayer.Migrations
                             URId = 1,
                             IsActive = true,
                             IsDeleted = false,
-                            RegisterDate = new DateTime(2023, 10, 13, 19, 2, 59, 871, DateTimeKind.Local).AddTicks(4920),
+                            RegisterDate = new DateTime(2024, 5, 4, 11, 54, 15, 368, DateTimeKind.Local).AddTicks(5437),
                             RoleId = 1,
                             UserId = 1
                         });

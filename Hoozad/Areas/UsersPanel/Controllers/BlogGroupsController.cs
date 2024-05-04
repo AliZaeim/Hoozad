@@ -1,5 +1,5 @@
-﻿using Core.Services.Interfaces;
-using DataLayer.Context;
+﻿using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Blogs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +9,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("gnews")]
     public class BlogGroupsController : Controller
     {        
         private readonly ISuppService _suppService;
@@ -24,6 +25,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BlogGroups/Details/5
+        [PermissionCheckerByPermissionName("gnedet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _suppService.GetBlogGroupsAsync() == null)
@@ -41,6 +43,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BlogGroups/Create
+        [PermissionCheckerByPermissionName("gneadd")]
         public IActionResult Create()
         {
             return View();
@@ -51,7 +54,8 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogGroupId,BlogGroupTitle,BlogGroupEnTitle,IsActive,ShowinMenu,TitleinMenu,IsDeleted")] BlogGroup blogGroup)
+        [PermissionCheckerByPermissionName("gneadd")]
+        public async Task<IActionResult> Create(BlogGroup blogGroup)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +67,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BlogGroups/Edit/5
+        [PermissionCheckerByPermissionName("gneedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _suppService.GetBlogGroupsAsync() == null)
@@ -83,7 +88,8 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BlogGroupId,BlogGroupTitle,BlogGroupEnTitle,IsActive,ShowinMenu,TitleinMenu,IsDeleted")] BlogGroup blogGroup)
+        [PermissionCheckerByPermissionName("gneedit")]
+        public async Task<IActionResult> Edit(int id, BlogGroup blogGroup)
         {
             if (id != blogGroup.BlogGroupId)
             {
@@ -114,6 +120,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BlogGroups/Delete/5
+        [PermissionCheckerByPermissionName("gnedel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _suppService.GetBlogGroupsAsync() == null)
@@ -132,6 +139,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/BlogGroups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("gnedel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _suppService.GetBlogGroupsAsync() == null)

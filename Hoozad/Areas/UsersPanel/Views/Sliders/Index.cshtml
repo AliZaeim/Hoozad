@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<DataLayer.Entities.Supplementary.Slider>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _perService
 @{
     ViewData["Title"] = "اسلایدرها";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">اسلایدرها</h1>
+@if(_perService.CheckPermissionByName("sliadd",User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت اسلایدر</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت اسلایدر</a>
-</p>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -41,9 +45,18 @@
                     <img src="/images/sliders/@item.Image" width="200" height="100">
                 </td>
                 <td class="text-xs-center align-middle">
-                    <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">حــذف</a>
+                    @if(_perService.CheckPermissionByName("sliedit",User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> <span>|</span>
+                    }
+                    @if(_perService.CheckPermissionByName("slidet",User.Identity!.Name!))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> <span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("slidel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">حــذف</a>
+                    }                    
                 </td>
             </tr>
         }

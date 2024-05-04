@@ -26,6 +26,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/SiteInfoes/Details/5
+        [PermissionCheckerByPermissionName("sinfdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _siteInfoService.GetSiteInfosAsync() == null)
@@ -43,6 +44,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/SiteInfoes/Create
+        [PermissionCheckerByPermissionName("sinfadd")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +55,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("sinfadd")]
         public async Task<IActionResult> Create(SiteInfo siteInfo)
         {
             if (ModelState.IsValid)
@@ -66,6 +69,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/SiteInfoes/Edit/5
+        [PermissionCheckerByPermissionName("sinfedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _siteInfoService.GetSiteInfosAsync() == null)
@@ -86,6 +90,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("sinfedit")]
         public async Task<IActionResult> Edit(int id, SiteInfo siteInfo)
         {
             if (id != siteInfo.Id)
@@ -117,6 +122,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/SiteInfoes/Delete/5
+        [PermissionCheckerByPermissionName("sinfdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _siteInfoService.GetSiteInfosAsync() == null)
@@ -136,6 +142,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/SiteInfoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("sinfdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _siteInfoService.GetSiteInfosAsync() == null)

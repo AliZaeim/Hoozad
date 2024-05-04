@@ -1,15 +1,19 @@
 ﻿using Core.Convertors;
 using Core.DTOs.Admin;
+using Core.Security;
 using Core.Services;
 using Core.Services.Interfaces;
 using DataLayer.Context;
 using DataLayer.Entities.Store;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
+    [Authorize]
+    [PermissionCheckerByPermissionName("disco")]
     public class DiscountCoupensController : Controller
     {
 
@@ -47,6 +51,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/DiscountCoupens/Details/5
+        [PermissionCheckerByPermissionName("dcdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _discountCoupenService.GetAll() == null)
@@ -64,6 +69,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/DiscountCoupens/Create
+        [PermissionCheckerByPermissionName("dcadd")]
         public IActionResult Create()
         {
             return View();
@@ -74,6 +80,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("dcadd")]
         public async Task<IActionResult> Create(DiscountCoupenVM discountCoupenVM)
         {
             if (ModelState.IsValid)
@@ -111,6 +118,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/DiscountCoupens/Edit/5
+        [PermissionCheckerByPermissionName("dcedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _discountCoupenService.GetAll() == null)
@@ -141,6 +149,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("dcedit")]
         public async Task<IActionResult> Edit(int id, DiscountCoupenVM discountCoupenVM)
         {
             if (id != discountCoupenVM.Id)
@@ -191,6 +200,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/DiscountCoupens/Delete/5
+        [PermissionCheckerByPermissionName("dcdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _discountCoupenService.GetAll() == null)
@@ -210,6 +220,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/DiscountCoupens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("dcdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_discountCoupenService.GetAll() == null)

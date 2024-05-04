@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataLayer.Context;
 using DataLayer.Entities.Supplementary;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
+    [Authorize]
     public class StatesController : Controller
     {
         private readonly MyContext _context;

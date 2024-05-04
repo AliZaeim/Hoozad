@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<DataLayer.Entities.Permissions.Permission>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _perService
 @{
     ViewData["Title"] = "دسترسی‌ها";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">دسترسی‌ها</h1>
+@if (_perService.CheckPermissionByName("peradd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت</a>
-</p>
 
 
 <div id="parent0" class="container-fluid" style="height:10mm">
@@ -27,9 +31,18 @@
             <div class="col-md-3 text-xs-center">@item0.PermissionName</div>
             <div class="col-md-3 text-xs-center">@item0.Parent?.PermissionTitle</div>
             <div class="col-md-3 text-xs-center">
-                <a asp-action="Edit" asp-route-id="@item0.PermissionId">ویرایش</a> <span>|</span>
-                <a asp-action="Details" asp-route-id="@item0.PermissionId">جزئیات</a> <span>|</span>
-                <a asp-action="Delete" asp-route-id="@item0.PermissionId">حذف</a>
+                @if (_perService.CheckPermissionByName("peredit", User.Identity!.Name!))
+                {
+                    <a asp-action="Edit" asp-route-id="@item0.PermissionId">ویرایش</a> <span>|</span>
+                }
+                @if (_perService.CheckPermissionByName("perdet", User.Identity!.Name!))
+                {
+                    <a asp-action="Details" asp-route-id="@item0.PermissionId">جزئیات</a> <span>|</span>
+                }
+                @if (_perService.CheckPermissionByName("perdel", User.Identity!.Name!))
+                {
+                    <a asp-action="Delete" asp-route-id="@item0.PermissionId">حذف</a>
+                }                
             </div>
         </div>
 
@@ -41,9 +54,19 @@
                 <div class="col-md-3 text-xs-center">@item1.PermissionName</div>
                 <div class="col-md-3 text-xs-center">@item1.Parent?.PermissionTitle</div>
                 <div class="col-md-3 text-xs-center">
-                    <a asp-action="Edit" asp-route-id="@item1.PermissionId">ویرایش</a> <span>|</span>
-                    <a asp-action="Details" asp-route-id="@item1.PermissionId">جزئیات</a> <span>|</span>
-                    <a asp-action="Delete" asp-route-id="@item1.PermissionId">حذف</a>
+                    @if (_perService.CheckPermissionByName("peredit", User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item1.PermissionId">ویرایش</a> <span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("perdet", User.Identity!.Name!))
+                    {
+                        <a asp-action="Details" asp-route-id="@item1.PermissionId">جزئیات</a> <span>|</span>
+                    }                 
+                    @if (_perService.CheckPermissionByName("perdel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item1.PermissionId">حذف</a>
+                    }
+                    
                 </div>
             </div>
            
@@ -54,9 +77,18 @@
                     <div class="col-md-3 text-xs-center">@item2.PermissionName</div>
                     <div class="col-md-3 text-xs-center">@item2.Parent?.PermissionTitle</div>
                     <div class="col-md-3 text-xs-center">
-                        <a asp-action="Edit" asp-route-id="@item2.PermissionId">ویرایش</a> <span>|</span>
-                        <a asp-action="Details" asp-route-id="@item2.PermissionId">جزئیات</a> <span>|</span>
-                        <a asp-action="Delete" asp-route-id="@item2.PermissionId">حذف</a>
+                        @if (_perService.CheckPermissionByName("peredit", User.Identity!.Name!))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item2.PermissionId">ویرایش</a> <span>|</span>
+                        }
+                        @if (_perService.CheckPermissionByName("perdet", User.Identity!.Name!))
+                        {
+                            <a asp-action="Details" asp-route-id="@item2.PermissionId">جزئیات</a> <span>|</span>
+                        }
+                        @if (_perService.CheckPermissionByName("perdel", User.Identity!.Name!))
+                        {
+                            <a asp-action="Delete" asp-route-id="@item2.PermissionId">حذف</a>
+                        }
                     </div>
                 </div>
                
@@ -67,9 +99,18 @@
                         <div class="col-md-3 text-xs-center">@item3.PermissionName</div>
                         <div class="col-md-3 text-xs-center">@item3.Parent?.PermissionTitle</div>
                         <div class="col-md-3 text-xs-center">
-                            <a asp-action="Edit" asp-route-id="@item3.PermissionId">ویرایش</a> <span>|</span>
-                            <a asp-action="Details" asp-route-id="@item3.PermissionId">جزئیات</a> <span>|</span>
-                            <a asp-action="Delete" asp-route-id="@item3.PermissionId">حذف</a>
+                            @if (_perService.CheckPermissionByName("peredit", User.Identity!.Name!))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item3.PermissionId">ویرایش</a> <span>|</span>
+                            }
+                            @if (_perService.CheckPermissionByName("perdet", User.Identity!.Name!))
+                            {
+                                <a asp-action="Details" asp-route-id="@item3.PermissionId">جزئیات</a> <span>|</span>
+                            }
+                            @if (_perService.CheckPermissionByName("perdel", User.Identity!.Name!))
+                            {
+                                <a asp-action="Delete" asp-route-id="@item3.PermissionId">حذف</a>
+                            }
                         </div>
                     </div>
                 }

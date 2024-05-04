@@ -21,7 +21,8 @@ namespace DataLayer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    ItemCount = table.Column<int>(type: "int", nullable: false)
+                    ItemCount = table.Column<int>(type: "int", nullable: false),
+                    ShowPriority = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -145,7 +146,8 @@ namespace DataLayer.Migrations
                     DiscountPercent = table.Column<int>(type: "int", nullable: true),
                     DiscountValue = table.Column<int>(type: "int", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true)
+                    ParentId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,15 +209,11 @@ namespace DataLayer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    TitleColor = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    TextColor = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Text2 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Text2Color = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    LinkText = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    LinkText = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkUrl = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Image = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     MobileImage = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ShowPriority = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -561,7 +559,8 @@ namespace DataLayer.Migrations
                     RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    CountyId = table.Column<int>(type: "int", nullable: true)
+                    CountyId = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -845,6 +844,11 @@ namespace DataLayer.Migrations
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "PermissionId", "ParentId", "PermissionName", "PermissionTitle" },
+                values: new object[] { 1, null, "mnage", "مدیریت" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
@@ -2145,14 +2149,254 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "PermissionId", "ParentId", "PermissionName", "PermissionTitle" },
+                values: new object[,]
+                {
+                    { 2, 1, "sitefaci", "امکانات سایت" },
+                    { 100, 1, "store", "فروشگاه" },
+                    { 200, 1, "reports", "گزارشات" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RolePermisisons",
+                columns: new[] { "RP_Id", "PermissionId", "RoleId" },
+                values: new object[] { 1, 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "PermissionId", "ParentId", "PermissionName", "PermissionTitle" },
+                values: new object[,]
+                {
+                    { 3, 2, "slides", "اسلایدر" },
+                    { 8, 2, "banners", "بنرهای صفحه اصلی" },
+                    { 13, 2, "siteinfo", "اطلاعات سایت" },
+                    { 18, 2, "journal", "مجله" },
+                    { 29, 2, "faqs", "پرسش و پاسخ" },
+                    { 34, 2, "orstatus", "وضعیتهای سفارش" },
+                    { 39, 2, "perms", "دسترسی ها" },
+                    { 44, 2, "roles", "نقش ها" },
+                    { 101, 100, "pgroups", "گروه های محصول" },
+                    { 106, 100, "prducts", "محصولات" },
+                    { 114, 100, "prsizes", "سایز محصولات" },
+                    { 119, 100, "disco", "کوپن تخفیف" },
+                    { 124, 100, "werh", "دفتر انبار" },
+                    { 201, 200, "carts", "سبدهای خرید" },
+                    { 203, 200, "ordes", "سفارشات" },
+                    { 205, 200, "cmess", "پیامهای مشتریان" },
+                    { 210, 200, "users", "کاربران" },
+                    { 215, 200, "chbanks", "بانک تلفن همراه" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RolePermisisons",
+                columns: new[] { "RP_Id", "PermissionId", "RoleId" },
+                values: new object[,]
+                {
+                    { 2, 2, 1 },
+                    { 50, 100, 1 },
+                    { 79, 200, 1 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "BirthDate", "Cellphone", "CountyId", "Email", "Family", "IsActive", "Name", "Password", "PostalCode", "RegDate", "UserName" },
-                values: new object[] { 1, null, null, "09126617096", 330, null, "سایت", true, "مدیر", "marjan1377hooz", null, new DateTime(2023, 9, 22, 15, 59, 44, 700, DateTimeKind.Local).AddTicks(963), "majihoozad" });
+                columns: new[] { "Id", "Address", "BirthDate", "Cellphone", "CountyId", "Email", "Family", "IsActive", "IsDeleted", "Name", "Password", "PostalCode", "RegDate", "UserName" },
+                values: new object[] { 1, null, null, "09126617096", 330, null, "سایت", true, false, "مدیر", "marjan1377hooz", null, new DateTime(2024, 5, 4, 11, 54, 15, 368, DateTimeKind.Local).AddTicks(5380), "majihoozad" });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "PermissionId", "ParentId", "PermissionName", "PermissionTitle" },
+                values: new object[,]
+                {
+                    { 4, 3, "sliadd", "افزودن" },
+                    { 5, 3, "sliedit", "ویرایش" },
+                    { 6, 3, "slidet", "جزئیات" },
+                    { 7, 3, "slidele", "حذف" },
+                    { 9, 8, "bnadd", "افزودن" },
+                    { 10, 8, "bnedit", "ویرایش" },
+                    { 11, 8, "bndet", "جزئیات" },
+                    { 12, 8, "bndel", "حذف" },
+                    { 14, 13, "sinfadd", "افزودن" },
+                    { 15, 13, "sinfedit", "ویرایش" },
+                    { 16, 13, "sinfdet", "جزئیات" },
+                    { 17, 13, "sinfdele", "حذف" },
+                    { 19, 18, "gnews", "گروه های خبر" },
+                    { 24, 18, "news", "خبر" },
+                    { 35, 34, "orsadd", "افزودن" },
+                    { 36, 34, "orsedit", "ویرایش" },
+                    { 37, 34, "orsdet", "جزئیات" },
+                    { 38, 34, "orsdel", "حذف" },
+                    { 40, 39, "peradd", "افزودن" },
+                    { 41, 39, "peredit", "ویرایش" },
+                    { 42, 39, "perdet", "جزئیات" },
+                    { 43, 39, "perdel", "حذف" },
+                    { 45, 44, "roladd", "افزودن" },
+                    { 46, 44, "roledit", "ویرایش" },
+                    { 47, 44, "roldet", "جزئیات" },
+                    { 48, 44, "roldel", "حذف" },
+                    { 49, 44, "rolmanage", "افزودن دسترسی" },
+                    { 102, 101, "pgradd", "افزودن" },
+                    { 103, 101, "pgredit", "ویرایش" },
+                    { 104, 101, "pgrdet", "جزئیات" },
+                    { 105, 101, "pgrdel", "حذف" },
+                    { 107, 106, "pradd", "افزودن" },
+                    { 108, 106, "predit", "ویرایش" },
+                    { 109, 106, "prdet", "جزئیات" },
+                    { 110, 106, "prdel", "حذف" },
+                    { 111, 106, "priceadd", "ثبت قیمت" },
+                    { 112, 106, "coloradd", "ثبت رنگ" },
+                    { 113, 106, "itemadd", "افزودن آیتم" },
+                    { 115, 114, "prsadd", "افزودن" },
+                    { 116, 114, "prsedit", "ویرایش" },
+                    { 117, 114, "prsdet", "جزئیات" },
+                    { 118, 114, "prsdel", "حذف" },
+                    { 120, 114, "dcadd", "افزودن" },
+                    { 121, 114, "dcedit", "ویرایش" },
+                    { 122, 114, "dcdet", "جزئیات" },
+                    { 123, 114, "dcdel", "حذف" },
+                    { 125, 124, "whadd", "افزودن" },
+                    { 126, 124, "whedit", "ویرایش" },
+                    { 127, 124, "whdet", "جزئیات" },
+                    { 128, 124, "whdel", "حذف" },
+                    { 202, 201, "crdet", "جزئیات" },
+                    { 204, 203, "ordet", "جزئیات" },
+                    { 206, 205, "cmadd", "افزودن" },
+                    { 207, 205, "cmedit", "ویرایش" },
+                    { 208, 205, "cmdet", "جزئیات" },
+                    { 209, 205, "cmdel", "حذف" },
+                    { 211, 210, "usadd", "افزودن" },
+                    { 212, 210, "usedit", "ویرایش" },
+                    { 213, 210, "usdet", "جزئیات" },
+                    { 214, 210, "usdel", "حذف" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RolePermisisons",
+                columns: new[] { "RP_Id", "PermissionId", "RoleId" },
+                values: new object[,]
+                {
+                    { 3, 3, 1 },
+                    { 8, 8, 1 },
+                    { 13, 13, 1 },
+                    { 18, 18, 1 },
+                    { 29, 29, 1 },
+                    { 34, 34, 1 },
+                    { 39, 39, 1 },
+                    { 44, 44, 1 },
+                    { 51, 101, 1 },
+                    { 56, 106, 1 },
+                    { 64, 114, 1 },
+                    { 69, 119, 1 },
+                    { 74, 124, 1 },
+                    { 80, 201, 1 },
+                    { 82, 203, 1 },
+                    { 84, 205, 1 },
+                    { 89, 210, 1 },
+                    { 94, 215, 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "URId", "IsActive", "IsDeleted", "RegisterDate", "RoleId", "UserId" },
-                values: new object[] { 1, true, false, new DateTime(2023, 9, 22, 15, 59, 44, 700, DateTimeKind.Local).AddTicks(1010), 1, 1 });
+                values: new object[] { 1, true, false, new DateTime(2024, 5, 4, 11, 54, 15, 368, DateTimeKind.Local).AddTicks(5437), 1, 1 });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "PermissionId", "ParentId", "PermissionName", "PermissionTitle" },
+                values: new object[,]
+                {
+                    { 20, 19, "gneadd", "افزودن" },
+                    { 21, 19, "gneedit", "ویرایش" },
+                    { 22, 19, "gnedet", "جزئیات" },
+                    { 23, 19, "gnedel", "حذف" },
+                    { 25, 24, "neadd", "افزودن" },
+                    { 26, 24, "needit", "ویرایش" },
+                    { 27, 24, "nedet", "جزئیات" },
+                    { 28, 24, "nedel", "حذف" },
+                    { 30, 24, "faqadd", "افزودن" },
+                    { 31, 24, "faqedit", "ویرایش" },
+                    { 32, 24, "faqdet", "جزئیات" },
+                    { 33, 24, "faqdel", "حذف" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RolePermisisons",
+                columns: new[] { "RP_Id", "PermissionId", "RoleId" },
+                values: new object[,]
+                {
+                    { 4, 4, 1 },
+                    { 5, 5, 1 },
+                    { 6, 6, 1 },
+                    { 7, 7, 1 },
+                    { 9, 9, 1 },
+                    { 10, 10, 1 },
+                    { 11, 11, 1 },
+                    { 12, 12, 1 },
+                    { 14, 14, 1 },
+                    { 15, 15, 1 },
+                    { 16, 16, 1 },
+                    { 17, 17, 1 },
+                    { 19, 19, 1 },
+                    { 24, 24, 1 },
+                    { 35, 35, 1 },
+                    { 36, 36, 1 },
+                    { 37, 37, 1 },
+                    { 38, 38, 1 },
+                    { 40, 40, 1 },
+                    { 41, 41, 1 },
+                    { 42, 42, 1 },
+                    { 43, 43, 1 },
+                    { 45, 45, 1 },
+                    { 46, 46, 1 },
+                    { 47, 47, 1 },
+                    { 48, 48, 1 },
+                    { 49, 49, 1 },
+                    { 52, 102, 1 },
+                    { 53, 103, 1 },
+                    { 54, 104, 1 },
+                    { 55, 105, 1 },
+                    { 57, 107, 1 },
+                    { 58, 108, 1 },
+                    { 59, 109, 1 },
+                    { 60, 110, 1 },
+                    { 61, 111, 1 },
+                    { 62, 112, 1 },
+                    { 63, 113, 1 },
+                    { 65, 115, 1 },
+                    { 66, 116, 1 },
+                    { 67, 117, 1 },
+                    { 68, 118, 1 },
+                    { 70, 120, 1 },
+                    { 71, 121, 1 },
+                    { 72, 122, 1 },
+                    { 73, 123, 1 },
+                    { 75, 125, 1 },
+                    { 76, 126, 1 },
+                    { 77, 127, 1 },
+                    { 78, 128, 1 },
+                    { 81, 202, 1 },
+                    { 83, 204, 1 },
+                    { 85, 206, 1 },
+                    { 86, 207, 1 },
+                    { 87, 208, 1 },
+                    { 88, 209, 1 },
+                    { 90, 211, 1 },
+                    { 91, 212, 1 },
+                    { 92, 213, 1 },
+                    { 93, 214, 1 },
+                    { 20, 20, 1 },
+                    { 21, 21, 1 },
+                    { 22, 22, 1 },
+                    { 23, 23, 1 },
+                    { 25, 25, 1 },
+                    { 26, 26, 1 },
+                    { 27, 27, 1 },
+                    { 28, 28, 1 },
+                    { 30, 30, 1 },
+                    { 31, 31, 1 },
+                    { 32, 32, 1 },
+                    { 33, 33, 1 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BannerItems_BannerId",

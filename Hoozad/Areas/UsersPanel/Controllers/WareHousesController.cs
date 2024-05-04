@@ -1,5 +1,7 @@
-﻿using Core.Services.Interfaces;
+﻿using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Store;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
+    [Authorize]
+    [PermissionCheckerByPermissionName("werh")]
     public class WareHousesController : Controller
     {
         
@@ -41,6 +45,7 @@ namespace Web.Areas.UsersPanel.Controllers
         //}
 
         // GET: UsersPanel/WareHouses/Details/5
+        [PermissionCheckerByPermissionName("whdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _storeService.GetWareHousesAsync() == null)
@@ -58,6 +63,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/WareHouses/Create
+        [PermissionCheckerByPermissionName("whadd")]
         public async Task<IActionResult> Create()
         {
             List<Product> products = await _storeService.GetProductsAsync();
@@ -72,6 +78,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("whadd")]
         public async Task<IActionResult> Create(WareHouse wareHouse)
         {
             if (ModelState.IsValid)
@@ -88,6 +95,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/WareHouses/Edit/5
+        [PermissionCheckerByPermissionName("whedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _storeService.GetProductsAsync() == null)
@@ -111,6 +119,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("whedit")]
         public async Task<IActionResult> Edit(int id, WareHouse wareHouse)
         {
             if (id != wareHouse.Id)
@@ -150,6 +159,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/WareHouses/Delete/5
+        [PermissionCheckerByPermissionName("whdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _storeService.GetWareHousesAsync() == null)
@@ -167,6 +177,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/WareHouses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("whdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _storeService.GetWareHousesAsync() == null)

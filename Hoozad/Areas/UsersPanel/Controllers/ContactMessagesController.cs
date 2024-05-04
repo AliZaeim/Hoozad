@@ -1,5 +1,5 @@
-﻿using Core.Services.Interfaces;
-using DataLayer.Context;
+﻿using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Supplementary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +9,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("cmess")]
     public class ContactMessagesController : Controller
     {
         
@@ -25,6 +26,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ContactMessages/Details/5
+        [PermissionCheckerByPermissionName("cmdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _suppServie.GetContactMessagesAsync() == null)
@@ -42,6 +44,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ContactMessages/Create
+        [PermissionCheckerByPermissionName("cmadd")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +55,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("cmadd")]
         public async Task<IActionResult> Create(ContactMessage contactMessage)
         {
             if (ModelState.IsValid)
@@ -65,6 +69,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ContactMessages/Edit/5
+        [PermissionCheckerByPermissionName("cmedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _suppServie.GetContactMessagesAsync() == null)
@@ -85,6 +90,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("cmedit")]
         public async Task<IActionResult> Edit(int id, ContactMessage contactMessage)
         {
             if (id != contactMessage.Id)
@@ -116,6 +122,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/ContactMessages/Delete/5
+        [PermissionCheckerByPermissionName("cmdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _suppServie.GetContactMessagesAsync() == null)
@@ -133,6 +140,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/ContactMessages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("cmdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _suppServie.GetContactMessagesAsync() == null)

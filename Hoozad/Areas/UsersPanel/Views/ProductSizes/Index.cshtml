@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<DataLayer.Entities.Store.ProductSize>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _permService
 @{
     ViewData["Title"] = "جدول سایز";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">جدول سایز</h1>
+@if (_permService.CheckPermissionByName("prsadd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت سایز</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت سایز</a>
-</p>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -63,11 +67,21 @@
                 <td class="text-xs-center align-middle">
                     @Html.DisplayFor(modelItem => item.SleeveLength)
                 </td>
-               
+
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">حــذف</a>
+                    @if (_permService.CheckPermissionByName("prsedit", User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a>
+                    }
+                    @if (_permService.CheckPermissionByName("prsdet", User.Identity!.Name!))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a>
+                    }
+                    @if (_permService.CheckPermissionByName("prsdel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">حــذف</a>
+                    }
+                    
                 </td>
             </tr>
         }

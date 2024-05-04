@@ -2,15 +2,20 @@
 @using Core.Convertors;
 @using Core.Services.Interfaces;
 @inject IStoreService _storeService
+@inject IPermissionService _permService
 @{
     ViewData["Title"] = "دفتر انبار";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">دفتر انبار</h1>
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت در دفتر</a>
-</p>
+@if (_permService.CheckPermissionByName("whadd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت در دفتر</a>
+    </p>
+}
+
 <div class="container-fluid">
     <div class="row">
         

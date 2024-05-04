@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataLayer.Context;
-using DataLayer.Entities.User;
-using Core.Services.Interfaces;
+﻿using Core.Convertors;
 using Core.DTOs.Admin;
-using Core.Convertors;
+using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Supplementary;
+using DataLayer.Entities.User;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
+    [Authorize]
+    [PermissionCheckerByPermissionName("users")]
     public class UsersController : Controller
     {
         
@@ -35,6 +33,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Users/Details/5
+        [PermissionCheckerByPermissionName("usdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _userService.GetUsersAsync() == null)
@@ -52,6 +51,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Users/Create
+        [PermissionCheckerByPermissionName("usadd")]
         public async Task<IActionResult> Create()
         {
             UserVM userVM = new()
@@ -67,6 +67,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("usadd")]
         public async Task<IActionResult> Create(UserVM userVM)
         {
             if (ModelState.IsValid)
@@ -131,6 +132,7 @@ namespace Web.Areas.UsersPanel.Controllers
             return PartialView(counties);
         }
         // GET: UsersPanel/Users/Edit/5
+        [PermissionCheckerByPermissionName("usedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _userService.GetUsersAsync() == null)
@@ -173,6 +175,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("usedit")]
         public async Task<IActionResult> Edit(int id, UserVM userVM)
         {
             if (id != userVM.Id)
@@ -256,6 +259,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Users/Delete/5
+        [PermissionCheckerByPermissionName("usdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _userService.GetUsersAsync() == null)
@@ -275,6 +279,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("usdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _userService.GetUsersAsync() == null)

@@ -1,4 +1,5 @@
-﻿using Core.Services.Interfaces;
+﻿using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Supplementary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("banners")]
     public class BannersController : Controller
     {
         
@@ -25,6 +27,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Banners/Details/5
+        [PermissionCheckerByPermissionName("bndet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null ||  await _suppService.GetBannersAsync() == null)
@@ -42,6 +45,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Banners/Create
+        [PermissionCheckerByPermissionName("bnadd")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +56,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("bnadd")]
         public async Task<IActionResult> Create(Banner banner)
         {
             if (ModelState.IsValid)
@@ -64,6 +69,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Banners/Edit/5
+        [PermissionCheckerByPermissionName("bnedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _suppService.GetBannersAsync() == null)
@@ -84,6 +90,8 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("bnedit")]
+
         public async Task<IActionResult> Edit(int id, Banner banner)
         {
             if (id != banner.Id)
@@ -115,6 +123,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/Banners/Delete/5
+        [PermissionCheckerByPermissionName("bndel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _suppService.GetBannersAsync() == null)
@@ -134,6 +143,8 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/Banners/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("bndel")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _suppService.GetBannersAsync() == null)

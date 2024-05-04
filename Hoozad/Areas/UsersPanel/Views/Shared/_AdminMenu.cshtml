@@ -1,4 +1,6 @@
-﻿<div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
+﻿@using Core.Services.Interfaces;
+@inject IPermissionService _perService
+<div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
     <!-- main menu header-->
     <div class="main-menu-header">
         <input type="text" placeholder="Search" class="menu-search form-control round" />
@@ -6,92 +8,163 @@
     <!-- / main menu header-->
     <!-- main menu content-->
     <div class="main-menu-content">
-        <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-            <li class=" nav-item">
-                <a href="#"><i class="icon-home3"></i><span class="menu-title">مدیریت</span></a>
-                <ul class="menu-content">
-                    <li>
-                        <a href="/Admin/Sliders" class="menu-item"><i class="icon-library text-warning"></i><span class="menu-title"> امکانات سایت</span></a>
-                        <ul class="menu-content">
+        @if (_perService.CheckPermissionByName("mnage", User.Identity!.Name!))
+        {
+            <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
+                <li class=" nav-item">
+                    <a href="#"><i class="icon-home3"></i><span class="menu-title">مدیریت</span></a>
+                    <ul class="menu-content">
+                        @if (_perService.CheckPermissionByName("sitefaci", User.Identity!.Name!))
+                        {
                             <li>
-                                <a href="/UsersPanel/Sliders/Index" class="menu-item"><i class="icon-table2 text-success"></i> اسلایدر</a>
-                            </li>                            
-                            <li>
-                                <a href="/UsersPanel/Banners/Index" class="menu-item"><i class="icon-images2 text-primary"></i> بنرهای صفحه اصلی</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/SiteInfoes/Index" class="menu-item"><i class="icon-info text-info"></i> اطلاعات سایت</a>
-                            </li>
-                            <li>
-                                <a href="#" class="menu-item"><i class="icon-newspaper text-danger"></i>مجله</a>
+
+                                <a href="/Admin/Sliders" class="menu-item"><i class="icon-library text-warning"></i><span class="menu-title"> امکانات سایت</span></a>
                                 <ul class="menu-content">
-                                    <li>
-                                        <a href="/UsersPanel/BlogGroups" class="menu-item"><i class="icon-make-group text-white"></i> گروه های خبر</a>
-                                    </li>
-                                    <li>
-                                        <a href="/UsersPanel/Blogs" class="menu-item"><i class="icon-book text-warning"></i> اخبار مجله</a>
-                                    </li>
+                                    @if (_perService.CheckPermissionByName("slides", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Sliders/Index" class="menu-item"><i class="icon-table2 text-success"></i> اسلایدر</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("banners", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Banners/Index" class="menu-item"><i class="icon-images2 text-primary"></i> بنرهای صفحه اصلی</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("siteinfo", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/SiteInfoes/Index" class="menu-item"><i class="icon-info text-info"></i> اطلاعات سایت</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("journal", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="#" class="menu-item"><i class="icon-newspaper text-danger"></i>مجله</a>
+                                            <ul class="menu-content">
+                                                @if (_perService.CheckPermissionByName("gnews", User.Identity!.Name!))
+                                                {
+                                                    <li>
+                                                        <a href="/UsersPanel/BlogGroups" class="menu-item"><i class="icon-make-group text-white"></i> گروه های خبر</a>
+                                                    </li>
+                                                }
+                                                @if (_perService.CheckPermissionByName("news", User.Identity!.Name!))
+                                                {
+                                                    <li>
+                                                        <a href="/UsersPanel/Blogs" class="menu-item"><i class="icon-book text-warning"></i> اخبار مجله</a>
+                                                    </li>
+                                                }
+
+                                            </ul>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("faqs", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/FAQs/Index" class="menu-item"><i class="icon-question-circle text-info"></i> پرسش و پاسخ</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("orstatus", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Status" class="menu-item"><i class="icon-alert-circled text-warning"></i>وضعیت‌های سفارش</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("perms", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Permissions" class="menu-item"><i class="icon-security text-danger"></i> دسترسی ها</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("roles", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Roles" class="menu-item"><i class="icon-group text-success"></i> نقش‌ها</a>
+                                        </li>
+                                    }
                                 </ul>
                             </li>
+                        }
+                        @if (_perService.CheckPermissionByName("store", User.Identity!.Name!))
+                        {
                             <li>
-                                <a href="/UsersPanel/FAQs/Index" class="menu-item"><i class="icon-question-circle text-info"></i> پرسش و پاسخ</a>
+                                <a href="#" class="menu-item"><i class="icon-calculator3 text-success"></i> فروشگاه</a>
+                                <ul class="menu-content">
+                                    @if (_perService.CheckPermissionByName("pgroups", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/ProductGroups" class="menu-item"><i class="icon-make-group text-white"></i> گروه های محصول</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("prducts", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Products" class="menu-item"><i class="icon-file-zip text-success"></i> محصولات</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("prsizes", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/ProductSizes" class="menu-item"><i class="icon-font-size text-danger"></i> سایز محصولات</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("disco", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/DiscountCoupens" class="menu-item"><i class="icon-tag text-primary"></i> کوپن تخفیف</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("werh", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/WareHouses" class="menu-item"><i class="icon-book text-danger"></i> دفتر انبار</a>
+                                        </li>
+                                    }
+                                </ul>
                             </li>
+                        }
+                        @if (_perService.CheckPermissionByName("reports", User.Identity!.Name!))
+                        {
                             <li>
-                                <a href="/UsersPanel/Status" class="menu-item"><i class="icon-alert-circled text-warning"></i>وضعیت‌های سفارش</a>
+                                <a href="#" class="menu-item"><i class="icon-android-desktop text-success"></i> گزارشات</a>
+                                <ul class="menu-content">
+                                    @if (_perService.CheckPermissionByName("carts", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Reports/GetCarts" class="menu-item"><i class="icon-make-group text-white"></i> سبدهای خرید</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("ordes", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Reports/GetOrders" class="menu-item"><i class="icon-file-zip text-success"></i> سفارشات</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("cmess", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/ContactMessages" class="menu-item"><i class="icon-tag text-primary"></i> پیام های مشتریان</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("users", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Users" class="menu-item"><i class="icon-user text-info"></i> کاربران</a>
+                                        </li>
+                                    }
+                                    @if (_perService.CheckPermissionByName("chbanks", User.Identity!.Name!))
+                                    {
+                                        <li>
+                                            <a href="/UsersPanel/Reports/GetCellphones" class="menu-item"><i class="icon-phone text-white"></i> بانک تلفن همراه</a>
+                                        </li>
+                                    }
+                                </ul>
                             </li>
-                            <li>
-                                <a href="/UsersPanel/Permissions" class="menu-item"><i class="icon-security text-danger"></i> دسترسی ها</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/Roles" class="menu-item"><i class="icon-group text-success"></i> نقش‌ها</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="#" class="menu-item"><i class="icon-calculator3 text-success"></i> فروشگاه</a>
-                        <ul class="menu-content">
-                            <li>
-                                <a href="/UsersPanel/ProductGroups" class="menu-item"><i class="icon-make-group text-white"></i> گروه های محصول</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/Products" class="menu-item"><i class="icon-file-zip text-success"></i> محصولات</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/ProductSizes" class="menu-item"><i class="icon-font-size text-danger"></i> سایز محصولات</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/DiscountCoupens" class="menu-item"><i class="icon-tag text-primary"></i> کوپن تخفیف</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/WareHouses" class="menu-item"><i class="icon-book text-danger"></i> دفتر انبار</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="menu-item"><i class="icon-android-desktop text-success"></i> گزارشات</a>
-                        <ul class="menu-content">
-                            <li>
-                                <a href="/UsersPanel/Reports/GetCarts" class="menu-item"><i class="icon-make-group text-white"></i> سبدهای خرید</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/Reports/GetOrders" class="menu-item"><i class="icon-file-zip text-success"></i> سفارشات</a>
-                            </li>                            
-                            <li>
-                                <a href="/UsersPanel/ContactMessages" class="menu-item"><i class="icon-tag text-primary"></i> پیام های مشتریان</a>
-                            </li>  
-                            <li>
-                                <a href="/UsersPanel/Users" class="menu-item"><i class="icon-user text-info"></i> کاربران</a>
-                            </li>
-                            <li>
-                                <a href="/UsersPanel/Reports/GetCellphones" class="menu-item"><i class="icon-phone text-white"></i> بانک تلفن همراه</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </li>           
-        </ul>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        }
     </div>
-    
 </div>

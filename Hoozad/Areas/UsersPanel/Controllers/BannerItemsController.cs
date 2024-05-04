@@ -12,7 +12,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
-    //[PermissionCheckerByPermissionName("banneritems")]
+    [PermissionCheckerByPermissionName("banners")]
     public class BannerItemsController : Controller
     {
        
@@ -43,7 +43,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BannerItems/Details/5
-        [PermissionCheckerByPermissionName("bidet")]
+        [PermissionCheckerByPermissionName("bndet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || await _suppService.GetBannerItemsAsync() == null)
@@ -61,7 +61,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BannerItems/Create
-        [PermissionCheckerByPermissionName("biadd")]
+        [PermissionCheckerByPermissionName("bnadd")]
         public async Task<IActionResult> Create(int? bannerId)
         {
             if (bannerId == null)
@@ -82,7 +82,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[PermissionCheckerByPermissionName("biadd")]
+        [PermissionCheckerByPermissionName("bnadd")]
         public async Task<IActionResult> Create(BannerItem bannerItem, IFormFile? Image, IFormFile? MobileImage)
         {
             if (ModelState.IsValid)
@@ -130,7 +130,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BannerItems/Edit/5
-        //[PermissionCheckerByPermissionName("biadd")]
+        [PermissionCheckerByPermissionName("bnadd")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || await _suppService.GetBannerItemsAsync() == null)
@@ -152,7 +152,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[PermissionCheckerByPermissionName("biedit")]
+        [PermissionCheckerByPermissionName("bnedit")]
         public async Task<IActionResult> Edit(int id, BannerItem bannerItem, IFormFile? Image, IFormFile? MobileImage)
         {
             if (id != bannerItem.Id)
@@ -209,7 +209,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/BannerItems/Delete/5
-        //[PermissionCheckerByPermissionName("bidel")]
+        [PermissionCheckerByPermissionName("bndel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || await _suppService.GetBannerItemsAsync() == null)
@@ -229,7 +229,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/BannerItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        //[PermissionCheckerByPermissionName("bidel")]
+        [PermissionCheckerByPermissionName("bndel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (await _suppService.GetBannerItemsAsync() == null)

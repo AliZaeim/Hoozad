@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<DataLayer.Entities.Supplementary.FAQ>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _perService
 @{
     ViewData["Title"] = "پرسش و پاسخ";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">پرسش و پاسخ</h1>
+@if (_perService.CheckPermissionByName("faqadd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">افزودن</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-success">افزودن</a>
-</p>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -33,8 +37,16 @@
                     @Html.DisplayFor(modelItem => item.Answer)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |                    
-                    <a asp-action="Delete" asp-route-id="@item.Id">حــذف</a>
+                    @if (_perService.CheckPermissionByName("faqedit", User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a><span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("faqdel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">حــذف</a>
+                    }
+                                      
+                    
                 </td>
             </tr>
         }

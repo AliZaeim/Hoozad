@@ -1,16 +1,20 @@
 ﻿@model IEnumerable<DataLayer.Entities.Supplementary.BannerItem>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _perService
 @{
     ViewData["Title"] = ViewData["zTitle"]!.ToString();
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">@ViewData["zTitle"]!.ToString()</h1>
+@if (_perService.CheckPermissionByName("bnadd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="text-xs-center btn btn-success">ثبت بنر</a>
+        <a asp-action="Index" asp-controller="Banners" class="text-xs-center btn btn-success">بسته های بنر</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create" class="text-xs-center btn btn-success">ثبت بنر</a>
-    <a asp-action="Index" asp-controller="Banners" class="text-xs-center btn btn-success">بسته های بنر</a>
-</p>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -47,9 +51,20 @@
                     @Html.DisplayFor(modelItem => item.Banner!.Name)
                 </td>
                 <td class="text-xs-center align-middle">
-                    <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">حذف</a>
+                    @if (_perService.CheckPermissionByName("bnedit", User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a>
+                    }
+                    @if (_perService.CheckPermissionByName("bndet", User.Identity!.Name!))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a>
+                    }
+                    @if (_perService.CheckPermissionByName("bndel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">حذف</a>
+                    }
+
+                    
                 </td>
             </tr>
         }

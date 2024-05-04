@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<DataLayer.Entities.Blogs.BlogGroup>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _perService
 @{
     ViewData["Title"] = "گروه های خبر";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">گروه های خبر</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت گروه</a>
-</p>
+@if (_perService.CheckPermissionByName("sinfadd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت گروه</a>
+    </p>
+}
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -39,9 +42,18 @@
                 @Html.DisplayFor(modelItem => item.IsActive)
             </td>            
             <td class="text-xs-center align-middle">
-                <a asp-action="Edit" asp-route-id="@item.BlogGroupId">ویرایش</a> |
-                <a asp-action="Details" asp-route-id="@item.BlogGroupId">جزئیات</a> |
-                <a asp-action="Delete" asp-route-id="@item.BlogGroupId">حــذف</a>
+                @if (_perService.CheckPermissionByName("sinfedit", User.Identity!.Name!))
+                {
+                        <a asp-action="Edit" asp-route-id="@item.BlogGroupId">ویرایش</a><span>|</span>
+                }
+                @if (_perService.CheckPermissionByName("sinfdet", User.Identity!.Name!))
+                {
+                        <a asp-action="Details" asp-route-id="@item.BlogGroupId">جزئیات</a><span>|</span>
+                }
+                @if (_perService.CheckPermissionByName("sinfdel", User.Identity!.Name!))
+                {
+                        <a asp-action="Delete" asp-route-id="@item.BlogGroupId">حــذف</a>
+                }              
             </td>
         </tr>
 }

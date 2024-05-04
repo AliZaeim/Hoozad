@@ -1,16 +1,20 @@
 ﻿@using Core.Convertors;
 @model IEnumerable<DataLayer.Entities.Store.DiscountCoupen>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _permService
 @{
     ViewData["Title"] = "کوپن های تخفیف";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1 class="text-xs-center alert alert-info">کوپن های تخفیف</h1>
+@if (_permService.CheckPermissionByName("dcadd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت</a>
-</p>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -64,9 +68,19 @@
                     @Html.DisplayFor(modelItem => item.IsActive)
                 </td>
                 <td class="text-xs-center align-middle">
-                    <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">حذف</a>
+                    @if (_permService.CheckPermissionByName("dcedit", User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a>
+                    }
+                    @if (_permService.CheckPermissionByName("dcdet", User.Identity!.Name!))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a>
+                    }
+                    @if (_permService.CheckPermissionByName("dcdel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">حذف</a>
+                    }
+                    
                 </td>
             </tr>
         }

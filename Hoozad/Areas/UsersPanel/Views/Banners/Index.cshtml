@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<DataLayer.Entities.Supplementary.Banner>
-
+@using Core.Services.Interfaces;
+@inject IPermissionService _perService
 @{
     ViewData["Title"] = "بسته های بنر";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
@@ -15,9 +16,12 @@
     <br />
     2 بسته بنر چهارتایی 
 </h4>
-<p>
-    <a asp-action="Create" class="btn btn-success">ثبت بسته بنر </a>
-</p>
+@if (_perService.CheckPermissionByName("bnadd", User.Identity!.Name!))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">ثبت بسته بنر </a>
+    </p>
+}
 
 <table class="table table-bordered">
     <thead>
@@ -54,11 +58,28 @@
                     @Html.DisplayFor(modelItem => item.ShowPriority)
                 </td>
                 <td class="text-xs-center align-middle">
-                    <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">حذف</a> |
-                    <a asp-action="Create" asp-controller="BannerItems"  asp-route-bannerid="@item.Id">ثبت بنر</a> |
-                    <a asp-action="Index" asp-controller="BannerItems" asp-route-bannerid="@item.Id">مشاهده بنرها <span class="tag tag-squre tag-info">@item.BannerItems?.Count()</span></a>
+                    @if (_perService.CheckPermissionByName("bnedit", User.Identity!.Name!))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a><span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("bndet", User.Identity!.Name!))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">جزئیات</a><span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("bndel", User.Identity!.Name!))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">حذف</a><span>|</span>
+                    }
+
+                    @if (_perService.CheckPermissionByName("bnadd", User.Identity!.Name!))
+                    {
+                        <a asp-action="Create" asp-controller="BannerItems" asp-route-bannerid="@item.Id">ثبت بنر</a> <span>|</span>
+                    }
+                    @if (_perService.CheckPermissionByName("banners", User.Identity!.Name!))
+                    {
+                        <a asp-action="Index" asp-controller="BannerItems" asp-route-bannerid="@item.Id">مشاهده بنرها <span class="tag tag-squre tag-info">@item.BannerItems?.Count()</span></a>
+                    }                   
+                    
                 </td>
             </tr>
         }

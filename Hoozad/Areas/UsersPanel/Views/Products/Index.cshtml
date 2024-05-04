@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<DataLayer.Entities.Store.Product>
 @using Core.Services.Interfaces;
-@inject IStoreService _storeService;
+@inject IStoreService _storeService
+@inject IPermissionService _permService
 @{
     ViewData["Title"] = "محصولات";
     Layout = "~/Areas/UsersPanel/Views/Shared/_AdminLayout.cshtml";
@@ -9,15 +10,22 @@
 <h1 class="text-xs-center alert alert-info">محصولات</h1>
 
 <p>
-    @if (ViewData["gid"] == null)
+    @if (_permService.CheckPermissionByName("pradd", User.Identity!.Name!))
     {
-        <a asp-action="Create" class="btn btn-success">ثبت محصول جدید</a>
+        @if (ViewData["gid"] == null)
+        {
+            <a asp-action="Create" class="btn btn-success">ثبت محصول جدید</a>
+        }
+        else
+        {
+            <a asp-action="Create" asp-route-gId="@ViewData["gid"]" class="btn btn-success">ثبت محصول جدید</a>
+        }
     }
-    else
+    @if (_permService.CheckPermissionByName("pgroups",User.Identity!.Name!))
     {
-        <a asp-action="Create" asp-route-gId="@ViewData["gid"]" class="btn btn-success">ثبت محصول جدید</a>
+        <a asp-action="Index" asp-controller="ProductGroups" class="btn btn-info">گروه های محصول</a>
     }
-    <a asp-action="Index" asp-controller="ProductGroups" class="btn btn-info">گروه های محصول</a>
+    
 </p>
 <div class="table-responsive" id="tblDiv">
     <table class="table table-bordered">
@@ -179,8 +187,12 @@
                                         </td>
                                         <td class="text-xs-center align-middle p-0">@pr.Price.GetValueOrDefault().ToString("N0")</td>
                                         <td class="text-xs-center align-middle p-0">
-                                            <a data-prId="@pr.Id" data-name="@item.ProductName" class="EditPrice text-info font-size-xsmall p-0">ویرایش</a> <span>|</span>
-                                            <a data-prId="@pr.Id" data-name="@item.ProductName" class="RemovePrice text-danger font-size-xsmall p-0">حذف</a>
+                                            @if(_permService.CheckPermissionByName("predit",User.Identity!.Name!))
+                                            {
+                                                <a data-prId="@pr.Id" data-name="@item.ProductName" class="EditPrice text-info font-size-xsmall p-0">ویرایش</a> <span>|</span>
+                                                <a data-prId="@pr.Id" data-name="@item.ProductName" class="RemovePrice text-danger font-size-xsmall p-0">حذف</a>
+                                            }
+                                            
                                         </td>
                                     </tr>
                                 }
@@ -204,8 +216,12 @@
                                         <td class="text-xs-center align-middle p-0"><input type="color" class="zcolorPalet" value="@pr.Color" disabled /></td>
                                         <td class="text-xs-center align-middle p-0">@pr.ColorName</td>
                                         <td class="text-xs-center align-middle p-0">
-                                            <a data-prcId="@pr.Id" data-name="@item.ProductName" class="EditColor text-info font-size-xsmall">ویرایش</a> <span>|</span>
-                                            <a data-prcId="@pr.Id" data-name="@item.ProductName" class="RemoveColor text-danger font-size-xsmall">حذف</a>
+                                            @if(_permService.CheckPermissionByName("predit",User.Identity!.Name!))
+                                            {
+                                                <a data-prcId="@pr.Id" data-name="@item.ProductName" class="EditColor text-info font-size-xsmall">ویرایش</a> <span>|</span>
+                                                <a data-prcId="@pr.Id" data-name="@item.ProductName" class="RemoveColor text-danger font-size-xsmall">حذف</a>
+                                            }
+
                                         </td>
                                     </tr>
                                 }
@@ -216,9 +232,18 @@
                         <a asp-action="Edit" asp-route-id="@item.ProductId">ویرایش</a> <span>|</span>
                         <a asp-action="Details" asp-route-id="@item.ProductId">جزئیات</a> <span>|</span>
                         <a asp-action="Delete" asp-route-id="@item.ProductId">حــذف</a> <br>
-                        <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddPrice text-info">ثبت قیمت</a> <span>|</span>
-                        <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddColor text-info">ثبت رنگ</a><span> | </span>
-                        <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddComponent text-warning">افزودن آیتم</a>
+                        @if (_permService.CheckPermissionByName("priceadd", User.Identity!.Name!))
+                        {
+                            <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddPrice text-info">ثبت قیمت</a> <span>|</span>
+                        }
+                        @if (_permService.CheckPermissionByName("coloradd", User.Identity!.Name!))
+                        {
+                            <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddColor text-info">ثبت رنگ</a> <span> | </span>
+                        }
+                        @if (_permService.CheckPermissionByName("itemadd", User.Identity!.Name!))
+                        {
+                            <a data-pId="@item.ProductId" data-name="@item.ProductName" class="AddComponent text-warning">افزودن آیتم</a>
+                        }                       
                     </td>
                 </tr>
                 rad++;
@@ -228,7 +253,7 @@
 </div>
 
 @section Scripts
-    {
+{
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip({ html: true });

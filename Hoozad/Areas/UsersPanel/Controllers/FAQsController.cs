@@ -1,4 +1,5 @@
-﻿using Core.Services.Interfaces;
+﻿using Core.Security;
+using Core.Services.Interfaces;
 using DataLayer.Entities.Supplementary;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ namespace Web.Areas.UsersPanel.Controllers
 {
     [Area("UsersPanel")]
     [Authorize]
+    [PermissionCheckerByPermissionName("faqs")]
     public class FAQsController : Controller
     {
         
@@ -26,6 +28,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/FAQs/Details/5
+        [PermissionCheckerByPermissionName("faqdet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null )
@@ -43,6 +46,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/FAQs/Create
+        [PermissionCheckerByPermissionName("faqadd")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +57,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("faqadd")]
         public async Task<IActionResult> Create(FAQ fAQ)
         {
             if (ModelState.IsValid)
@@ -65,6 +70,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/FAQs/Edit/5
+        [PermissionCheckerByPermissionName("faqedit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,6 +91,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("faqedit")]
         public async Task<IActionResult> Edit(int id, FAQ fAQ)
         {
             if (id != fAQ.Id)
@@ -116,6 +123,7 @@ namespace Web.Areas.UsersPanel.Controllers
         }
 
         // GET: UsersPanel/FAQs/Delete/5
+        [PermissionCheckerByPermissionName("faqdel")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,6 +143,7 @@ namespace Web.Areas.UsersPanel.Controllers
         // POST: UsersPanel/FAQs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [PermissionCheckerByPermissionName("faqdel")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             
